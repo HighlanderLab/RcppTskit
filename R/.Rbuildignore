@@ -1,0 +1,7 @@
+^\.git
+^\.github
+^.*\.Rproj$
+^\.Rproj\.user$
+^TODO$
+^.*.o$
+^.*.so$

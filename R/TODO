@@ -1,0 +1,39 @@
+
+* Put any C/C++/Fortran code in 'src' and build a README.md
+
+* These two lines were in NAMESPACE from Rcpp.package.skeleton() but devtools wants to autogenerate it
+importFrom(Rcpp, evalCpp)
+exportPattern("^[[:alpha:]]+")
+
+* Any of this usefull to add to DESCRIPTION?
+Depends: R (>= 4.0.0), methods, R6
+Suggests: knitr, rmarkdown, testthat
+VignetteBuilder: knitr
+NeedsCompilation: true
+
+* https://github.com/RcppCore/RcppArmadillo/tree/master/inst/include
+
+* https://github.com/RcppCore/RcppArmadillo/blob/master/.Rbuildignore has
+\.travis\.yml
+^\.codecov.yml
+^\.covrignore
+^local
+^vignettes/rmd
+
+* Mention that tskit&kastore are MIT too - see https://github.com/RcppCore/RcppArmadillo/blob/master/inst/COPYRIGHTS
+* https://github.com/RcppCore/RcppArmadillo/blob/master/inst/AUTHORS
+Armadillo itself carries the following in file NOTICE.TXT:
+
+  Armadillo C++ Linear Algebra Library
+  Copyright 2008-2016 Conrad Sanderson (http://conradsanderson.id.au)
+  Copyright 2008-2016 National ICT Australia (NICTA)
+
+  This product includes software developed by Conrad Sanderson (http://conradsanderson.id.au)
+  This product includes software developed at National ICT Australia (NICTA)
+
+The RcppArmadillo package integrates Armadillo into R, provides wrappers,
+converters, a test framework, examples and more. It was written by Dirk
+Eddelbuettel, Romain Francois and Doug Bates with contributions by many
+others as detailed in the ChangeLog file.
+
+* See also issues at https://github.com/highlanderlab/tskitr/issues
