@@ -1,0 +1,6 @@
+PKG_CPPFLAGS = -I../inst/include/tskit -I../inst/include/tskit/tskit
+
+# TSKIT_C_SOURCES = convert.c core.c genotypes.c haplotype_matching.c kastore.c \
+#	stats.c tables.c trees.c
+#
+# SOURCES = $(TSKIT_C_SOURCES) rcpp_hello_world.cpp tskit_minimal.cpp RcppExports.cpp

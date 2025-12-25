@@ -1,7 +1,3 @@
-[submodule "extern/kastore"]
-	path = extern/kastore
-	url = https://github.com/tskit-dev/kastore
-	branch = main
 [submodule "extern/tskit"]
 	path = extern/tskit
 	url = https://github.com/tskit-dev/tskit

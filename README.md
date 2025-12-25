@@ -13,7 +13,7 @@ need arises.
 Contents
 --------
 
-  * `extern` - Git submodules for kastore and tskit and instructions on copying their C code
+  * `extern` - Git submodule for tskit and instructions on copying its C code
 
   * `R` - R package
 
