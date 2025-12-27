@@ -5,7 +5,6 @@ using namespace Rcpp;
 
 // Baby steps development/exploration to see how this could work
 
-// This one works
 // [[Rcpp::export]]
 List rcpp_hello_world() {
     CharacterVector x = CharacterVector::create( "foo", "bar" )  ;
@@ -14,13 +13,21 @@ List rcpp_hello_world() {
     return z ;
 }
 
-// This one works
+//' Report the version of tskit C API
+//'
+//' @details The version is defined by tstkit in the header \code{tskit/core.h}.
+//' @return A named vector with three elements \code{major}, \code{minor}, and
+//'   \code{patch}.
+//' @seealso tskit header file \code{tskit/core.h}.
 // [[Rcpp::export]]
-int tskit_version_major() {
-    return TSK_VERSION_MAJOR;
+Rcpp::IntegerVector tskit_version() {
+  using Rcpp::_;
+  using Rcpp::IntegerVector;
+  return IntegerVector::create(_["major"] = TSK_VERSION_MAJOR,
+                               _["minor"] = TSK_VERSION_MINOR,
+                               _["patch"] = TSK_VERSION_PATCH);
 }
 
-// This one works
 // [[Rcpp::export]]
 int tskit_table_collection_init_ok() {
     int ret;
@@ -30,7 +37,6 @@ int tskit_table_collection_init_ok() {
     return ret;
 }
 
-// This one works
 // [[Rcpp::export]]
 int tskit_table_collection_num_nodes_zero() {
     int n, ret;
@@ -59,7 +65,6 @@ ts2
 ts2$num_nodes
 */
 
-// This one works
 // [[Rcpp::export]]
 int tskit_treeseq_num_nodes_from_file(std::string file) {
     int n, ret;
@@ -78,7 +83,6 @@ int tskit_treeseq_num_nodes_from_file(std::string file) {
 tskit_treeseq_num_nodes_from_file("test.trees")
 */
 
-// This one works
 // [[Rcpp::export]]
 SEXP tskit_treeseq_load_xptr(std::string file) {
     int ret;
@@ -92,7 +96,6 @@ SEXP tskit_treeseq_load_xptr(std::string file) {
     return xp;
 }
 
-// This one works
 // [[Rcpp::export]]
 int tskit_treeseq_num_nodes(SEXP xp) {
     int n;

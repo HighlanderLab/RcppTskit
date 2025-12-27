@@ -5,8 +5,14 @@ rcpp_hello_world <- function() {
     .Call(`_tskitr_rcpp_hello_world`)
 }
 
-tskit_version_major <- function() {
-    .Call(`_tskitr_tskit_version_major`)
+#' Report the version of tskit C API
+#'
+#' @details The version is defined by tstkit in the header \code{tskit/core.h}.
+#' @return A named vector with three elements \code{major}, \code{minor}, and
+#'   \code{patch}.
+#' @seealso tskit header file \code{tskit/core.h}.
+tskit_version <- function() {
+    .Call(`_tskitr_tskit_version`)
 }
 
 tskit_table_collection_init_ok <- function() {

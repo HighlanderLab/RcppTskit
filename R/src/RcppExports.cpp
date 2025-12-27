@@ -20,13 +20,13 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// tskit_version_major
-int tskit_version_major();
-RcppExport SEXP _tskitr_tskit_version_major() {
+// tskit_version
+Rcpp::IntegerVector tskit_version();
+RcppExport SEXP _tskitr_tskit_version() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(tskit_version_major());
+    rcpp_result_gen = Rcpp::wrap(tskit_version());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -86,7 +86,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_tskitr_rcpp_hello_world", (DL_FUNC) &_tskitr_rcpp_hello_world, 0},
-    {"_tskitr_tskit_version_major", (DL_FUNC) &_tskitr_tskit_version_major, 0},
+    {"_tskitr_tskit_version", (DL_FUNC) &_tskitr_tskit_version, 0},
     {"_tskitr_tskit_table_collection_init_ok", (DL_FUNC) &_tskitr_tskit_table_collection_init_ok, 0},
     {"_tskitr_tskit_table_collection_num_nodes_zero", (DL_FUNC) &_tskitr_tskit_table_collection_num_nodes_zero, 0},
     {"_tskitr_tskit_treeseq_num_nodes_from_file", (DL_FUNC) &_tskitr_tskit_treeseq_num_nodes_from_file, 1},
