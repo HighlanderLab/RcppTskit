@@ -10,13 +10,13 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// rcpp_hello_world
-List rcpp_hello_world();
-RcppExport SEXP _tskitr_rcpp_hello_world() {
+// kastore_version
+Rcpp::IntegerVector kastore_version();
+RcppExport SEXP _tskitr_kastore_version() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(rcpp_hello_world());
+    rcpp_result_gen = Rcpp::wrap(kastore_version());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -30,68 +30,34 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// tskit_table_collection_init_ok
-int tskit_table_collection_init_ok();
-RcppExport SEXP _tskitr_tskit_table_collection_init_ok() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(tskit_table_collection_init_ok());
-    return rcpp_result_gen;
-END_RCPP
-}
-// tskit_table_collection_num_nodes_zero
-int tskit_table_collection_num_nodes_zero();
-RcppExport SEXP _tskitr_tskit_table_collection_num_nodes_zero() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(tskit_table_collection_num_nodes_zero());
-    return rcpp_result_gen;
-END_RCPP
-}
-// tskit_treeseq_num_nodes_from_file
-int tskit_treeseq_num_nodes_from_file(std::string file);
-RcppExport SEXP _tskitr_tskit_treeseq_num_nodes_from_file(SEXP fileSEXP) {
+// treeseq_load
+SEXP treeseq_load(std::string file);
+RcppExport SEXP _tskitr_treeseq_load(SEXP fileSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string >::type file(fileSEXP);
-    rcpp_result_gen = Rcpp::wrap(tskit_treeseq_num_nodes_from_file(file));
+    rcpp_result_gen = Rcpp::wrap(treeseq_load(file));
     return rcpp_result_gen;
 END_RCPP
 }
-// tskit_treeseq_load_xptr
-SEXP tskit_treeseq_load_xptr(std::string file);
-RcppExport SEXP _tskitr_tskit_treeseq_load_xptr(SEXP fileSEXP) {
+// treeseq_num_nodes
+int treeseq_num_nodes(SEXP ts);
+RcppExport SEXP _tskitr_treeseq_num_nodes(SEXP tsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type file(fileSEXP);
-    rcpp_result_gen = Rcpp::wrap(tskit_treeseq_load_xptr(file));
-    return rcpp_result_gen;
-END_RCPP
-}
-// tskit_treeseq_num_nodes
-int tskit_treeseq_num_nodes(SEXP xp);
-RcppExport SEXP _tskitr_tskit_treeseq_num_nodes(SEXP xpSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type xp(xpSEXP);
-    rcpp_result_gen = Rcpp::wrap(tskit_treeseq_num_nodes(xp));
+    Rcpp::traits::input_parameter< SEXP >::type ts(tsSEXP);
+    rcpp_result_gen = Rcpp::wrap(treeseq_num_nodes(ts));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_tskitr_rcpp_hello_world", (DL_FUNC) &_tskitr_rcpp_hello_world, 0},
+    {"_tskitr_kastore_version", (DL_FUNC) &_tskitr_kastore_version, 0},
     {"_tskitr_tskit_version", (DL_FUNC) &_tskitr_tskit_version, 0},
-    {"_tskitr_tskit_table_collection_init_ok", (DL_FUNC) &_tskitr_tskit_table_collection_init_ok, 0},
-    {"_tskitr_tskit_table_collection_num_nodes_zero", (DL_FUNC) &_tskitr_tskit_table_collection_num_nodes_zero, 0},
-    {"_tskitr_tskit_treeseq_num_nodes_from_file", (DL_FUNC) &_tskitr_tskit_treeseq_num_nodes_from_file, 1},
-    {"_tskitr_tskit_treeseq_load_xptr", (DL_FUNC) &_tskitr_tskit_treeseq_load_xptr, 1},
-    {"_tskitr_tskit_treeseq_num_nodes", (DL_FUNC) &_tskitr_tskit_treeseq_num_nodes, 1},
+    {"_tskitr_treeseq_load", (DL_FUNC) &_tskitr_treeseq_load, 1},
+    {"_tskitr_treeseq_num_nodes", (DL_FUNC) &_tskitr_treeseq_num_nodes, 1},
     {NULL, NULL, 0}
 };
 
