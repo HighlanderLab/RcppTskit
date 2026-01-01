@@ -1,0 +1,50 @@
+# tskit C sources & objects
+# TSKIT_SOURCES = $(wildcard tskit/*.c) # wildcard is a GNU extension and not desired on CRAN
+TSKIT_SOURCES = \
+	tskit/convert.c \
+	tskit/core.c \
+	tskit/genotypes.c \
+	tskit/haplotype_matching.c \
+	tskit/kastore.c \
+	tskit/stats.c \
+	tskit/tables.c \
+	tskit/trees.c
+# $(info TSKIT_SOURCES = $(TSKIT_SOURCES)) # for debugging, info is also a GNU extension
+TSKIT_OBJECTS = $(TSKIT_SOURCES:.c=.o)
+# $(info TSKIT_OBJECTS = $(TSKIT_OBJECTS)) # for debugging, info is also a GNU extension
+
+# tskitr C++ sources & objects
+# TSKITR_SOURCES = $(wildcard *.cpp) # wildcard is a GNU extension and not desired on CRAN
+TSKITR_SOURCES = \
+	tskitr_minimal.cpp \
+	RcppExports.cpp
+# $(info TSKITR_SOURCES = $(TSKITR_SOURCES)) # for debugging, info is also a GNU extension
+TSKITR_OBJECTS = $(TSKITR_SOURCES:.cpp=.o)
+# $(info TSKITR_OBJECTS = $(TSKITR_OBJECTS)) # for debugging, info is also a GNU extension
+
+# All objects
+OBJECTS = $(TSKIT_OBJECTS) $(TSKITR_OBJECTS)
+# $(info OBJECTS = $(OBJECTS)) # for debugging, info is also a GNU extension
+
+# Include paths and preprocessor defines
+PKG_CPPFLAGS = -I../inst/include -I../inst/include/tskit -I../inst/include/tskit/tskit
+
+# Compiler flags
+# TODO: Remove asserts as per Writting R extensions manual
+# PKG_CFLAGS = -DNDEBUG
+# TODO: Note clang++ uses -DNDEBUG by default (see below output from devtools::install())
+# clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I../inst/include/tskit -I../inst/include/tskit/tskit -I/opt/homebrew/opt/gettext/include -I'/Users/ggorjanc/Library/R/arm64/4.5/library/Rcpp/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c tskitr_minimal.cpp -o tskitr_minimal.o
+# TODO: Should we port any flags from extern/tskit/c/meson.build to R build system?
+#       See default flags used by clang  (see below output from devtools::install())
+# clang -arch arm64 -I../inst/include -I../inst/include/tskit -I../inst/include/tskit/tskit -I/opt/homebrew/opt/gettext/include  -falign-functions=64 -Wall -g -O2  -c tskit/convert.c -o tskit/convert.o
+# PKG_CFLAGS   = -O2 -Wall
+# PKG_CXXFLAGS = -O2 -Wall
+
+# Explicit compile rule for tskit C files
+tskit/%.o: tskit/%.c
+	$(CC) $(PKG_CPPFLAGS) $(PKG_CFLAGS) $(CFLAGS) -c $< -o $@
+
+# Linking
+PKG_LIBS = @TSKITR_LIB@
+
+# TODO: Create Makevars.win

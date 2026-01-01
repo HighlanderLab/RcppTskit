@@ -82,7 +82,7 @@ static void treeseq_xptr_finalize(SEXP xptr_sexp) {
 //' @return An external pointer to a \code{tsk_treeseq_t} object.
 //' @examples
 //' ts_file <- system.file("examples", "test.trees", package = "tskitr")
-//' ts <- ts_load(ts_file)
+//' ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 //' ts
 //' is(ts)
 //' ts_num_nodes(ts)
@@ -111,10 +111,11 @@ SEXP ts_load(std::string file) {
 //'     samples, nodes, edges, trees, sites, and mutations.
 //' @param ts an external pointer to a \code{tsk_treeseq_t} object.
 //' @return \code{ts_num} returns a named list with the numbers of each item,
-//     while \code{ts_num_x} return the number of each item.
+//'     while \code{ts_num_x} return the number of each item. All numbers are
+//'     returned as integers.
 //' @examples
 //' ts_file <- system.file("examples", "test.trees", package = "tskitr")
-//' ts <- ts_load(ts_file)
+//' ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 //' ts_num(ts)
 //' ts_num_provenances(ts)
 //' ts_num_populations(ts)

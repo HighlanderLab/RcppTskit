@@ -1,8 +1,6 @@
-^\.git
-^\.github
+^\.git$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^TODO$
-^.*.o$
-^.*.so$
 ^test\.trees$
+^.*\.o$
+^.*\.so$

@@ -3,6 +3,11 @@
 .Rhistory
 .RData
 .Ruserdata
-*.o
-*.so
-R/test.trees
+R/src/*.o
+R/src/tskit/*.o
+R/src/*.so
+R/src/*.dll*
+R/src/Makevars
+R/src/Makevars.win
+test.trees
+.DS_Store

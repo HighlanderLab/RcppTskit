@@ -17,7 +17,7 @@ Load tree sequence from a file
 }
 \examples{
 ts_file <- system.file("examples", "test.trees", package = "tskitr")
-ts <- ts_load(ts_file)
+ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 ts
 is(ts)
 ts_num_nodes(ts)

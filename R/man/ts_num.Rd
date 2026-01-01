@@ -41,6 +41,8 @@ ts_num_mutations(ts)
 }
 \value{
 \code{ts_num} returns a named list with the numbers of each item,
+    while \code{ts_num_x} return the number of each item. All numbers are
+    returned as integers.
 }
 \description{
 Get the number of records in a tree sequence
@@ -75,7 +77,7 @@ These functions return the number of various items in a tree
 }}
 \examples{
 ts_file <- system.file("examples", "test.trees", package = "tskitr")
-ts <- ts_load(ts_file)
+ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 ts_num(ts)
 ts_num_provenances(ts)
 ts_num_populations(ts)

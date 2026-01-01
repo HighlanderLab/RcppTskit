@@ -17,14 +17,15 @@ and low-level work with tree sequences is required. R access to the parts of
 C API is added as the need arises.
 }
 \examples{
-# Here are two examples showcasing what you can do with tskitr
+\dontshow{# Providing the examples here so we test them at R CMD check}
+# Here are examples showcasing what you can do with tskitr
 
 # 1) Load a tree sequence into an R session and summarise its contents
 ts_file <- system.file("examples", "test.trees", package = "tskitr")
 ts <- ts_load(ts_file)
 ts_num_individuals(ts)
 
-# 2) Call tskit C API in C++ code within an R session or an R package
+# 2) Call tskit C API in C++ code in an R session
 library(Rcpp)
 codeString <- '
     #include <tskit.h>
@@ -36,11 +37,16 @@ codeString <- '
     }'
 get_num_individuals <- cppFunction(code=codeString, depends="tskitr", plugins="tskitr")
 ts_file <- system.file("examples", "test.trees", package="tskitr")
-ts <- tskitr::ts_load(ts_file)
+ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 get_num_individuals(ts)
 ts_num_individuals(ts) # tskitr implementation of get_num_individuals()
 
-# For use in an R package, see the vignette TODO
+# 3) Call `tskit` C API in C++ code in another R package (TODO)
+# TODO: see STATE_and_AIMS.md or vignette
+
+# 4) Call `tskit` C API in R code in an R session or another R package (TODO)
+# TODO: see STATE_and_AIMS.md or vignette
+
 }
 \seealso{
 Useful links:

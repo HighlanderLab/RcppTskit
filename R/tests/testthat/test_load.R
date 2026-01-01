@@ -4,7 +4,7 @@ test_that("ts_load works and ts_num(_x) are correct", {
   expect_error(ts_load())
   expect_error(ts_load("nonexistent_ts"))
   ts_file <- system.file("examples", "test.trees", package = "tskitr")
-  ts <- ts_load(ts_file)
+  ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 
   expect_error(ts_num())
   n <- ts_num(ts)

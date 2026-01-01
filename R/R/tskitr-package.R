@@ -16,14 +16,15 @@
 #' @importFrom Rdpack reprompt
 #'
 #' @examples
-#' # Here are two examples showcasing what you can do with tskitr
+#' \dontshow{# Providing the examples here so we test them at R CMD check}
+#' # Here are examples showcasing what you can do with tskitr
 #'
 #' # 1) Load a tree sequence into an R session and summarise its contents
 #' ts_file <- system.file("examples", "test.trees", package = "tskitr")
 #' ts <- ts_load(ts_file)
 #' ts_num_individuals(ts)
 #'
-#' # 2) Call tskit C API in C++ code within an R session
+#' # 2) Call tskit C API in C++ code in an R session
 #' library(Rcpp)
 #' codeString <- '
 #'     #include <tskit.h>
@@ -35,11 +36,16 @@
 #'     }'
 #' get_num_individuals <- cppFunction(code=codeString, depends="tskitr", plugins="tskitr")
 #' ts_file <- system.file("examples", "test.trees", package="tskitr")
-#' ts <- tskitr::ts_load(ts_file)
+#' ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 #' get_num_individuals(ts)
 #' ts_num_individuals(ts) # tskitr implementation of get_num_individuals()
 #'
-#' # For use in an R package, see the vignette TODO
+#' # 3) Call `tskit` C API in C++ code in another R package (TODO)
+#' # TODO: see STATE_and_AIMS.md or vignette
+#'
+#' # 4) Call `tskit` C API in R code in an R session or another R package (TODO)
+#' # TODO: see STATE_and_AIMS.md or vignette
+#'
 "_PACKAGE"
 
 #' Providing an inline plugin so we can call tskit C API with functions like
@@ -48,26 +54,30 @@
 #
 #' Studying RcppArmadillo, I don't see it uses Rcpp::registerPlugin() anywhere,
 #' but an LLM suggested that this is because Armadillo is header-only library
-#' so depends = "RcppArmadillo" adds include paths and there is no library to
-#' link. tskitr is different because we must link against the compiled tskitr
-#' shared object (or a static library). The plugin (or explicit PKG_LIBS) is
-#' required since depends only sets include paths, not linker flags.
+#' so depends = "RcppArmadillo" adds include paths to headers, while there is
+#' no library that we should link to. tskitr is different because we must link
+#' against the compiled tskitr shared object (or a static library). The plugin
+#' (or explicit PKG_LIBS) is required to provide linking flags in addition to
+#' depends providing include paths to headers.
 #' @noRd
 .onLoad <- function(libname, pkgname) {
   Rcpp::registerPlugin(name = "tskitr", plugin = function() {
+    # See ?Rcpp::registerPlugin and ?inline::registerPlugin on what the plugin
+    # function should return (a list with additional includes, environment
+    # variables, such as PKG_LIBS, and other compilation context).
     libdir <- system.file("libs", package = "tskitr")
-    libnames <- c(
-      "tskitr.dylib",
-      "tskitr.so",
-      "tskitr.dll.a",
-      "tskitr.lib",
-      "tskitr.dll"
+    candidates <- c(
+      "tskitr.so", # Unix/Linux and macOS
+      "tskitr.dylib", # macOS (backup to tskitr.so)
+      "tskitr.dll.a", # Windows (MinGW/Rtools)
+      "tskitr.lib", # Windows (MSVC, backup)
+      "tskitr.dll" # Windows (DLL, backup)
     )
-    libpaths <- file.path(libdir, libnames)
+    libpaths <- file.path(libdir, candidates)
     libfile <- libpaths[file.exists(libpaths)][1]
-    if (is.na(libfile)) {
+    if (length(libfile) < 1) {
       stop("Unable to locate the tskitr shared library in ", libdir)
     }
-    list(env = list(PKG_LIBS = paste0(shQuote(libfile))))
+    list(env = list(PKG_LIBS = shQuote(libfile)))
   })
 }
