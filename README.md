@@ -93,7 +93,7 @@ R CMD build tskitr
 R CMD check tskitr_*.tar.gz
 
 # Install the package
-R CMD INSTALL tskitr_*.tar.gz # or .zip
+R CMD INSTALL tskitr_*.tar.gz
 ```
 
 On Windows, replace `tar.gz` with `zip`.

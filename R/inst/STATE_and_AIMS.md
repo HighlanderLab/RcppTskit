@@ -177,7 +177,7 @@ Given the above state of the tree sequence ecosystem, the aims of the `tskitr` p
   3) Call `tskit` C API in C++ code in another R package, and
   4) Call `tskit` C API in R code in an R session or another R package (TODO).
 
-The following sections demonstrate how this functionality looks like.
+The following subsections demonstrate how this functionality looks like.
 
 ### 1) Load a tree sequence into an R session and summarise it
 
@@ -241,7 +241,7 @@ codeString <- '
         n = (int) tsk_treeseq_get_num_individuals(xptr);
         return n;
     }'
-get_num_individuals <- cppFunction(code=codeString, depends="tskitr", plugins="tskitr")
+ts_num_individuals2 <- cppFunction(code=codeString, depends="tskitr", plugins="tskitr")
 # Both of the depends and plugins arguments are needed!
 
 # Load a tree sequence
@@ -249,7 +249,7 @@ ts_file <- system.file("examples", "test.trees", package="tskitr")
 ts <- tskitr::ts_load(ts_file)
 
 # Apply the compiled function
-get_num_individuals(ts)
+ts_num_individuals2(ts)
 # [1] 80
 
 # An identical tskitr implementation of the function
