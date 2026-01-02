@@ -69,7 +69,7 @@ git clone https://github.com/HighlanderLab/tskitr.git
 
 If you plan to update `tskit`, follow instructions in `extern/README.md`.
 
-Then open R package directory in your favourite R IDE (RStudio, Positron, ...), implement your changes and run:
+Then open `R` package directory in your favourite R IDE (Positron, RStudio, text-editor-of-your-choice, etc.), implement your changes and run:
 
 ```
 # Note that the tskitr package is in the R directory

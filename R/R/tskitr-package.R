@@ -11,8 +11,7 @@
 #' @keywords internal
 #'
 #' @useDynLib tskitr, .registration = TRUE
-#' @import Rcpp
-#' @importFrom Rcpp registerPlugin
+#' @importFrom Rcpp registerPlugin cppFunction
 #' @importFrom Rdpack reprompt
 #'
 #' @examples
@@ -25,20 +24,19 @@
 #' ts_num_individuals(ts)
 #'
 #' # 2) Call tskit C API in C++ code in an R session
-#' library(Rcpp)
 #' codeString <- '
-#'     #include <tskit.h>
-#'     int ts_num_individuals(SEXP ts) {
-#'         int n;
-#'         Rcpp::XPtr<tsk_treeseq_t> xptr(ts);
-#'         n = (int) tsk_treeseq_get_num_individuals(xptr);
-#'         return n;
-#'     }'
-#' get_num_individuals <- cppFunction(code=codeString, depends="tskitr", plugins="tskitr")
+#'   #include <tskit.h>
+#'   int ts_num_individuals(SEXP ts) {
+#'     int n;
+#'     Rcpp::XPtr<tsk_treeseq_t> xptr(ts);
+#'     n = (int) tsk_treeseq_get_num_individuals(xptr);
+#'     return n;
+#'   }'
+#' ts_num_individuals2 <- Rcpp::cppFunction(code=codeString, depends="tskitr", plugins="tskitr")
 #' ts_file <- system.file("examples", "test.trees", package="tskitr")
 #' ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
-#' get_num_individuals(ts)
-#' ts_num_individuals(ts) # tskitr implementation of get_num_individuals()
+#' ts_num_individuals2(ts)
+#' ts_num_individuals(ts) # tskitr implementation of ts_num_individuals2()
 #'
 #' # 3) Call `tskit` C API in C++ code in another R package (TODO)
 #' # TODO: see STATE_and_AIMS.md or vignette

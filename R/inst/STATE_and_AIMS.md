@@ -234,13 +234,13 @@ library(tskitr)
 
 # Write and compile a C++ function
 codeString <- '
-    #include <tskit.h>
-    int ts_num_individuals(SEXP ts) {
-        int n;
-        Rcpp::XPtr<tsk_treeseq_t> xptr(ts);
-        n = (int) tsk_treeseq_get_num_individuals(xptr);
-        return n;
-    }'
+  #include <tskit.h>
+  int ts_num_individuals(SEXP ts) {
+    int n;
+    Rcpp::XPtr<tsk_treeseq_t> xptr(ts);
+    n = (int) tsk_treeseq_get_num_individuals(xptr);
+    return n;
+  }'
 ts_num_individuals2 <- cppFunction(code=codeString, depends="tskitr", plugins="tskitr")
 # Both of the depends and plugins arguments are needed!
 
@@ -284,13 +284,13 @@ Here is an example:
 ```
 # Install tskitr
 remotes::install_github(
-   repo = "HighlanderLab/tskitr/R"
+  repo = "HighlanderLab/tskitr/R"
 )
 
 # Install AlphaSimR
 # (commit with proof of concept of using tskit C API)
 remotes::install_github(
-   repo = "HighlanderLab/AlphaSimR",
+  repo = "HighlanderLab/AlphaSimR",
   ref = "12657b08e7054d88bc214413d13f36c7cde60d95"
 )
 

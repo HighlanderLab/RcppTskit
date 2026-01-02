@@ -20,7 +20,9 @@ URL: https://github.com/highlanderlab/tskitr
 License: MIT + file LICENSE
 Imports: Rcpp (>= 1.1.0), Rdpack
 LinkingTo: Rcpp
-Suggests: testthat
+Suggests:
+    spelling, testthat
 RdMacros: Rdpack
 RoxygenNote: 7.3.3
 Encoding: UTF-8
+Language: en-GB
