@@ -1,7 +1,8 @@
 context("test_cppFunction_compilation")
 
-test_that("compilation via cppFunctions works", {
-  # TODO: Will this test take too much time?
+test_that("compilation via cppFunction() works", {
+  # TODO: Time unittests to decide which tests will be active on CRAN #20
+  #       https://github.com/HighlanderLab/tskitr/issues/20
   codeString <- '
     #include <tskit.h>
     int ts_num_individuals(SEXP ts) {
@@ -15,7 +16,7 @@ test_that("compilation via cppFunctions works", {
     depends = "tskitr",
     plugins = "tskitr"
   )
-  ts_file <- system.file("examples", "test.trees", package = "tskitr")
+  ts_file <- system.file("examples/test.trees", package = "tskitr")
   ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
   expect_equal(ts_num_individuals(ts), ts_num_individuals2(ts))
 })

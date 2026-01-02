@@ -12,7 +12,8 @@ setTskitrLibAndFlags <- function() {
   } else {
     stop("Unknown .Platform$OS.type!")
   }
-  # TODO: Make this portable across Unix/Linux/macOS/Windows platforms
+  # TODO: Make configure.R::setTskitrLibAndFlags() portable across Unix/Linux/macOS/Windows platforms #19
+  #       https://github.com/HighlanderLab/tskitr/issues/19
   ret <- paste0("-Wl,-install_name,@rpath/", libname)
   return(ret)
 }

@@ -162,6 +162,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// ts_sequence_length
+double ts_sequence_length(SEXP ts);
+RcppExport SEXP _tskitr_ts_sequence_length(SEXP tsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type ts(tsSEXP);
+    rcpp_result_gen = Rcpp::wrap(ts_sequence_length(ts));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_tskitr_kastore_version", (DL_FUNC) &_tskitr_kastore_version, 0},
@@ -178,6 +189,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_tskitr_ts_num_trees", (DL_FUNC) &_tskitr_ts_num_trees, 1},
     {"_tskitr_ts_num_sites", (DL_FUNC) &_tskitr_ts_num_sites, 1},
     {"_tskitr_ts_num_mutations", (DL_FUNC) &_tskitr_ts_num_mutations, 1},
+    {"_tskitr_ts_sequence_length", (DL_FUNC) &_tskitr_ts_sequence_length, 1},
     {NULL, NULL, 0}
 };
 

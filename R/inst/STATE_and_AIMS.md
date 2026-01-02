@@ -1,6 +1,3 @@
-TODO: Write the STATE_and_AIMS.md file on what we want to achieve with the tskitr package #12
-      https://github.com/HighlanderLab/tskitr/issues/12
-
 # STATE of the tree sequence ecosystem and AIMS for `tskitr`
 
 ## STATE of the tree sequence ecosystem
@@ -29,7 +26,8 @@ As described above, the tree sequence ecosystem is extensive. Python is the most
 
 There is an interest for work with tree sequences in R. Because we can call Python from within R with `reticulate`, there is no pressing need for a dedicated R support for work with tree sequences. See https://tskit.dev/tutorials/tskitr.html on how this looks like and further details at https://rstudio.github.io/reticulate. In a way, this situation will positively focus the community on the Python collection of packages. While there are some differences between R and Python, many R users will be able to work with the extensive Python documentation and examples. For example, the reticulate-based-calls from within R look like this:
 
-TODO: Move this code to an external file (since it's quite long)?
+TODO: Move reticulate code to an external file (since it's quite long)? #28
+      https://github.com/HighlanderLab/tskitr/issues/28
 
 ```
 # install.packages(c("reticulate")
@@ -86,7 +84,8 @@ allele_frequency
 
 To provide idiomatic R interface to some population genetic simulation steps and operations with tree sequences, `slendr` implemented bespoke functions and wrapper functions that use `reticulate` to call Python packages and their functions. This further lowers barriers for R users. For example, the code calls from within R look like this:
 
-TODO: Move this code to an external file (since it's quite long)?
+TODO: Move slendr/reticulate example to an external file (since it's quite long)? #27
+     https://github.com/HighlanderLab/tskitr/issues/27
 
 ```
 # install.packages(c("slendr"))
@@ -167,7 +166,9 @@ allele_frequency <- rowMeans(G)
 allele_frequency
 ```
 
-One downside of using `reticulate` is the overhead of calling Python functions, which can add up if they are called many times, say within an R loop. This overhead is minimal for most analyses as these would call a few functions, so most of the work, looping, etc. is done on Python side, often in `tskit`'s C code). However, the overhead can be limiting for repeated calling of `tskit` functions, say for tree sequence recording and bespoke analyses (though ideally these would be implemented in Python and possibly ported to C/C++). Importantly, metadata functionality is only available in Python, though `SLiM` does something of it's own (TODO: study what `SLiM` does with metadata).
+One downside of using `reticulate` is the overhead of calling Python functions, which can add up if they are called many times, say within an R loop. This overhead is minimal for most analyses as these would call a few functions, so most of the work, looping, etc. is done on Python side, often in `tskit`'s C code). However, the overhead can be limiting for repeated calling of `tskit` functions, say for tree sequence recording and bespoke analyses (though ideally these would be implemented in Python and possibly ported to C/C++). Importantly, metadata functionality is only available in Python, though `SLiM` does something of it's own
+TODO: Study what `SLiM` does with metadata #24
+      https://github.com/HighlanderLab/tskitr/issues/24
 
 ## AIMS for `tskitr`
 
@@ -175,7 +176,7 @@ Given the above state of the tree sequence ecosystem, the aims of the `tskitr` p
   1) Load a tree sequence into an R session and summarise it,
   2) Call `tskit` C API in C++ code in an R session,
   3) Call `tskit` C API in C++ code in another R package, and
-  4) Call `tskit` C API in R code in an R session or another R package (TODO).
+  4) Call `tskit` C API in R code in an R session or another R package (TODO). #12 https://github.com/HighlanderLab/tskitr/issues/12
 
 The following subsections demonstrate how this functionality looks like.
 
@@ -194,7 +195,7 @@ tskit_version()
 #     1     3     0
 
 # Load a tree sequence
-ts_file <- system.file("examples", "test.trees", package="tskitr")
+ts_file <- system.file("examples/test.trees", package="tskitr")
 ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 ts
 # <pointer: 0x1236b4220>
@@ -216,9 +217,11 @@ ts_num_individuals(ts)
 # see the implemented ts_num_x() functions
 ```
 
-TODO: create a summary()/print() method for ts? To do so, we would need to have a class that would hold the pointer!
+TODO: Create a summary()/print() method for ts? #26
+      https://github.com/HighlanderLab/tskitr/issues/26
 
-TODO: do we need/want any other summary functions/methods?
+TODO: Do we need/want any other summary functions/methods on ts? #25
+      https://github.com/HighlanderLab/tskitr/issues/25
 
 ### 2) Call `tskit` C API in C++ code in an R session
 
@@ -245,7 +248,7 @@ ts_num_individuals2 <- cppFunction(code=codeString, depends="tskitr", plugins="t
 # Both of the depends and plugins arguments are needed!
 
 # Load a tree sequence
-ts_file <- system.file("examples", "test.trees", package="tskitr")
+ts_file <- system.file("examples/test.trees", package="tskitr")
 ts <- tskitr::ts_load(ts_file)
 
 # Apply the compiled function
@@ -277,7 +280,7 @@ d) Configure your package build with the `tskitr` library using the following st
 
   * Add `cleanup` and  `cleanup.win` shell files  (and make them executable)that will remove `src/Makevars` and `src/Makevars.win` as well as compilation files.
 
-e) You should now be ready to build, check, and install your package using tools like `devtools::build()`, `devtools::check()` and `devtools::install()` or their `R CMD` equivalents.
+e) You should now be ready to build, check, and install your package using tools like `devtools::build()`, `devtools::check()`, and `devtools::install()` or their `R CMD` equivalents.
 
 Here is an example:
 
@@ -288,7 +291,8 @@ remotes::install_github(
 )
 
 # Install AlphaSimR
-# (commit with proof of concept of using tskit C API)
+# (commit with proof of concept of using tskit C API;
+#  study the file contents in there!)
 remotes::install_github(
   repo = "HighlanderLab/AlphaSimR",
   ref = "12657b08e7054d88bc214413d13f36c7cde60d95"
@@ -298,7 +302,7 @@ remotes::install_github(
 library(tskitr)
 library(AlphaSimR)
 
-ts_file <- system.file("examples", "test.trees", package = "tskitr")
+ts_file <- system.file("examples/test.trees", package = "tskitr")
 ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 tskitr::ts_num_individuals(ts)
 # AlphaSimR::ts_num_individuals2(ts)
@@ -306,6 +310,11 @@ tskitr::ts_num_individuals(ts)
 AlphaSimR:::ts_num_individuals2(ts)
 ```
 
-### 4) Call `tskit` C API in R code in an R session or another R package (TODO)
+### 4) Call `tskit` C API in R code in an R session or another R package
 
 Doable, but do we want/need this? - we would have to write Rcpp wrappers for all the functions in tskit C API. Can this be automated? Would Rcpp module help here?
+
+TODO: Write the STATE_and_AIMS.md file on what we want to achieve with the tskitr package #12
+      https://github.com/HighlanderLab/tskitr/issues/12
+
+Think about how we would like to use the code in practice!

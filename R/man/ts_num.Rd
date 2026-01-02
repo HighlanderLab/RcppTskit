@@ -12,6 +12,7 @@
 \alias{ts_num_trees}
 \alias{ts_num_sites}
 \alias{ts_num_mutations}
+\alias{ts_sequence_length}
 \title{Get the number of records in a tree sequence}
 \usage{
 ts_num(ts)
@@ -35,6 +36,8 @@ ts_num_trees(ts)
 ts_num_sites(ts)
 
 ts_num_mutations(ts)
+
+ts_sequence_length(ts)
 }
 \arguments{
 \item{ts}{an external pointer to a \code{tsk_treeseq_t} object.}
@@ -74,9 +77,11 @@ These functions return the number of various items in a tree
 
 \item \code{ts_num_mutations()}: Get the number of mutations in a tree sequence
 
+\item \code{ts_sequence_length()}: Get the sequence length
+
 }}
 \examples{
-ts_file <- system.file("examples", "test.trees", package = "tskitr")
+ts_file <- system.file("examples/test.trees", package = "tskitr")
 ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 ts_num(ts)
 ts_num_provenances(ts)
@@ -89,4 +94,5 @@ ts_num_edges(ts)
 ts_num_trees(ts)
 ts_num_sites(ts)
 ts_num_mutations(ts)
+ts_sequence_length(ts)
 }

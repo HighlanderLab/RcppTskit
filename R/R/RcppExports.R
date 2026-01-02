@@ -30,7 +30,7 @@ tskit_version <- function() {
 #' @param file a string specifying the full path of the tree sequence file.
 #' @return An external pointer to a \code{tsk_treeseq_t} object.
 #' @examples
-#' ts_file <- system.file("examples", "test.trees", package = "tskitr")
+#' ts_file <- system.file("examples/test.trees", package = "tskitr")
 #' ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 #' ts
 #' is(ts)
@@ -50,7 +50,7 @@ ts_load <- function(file) {
 #'     while \code{ts_num_x} return the number of each item. All numbers are
 #'     returned as integers.
 #' @examples
-#' ts_file <- system.file("examples", "test.trees", package = "tskitr")
+#' ts_file <- system.file("examples/test.trees", package = "tskitr")
 #' ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 #' ts_num(ts)
 #' ts_num_provenances(ts)
@@ -63,6 +63,7 @@ ts_load <- function(file) {
 #' ts_num_trees(ts)
 #' ts_num_sites(ts)
 #' ts_num_mutations(ts)
+#' ts_sequence_length(ts)
 #' @export
 ts_num <- function(ts) {
     .Call(`_tskitr_ts_num`, ts)
@@ -126,5 +127,11 @@ ts_num_sites <- function(ts) {
 #' @export
 ts_num_mutations <- function(ts) {
     .Call(`_tskitr_ts_num_mutations`, ts)
+}
+
+#' @describeIn ts_num Get the sequence length
+#' @export
+ts_sequence_length <- function(ts) {
+    .Call(`_tskitr_ts_sequence_length`, ts)
 }
 

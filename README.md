@@ -1,5 +1,7 @@
 # tskitr: R access to the `tskit` C API
 
+## Overview
+
 `tskit` enables performant storage, manipulation and analysis of ancestral
 recombination graphs using succinct tree sequence encoding; see https://tskit.dev.
 `tskit` provides Python, C, and Rust APIs. The Python API can be called from R
@@ -11,9 +13,9 @@ low-level work with tree sequences is required. R access to the parts of C API
 is added as the need arises.
 
 See more details on the state of the tree sequence ecosystem and aims for
-`tskitr` in `R/inst/STATE_and_AIMS.md`, including examples on how to use it independently or to develop new R packages.
+`tskitr` in [R/inst/STATE_and_AIMS.md](R/inst/STATE_and_AIMS.md), including examples on how to use it on its own or to develop new R packages.
 
-## TODO: What would be a good subsection title here?
+## Status
 
 TODO: Add R package badges (build status, CRAN version, etc.) to README.md #1
       https://github.com/HighlanderLab/tskitr/issues/1
@@ -35,13 +37,14 @@ TODO: Add R package badges (build status, CRAN version, etc.) to README.md #1
 To install the published release from CRAN use:
 
 ```
-# tskitr is not, yet, published on CRAN (TODO)
+# TODO: Publish on CRAN #14
+#       https://github.com/HighlanderLab/tskitr/issues/14
 # install.packages("tskitr")
 ```
 
-To install the published release or specific branches from Github use the
+To install a published release or specific branches from Github use the
 following code. Note that you will have to compile the C/C++ code and will
-hence require complete R build toolchain, including compilers. See
+hence require the complete R build toolchain, including compilers. See
 https://r-pkgs.org/setup.html#setup-tools for introduction to this topic,
 https://cran.r-project.org/bin/windows/Rtools for Windows tools, and
 https://mac.r-project.org/tools for macOS tools.
@@ -50,12 +53,16 @@ https://mac.r-project.org/tools for macOS tools.
 # install.packages("remotes") # If you don't have it already
 
 # Release (TODO)
+# TODO: Tag a release #15
+#       https://github.com/HighlanderLab/tskitr/issues/15
 # remotes::install_github("HighlanderLab/tskitr/R")
 
 # Main branch
 remotes::install_github("HighlanderLab/tskitr/R")
 
-# Development branch (TODO)
+# Development branch
+# TODO: Create a devel branch #16
+#       https://github.com/HighlanderLab/tskitr/issues/16
 # remotes::install_github("HighlanderLab/tskitr/R@devel")
 ```
 

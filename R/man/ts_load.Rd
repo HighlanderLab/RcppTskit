@@ -16,7 +16,7 @@ An external pointer to a \code{tsk_treeseq_t} object.
 Load tree sequence from a file
 }
 \examples{
-ts_file <- system.file("examples", "test.trees", package = "tskitr")
+ts_file <- system.file("examples/test.trees", package = "tskitr")
 ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 ts
 is(ts)

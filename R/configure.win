@@ -1,4 +1,5 @@
 #!/bin/sh
 "${R_HOME}/bin/Rscript" tools/configure.R
-# TODO: The R Extensions manual suggest using "${R_HOME}/bin${R_ARCH_BIN}/Rscript" on Windows
+# TODO: Use "${R_HOME}/bin${R_ARCH_BIN}/Rscript" in configure.win on Windows #18
 #       https://cran.r-project.org/doc/manuals/r-devel/R-exts.html#Configure-and-cleanup
+#       https://github.com/HighlanderLab/tskitr/issues/18

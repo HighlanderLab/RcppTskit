@@ -5,4 +5,5 @@ rm -f src/Makevars.win
 
 # Removing compilation files
 rm -f src/*.dll
-# TODO: Add other files to be removed here on Windows platform
+# TODO: Add other files to be removed in cleanup.win on Windows #17
+#       https://github.com/HighlanderLab/tskitr/issues/17

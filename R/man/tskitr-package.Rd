@@ -17,34 +17,38 @@ and low-level work with tree sequences is required. R access to the parts of
 C API is added as the need arises.
 }
 \examples{
-\dontshow{# Providing the examples here so we test them at R CMD check}
+\dontshow{# Providing the examples here so we test them via R CMD check}
 # Here are examples showcasing what you can do with tskitr
 
 # 1) Load a tree sequence into an R session and summarise its contents
-ts_file <- system.file("examples", "test.trees", package = "tskitr")
+ts_file <- system.file("examples/test.trees", package = "tskitr")
 ts <- ts_load(ts_file)
 ts_num_individuals(ts)
 
 # 2) Call tskit C API in C++ code in an R session
 codeString <- '
-    #include <tskit.h>
-    int ts_num_individuals(SEXP ts) {
-        int n;
-        Rcpp::XPtr<tsk_treeseq_t> xptr(ts);
-        n = (int) tsk_treeseq_get_num_individuals(xptr);
-        return n;
-    }'
+  #include <tskit.h>
+  int ts_num_individuals(SEXP ts) {
+    int n;
+    Rcpp::XPtr<tsk_treeseq_t> xptr(ts);
+    n = (int) tsk_treeseq_get_num_individuals(xptr);
+    return n;
+  }'
 ts_num_individuals2 <- Rcpp::cppFunction(code=codeString, depends="tskitr", plugins="tskitr")
-ts_file <- system.file("examples", "test.trees", package="tskitr")
+ts_file <- system.file("examples/test.trees", package="tskitr")
 ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 ts_num_individuals2(ts)
 ts_num_individuals(ts) # tskitr implementation of ts_num_individuals2()
 
-# 3) Call `tskit` C API in C++ code in another R package (TODO)
-# TODO: see STATE_and_AIMS.md or vignette
+# 3) Call `tskit` C API in C++ code in another R package
+state_and_aims_file <- system.file("STATE_and_AIMS.md", package = "tskitr")
+browseURL(state_and_aims_file)
 
-# 4) Call `tskit` C API in R code in an R session or another R package (TODO)
-# TODO: see STATE_and_AIMS.md or vignette
+# 4) Call `tskit` C API in R code in an R session or another R package
+# TODO: Write STATE_and_AIMS.md file on what we want to achieve #12
+#       https://github.com/HighlanderLab/tskitr/issues/12
+state_and_aims_file <- system.file("STATE_and_AIMS.md", package = "tskitr")
+browseURL(state_and_aims_file)
 
 }
 \seealso{

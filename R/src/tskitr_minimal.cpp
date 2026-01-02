@@ -35,19 +35,8 @@ Rcpp::IntegerVector tskit_version() {
                                        Rcpp::_["patch"] = TSK_VERSION_PATCH);
 }
 
-// Baby steps development/exploration to see how this could work
-
-// TODO: Just testing for now, remove later
-// rcpp_hello_world()
-Rcpp::List rcpp_hello_world() {
-    Rcpp::CharacterVector x = Rcpp::CharacterVector::create("foo", "bar");
-    Rcpp::NumericVector y   = Rcpp::NumericVector::create(0.0, 1.0);
-    Rcpp::List z            = Rcpp::List::create(x, y);
-    return z ;
-}
-
-// TODO: Just testing for now, remove later
-// table_collection_num_nodes_zero_check()
+// TODO: Decide what tskit functionality we want to expose as R functions #21
+//       https://github.com/HighlanderLab/tskitr/issues/21
 int table_collection_num_nodes_zero_check() {
     int n, ret;
     tsk_table_collection_t tables;
@@ -74,14 +63,14 @@ static void treeseq_xptr_finalize(SEXP xptr_sexp) {
     }
 }
 
-// TODO: rename this to ts_load_ptr and create ts_load R function
-//       that calls ts_load_ptr and assigns it to an S3/4 object!?
+// TODO: Rename ts_load() to ts_load_ptr() and create ts_load() returning S3/S4 object #22
+//       https://github.com/HighlanderLab/tskitr/issues/22
 //' Load tree sequence from a file
 //'
 //' @param file a string specifying the full path of the tree sequence file.
 //' @return An external pointer to a \code{tsk_treeseq_t} object.
 //' @examples
-//' ts_file <- system.file("examples", "test.trees", package = "tskitr")
+//' ts_file <- system.file("examples/test.trees", package = "tskitr")
 //' ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 //' ts
 //' is(ts)
@@ -114,7 +103,7 @@ SEXP ts_load(std::string file) {
 //'     while \code{ts_num_x} return the number of each item. All numbers are
 //'     returned as integers.
 //' @examples
-//' ts_file <- system.file("examples", "test.trees", package = "tskitr")
+//' ts_file <- system.file("examples/test.trees", package = "tskitr")
 //' ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 //' ts_num(ts)
 //' ts_num_provenances(ts)
@@ -127,6 +116,7 @@ SEXP ts_load(std::string file) {
 //' ts_num_trees(ts)
 //' ts_num_sites(ts)
 //' ts_num_mutations(ts)
+//' ts_sequence_length(ts)
 //' @export
 // [[Rcpp::export]]
 Rcpp::List ts_num(SEXP ts) {
@@ -140,7 +130,8 @@ Rcpp::List ts_num(SEXP ts) {
                               Rcpp::_["num_edges"] = (int) tsk_treeseq_get_num_edges(xptr),
                               Rcpp::_["num_trees"] = (int) tsk_treeseq_get_num_trees(xptr),
                               Rcpp::_["num_sites"] = (int) tsk_treeseq_get_num_sites(xptr),
-                              Rcpp::_["num_mutations"] = (int) tsk_treeseq_get_num_mutations(xptr));
+                              Rcpp::_["num_mutations"] = (int) tsk_treeseq_get_num_mutations(xptr),
+                              Rcpp::_["sequence_length"] = (int) tsk_treeseq_get_sequence_length(xptr));
 }
 
 //' @describeIn ts_num Get the number of provenances in a tree sequence
@@ -240,5 +231,15 @@ int ts_num_mutations(SEXP ts) {
     int n;
     Rcpp::XPtr<tsk_treeseq_t> xptr(ts);
     n = (int) tsk_treeseq_get_num_mutations(xptr);
+    return n;
+}
+
+//' @describeIn ts_num Get the sequence length
+//' @export
+// [[Rcpp::export]]
+double ts_sequence_length(SEXP ts) {
+    double n;
+    Rcpp::XPtr<tsk_treeseq_t> xptr(ts);
+    n = tsk_treeseq_get_sequence_length(xptr);
     return n;
 }

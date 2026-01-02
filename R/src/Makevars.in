@@ -30,11 +30,13 @@ OBJECTS = $(TSKIT_OBJECTS) $(TSKITR_OBJECTS)
 PKG_CPPFLAGS = -I../inst/include -I../inst/include/tskit -I../inst/include/tskit/tskit
 
 # Compiler flags
-# TODO: Remove asserts as per Writting R extensions manual
-# PKG_CFLAGS = -DNDEBUG
-# TODO: Note clang++ uses -DNDEBUG by default (see below output from devtools::install())
+# TODO: Remove asserts as per Writting R extensions manual #5
+#       https://github.com/HighlanderLab/tskitr/issues/5
+#       Note clang++ uses -DNDEBUG by default (see below output from devtools::install()) #5
 # clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG -I../inst/include -I../inst/include/tskit -I../inst/include/tskit/tskit -I/opt/homebrew/opt/gettext/include -I'/Users/ggorjanc/Library/R/arm64/4.5/library/Rcpp/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c tskitr_minimal.cpp -o tskitr_minimal.o
-# TODO: Should we port any flags from extern/tskit/c/meson.build to R build system?
+# PKG_CFLAGS = -DNDEBUG
+# TODO: Should we port any flags from extern/tskit/c/meson.build to R build system? #6
+#       https://github.com/HighlanderLab/tskitr/issues/6
 #       See default flags used by clang  (see below output from devtools::install())
 # clang -arch arm64 -I../inst/include -I../inst/include/tskit -I../inst/include/tskit/tskit -I/opt/homebrew/opt/gettext/include  -falign-functions=64 -Wall -g -O2  -c tskit/convert.c -o tskit/convert.o
 # PKG_CFLAGS   = -O2 -Wall
@@ -47,4 +49,5 @@ tskit/%.o: tskit/%.c
 # Linking
 PKG_LIBS = @TSKITR_LIB@
 
-# TODO: Create Makevars.win
+# TODO: Create Makevars.win #23
+#       https://github.com/HighlanderLab/tskitr/issues/23
