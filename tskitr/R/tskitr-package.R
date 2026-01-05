@@ -51,16 +51,16 @@
 "_PACKAGE"
 
 #' Providing an inline plugin so we can call tskit C API with functions like
-#' cppFunction() or sourceCpp(). See package files on how this is used
-#' (search for cppFunction).
+#' cppFunction() or sourceCpp(). See package files on how this is used (search
+#' for cppFunction).
 #
 #' Studying RcppArmadillo, I don't see it uses Rcpp::registerPlugin() anywhere,
 #' but an LLM suggested that this is because Armadillo is header-only library
 #' so depends = "RcppArmadillo" adds include paths to headers, while there is
 #' no library that we should link to. tskitr is different because we must link
-#' against the compiled tskitr shared object (or a static library). The plugin
-#' (or explicit PKG_LIBS) is required to provide linking flags in addition to
-#' depends providing include paths to headers.
+#' against the compiled tskitr library file. The plugin (or explicit PKG_LIBS)
+#' is required to provide linking flags in addition to depends providing include
+#' paths to headers.
 #' @noRd
 .onLoad <- function(libname, pkgname) {
   Rcpp::registerPlugin(name = "tskitr", plugin = function() {
@@ -78,7 +78,7 @@
     libpaths <- file.path(libdir, candidates)
     libfile <- libpaths[file.exists(libpaths)][1]
     if (length(libfile) < 1) {
-      stop("Unable to locate the tskitr shared library in ", libdir)
+      stop("Unable to locate the tskitr library file in ", libdir)
     }
     list(env = list(PKG_LIBS = shQuote(libfile)))
   })

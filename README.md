@@ -13,7 +13,7 @@ low-level work with tree sequences is required. R access to the parts of C API
 is added as the need arises.
 
 See more details on the state of the tree sequence ecosystem and aims for
-`tskitr` in [R/inst/STATE_and_AIMS.md](R/inst/STATE_and_AIMS.md), including examples on how to use it on its own or to develop new R packages.
+`tskitr` in [tskitr/inst/STATE_and_AIMS.md](tskitr/inst/STATE_and_AIMS.md), including examples on how to use it on its own or to develop new R packages.
 
 ## Status
 
@@ -22,15 +22,15 @@ TODO: Add R package badges (build status, CRAN version, etc.) to README.md #1
 
 ## Contents
 
-  * `extern` - Git submodule for `tskit` and instructions on obtaining the latest version and copying the `tskit` C code into `R` directory. `extern` is saved outside of the `R` directory because `R CMD CHECK` complains otherwise.
+  * `extern` - Git submodule for `tskit` and instructions on obtaining the latest version and copying the `tskit` C code into `tskitr` directory. `extern` is saved outside of the `tskitr` directory because `R CMD CHECK` complains otherwise.
 
-  * `R` - R package `tskitr`.
+  * `tskitr` - R package `tskitr`.
 
 ## License
 
   * See `extern/LICENSE` for `tskit`.
 
-  * See `R/DESCRIPTION` and `R/LICENSE` for `tskitr`.
+  * See `tskitr/DESCRIPTION` and `tskitr/LICENSE` for `tskitr`.
 
 ## Installation
 
@@ -55,15 +55,15 @@ https://mac.r-project.org/tools for macOS tools.
 # Release (TODO)
 # TODO: Tag a release #15
 #       https://github.com/HighlanderLab/tskitr/issues/15
-# remotes::install_github("HighlanderLab/tskitr/R")
+# remotes::install_github("HighlanderLab/tskitr/tskitr")
 
 # Main branch
-remotes::install_github("HighlanderLab/tskitr/R")
+remotes::install_github("HighlanderLab/tskitr/tskitr")
 
 # Development branch
 # TODO: Create a devel branch #16
 #       https://github.com/HighlanderLab/tskitr/issues/16
-# remotes::install_github("HighlanderLab/tskitr/R@devel")
+# remotes::install_github("HighlanderLab/tskitr/tskitr@devel")
 ```
 
 ## Development
@@ -76,11 +76,11 @@ git clone https://github.com/HighlanderLab/tskitr.git
 
 If you plan to update `tskit`, follow instructions in `extern/README.md`.
 
-Then open `R` package directory in your favourite R IDE (Positron, RStudio, text-editor-of-your-choice, etc.), implement your changes and run:
+Then open `tskitr` package directory in your favourite R IDE (Positron, RStudio, text-editor-of-your-choice, etc.), implement your changes and run:
 
 ```
-# Note that the tskitr package is in the R directory
-setwd("path/to/tskitr/R")
+# Note that the tskitr package is in the tskitr sub-directory
+setwd("path/to/tskitr/tskitr")
 
 # Run checks of your changes, documentation, etc.
 devtools::check()
@@ -92,7 +92,7 @@ devtools::install()
 Alternatively you can check and install from command line:
 
 ```
-# Note that the tskitr package is in the R directory
+# Note that the tskitr package is in the tskitr sub-directory
 cd path/to/tskitr
 
 # Run checks of your changes, documentation, etc.

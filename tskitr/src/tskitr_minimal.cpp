@@ -87,7 +87,9 @@ SEXP ts_load(std::string file) {
         Rcpp::stop(tsk_strerror(ret));
     }
     // Rcpp::XPtr<tsk_treeseq_t> xptr(ts_ptr, true);
-    // true => delete ts_ptr on garbage collection, but this will not call tsk_treeseq_free()
+    // true => delete ts_ptr on garbage collection (GC),
+    // but note that GC will not call tsk_treeseq_free(),
+    // which is why we need R_RegisterCFinalizerEx() below
     Rcpp::XPtr<tsk_treeseq_t> xptr(ts_ptr, false);
     R_RegisterCFinalizerEx(xptr, treeseq_xptr_finalize, TRUE);
     return xptr;

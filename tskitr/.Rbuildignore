@@ -1,6 +1,7 @@
 ^\.git$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^air\.toml$
 ^test\.trees$
 ^.*\.o$
 ^.*\.so$

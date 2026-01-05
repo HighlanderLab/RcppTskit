@@ -186,7 +186,7 @@ Here is an example:
 
 ```
 # Install tskitr
-remotes::install_github(repo = "HighlanderLab/tskitr/R")
+remotes::install_github(repo = "HighlanderLab/tskitr/tskitr")
 
 # Load tskitr and print tskit version
 library(tskitr)
@@ -229,7 +229,7 @@ Here is an example:
 
 ```
 # Install tskitr
-remotes::install_github(repo = "HighlanderLab/tskitr/R")
+remotes::install_github(repo = "HighlanderLab/tskitr/tskitr")
 
 # Load packages
 library(Rcpp)
@@ -287,7 +287,7 @@ Here is an example:
 ```
 # Install tskitr
 remotes::install_github(
-  repo = "HighlanderLab/tskitr/R"
+  repo = "HighlanderLab/tskitr/tskitr"
 )
 
 # Install AlphaSimR
