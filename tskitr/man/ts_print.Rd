@@ -2,12 +2,12 @@
 % Please edit documentation in R/tskitr-package.R
 \name{ts_print}
 \alias{ts_print}
-\title{Prints a summary of a tree sequence and its contents}
+\title{Print a summary of a tree sequence and its contents}
 \usage{
 ts_print(ts)
 }
 \arguments{
-\item{ts}{an external pointer to a \code{tsk_treeseq_t} object.}
+\item{ts}{tree sequence as an external pointer to a \code{tsk_treeseq_t} object.}
 }
 \value{
 list with two data.frames; the first contains tree sequence
@@ -15,7 +15,7 @@ list with two data.frames; the first contains tree sequence
   tables and the length of their metadata.
 }
 \description{
-Prints a summary of a tree sequence and its contents
+Print a summary of a tree sequence and its contents
 }
 \details{
 It uses \code{\link{ts_summary}()} and

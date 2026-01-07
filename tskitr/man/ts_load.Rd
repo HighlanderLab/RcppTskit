@@ -15,7 +15,7 @@ ts_read(file, options = 0L)
 \item{options}{integer bitwise options (see details).}
 }
 \value{
-An external pointer to a \code{tsk_treeseq_t} object.
+Tree sequence as an external pointer to a \code{tsk_treeseq_t} object.
 }
 \description{
 Load a tree sequence from a file.

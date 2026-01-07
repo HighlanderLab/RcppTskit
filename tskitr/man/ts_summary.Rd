@@ -43,7 +43,7 @@ ts_sequence_length(ts)
 ts_time_units(ts)
 }
 \arguments{
-\item{ts}{an external pointer to a \code{tsk_treeseq_t} object.}
+\item{ts}{tree sequence as an external pointer to a \code{tsk_treeseq_t} object.}
 }
 \value{
 \code{ts_summary} returns a named list with the number/value for all items,
@@ -80,7 +80,7 @@ These functions return the summary of properties and number of records
 
 \item \code{ts_num_individuals()}: Get the number of individuals in a tree sequence
 
-\item \code{ts_num_samples()}: Get the number of samples in a tree sequence
+\item \code{ts_num_samples()}: Get the number of samples (of nodes) in a tree sequence
 
 \item \code{ts_num_nodes()}: Get the number of nodes in a tree sequence
 

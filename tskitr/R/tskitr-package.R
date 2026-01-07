@@ -1,17 +1,20 @@
 #' @description
-#' Tskit enables performant storage, manipulation and analysis of ancestral
-#' recombination graphs using succinct tree sequence encoding; see https://tskit.dev.
+#' Tskit (`tskit`)  enables performant storage, manipulation, and analysis of
+#' ancestral recombination graphs using succinct tree sequence encoding; see
+#' https://tskit.dev.
 #' Tskit provides Python, C, and Rust APIs. The Python API can be called from R
-#' via the `reticulate` package to seamlessly load and analyse tree sequences;
+#' via the `reticulate` R package to seamlessly load and analyse a tree sequence;
 #' see https://tskit.dev/tutorials/tskitr.html.
 #' `tskitr` provides R access to the tskit C API for use cases where the
-#' `reticulate` approach is not suitable. For example, where high-performance
-#' and low-level work with tree sequences is required. R access to the parts of
-#' C API is added as the need arises.
+#' `reticulate` approach is not optimal. For example, for high-performance
+#' and low-level work with tree sequences. Currently, `tskitr` provides a very
+#' limited number of R functions due to the availability of extensive Python API
+#' and the `reticulate` approach.
 #' @keywords internal
 #'
 #' @useDynLib tskitr, .registration = TRUE
 #' @importFrom Rcpp registerPlugin cppFunction
+#' @importFrom reticulate is_py_object import py_module_available py_require
 #' @importFrom Rdpack reprompt
 #'
 #' @examples
@@ -56,11 +59,10 @@
 #
 #' Studying RcppArmadillo, I don't see it uses Rcpp::registerPlugin() anywhere,
 #' but an LLM suggested that this is because Armadillo is header-only library
-#' so depends = "RcppArmadillo" adds include paths to headers, while there is
+#' so `depends = "RcppArmadillo"` adds include paths to headers, while there is
 #' no library that we should link to. tskitr is different because we must link
-#' against the compiled tskitr library file. The plugin (or explicit PKG_LIBS)
-#' is required to provide linking flags in addition to depends providing include
-#' paths to headers.
+#' against the compiled tskitr library file. The `plugins` (or `PKG_LIBS`)
+#' is required for linking flags in addition to `depends` for include headers.
 #' @noRd
 .onLoad <- function(libname, pkgname) {
   Rcpp::registerPlugin(name = "tskitr", plugin = function() {
@@ -84,6 +86,44 @@
   })
 }
 
+#' Get the reticulate Python tskit module
+#'
+#' @description This function imports the reticulate Python \code{tskit} module
+#'   and if it is not yet installed, then it attempts to install it first.
+#' @param obj_name character name of the object holding \code{tskit} reticulate
+#'   Python module. If this object exists in the global R environment, then it
+#'   is returned Otherwise, the function attempts to install and import the
+#'   module before returning it. If \code{NULL}, then the function directly
+#'   attempts to install and import the module before returning it.
+#' @details This function is meant for users running \code{tskit <- get_tskit()}
+#'   or similar, but also by other functions in this package that need the
+#'   \code{tskit} reticulate Python module and we don't want to keep importing
+#'   it if it already has been imported.
+#' @return \code{tskit} reticulate Python module.
+#' @examples
+#' tskit <- get_tskit()
+#' is(tskit)
+#' tskit$ALLELES_01
+#' @export
+get_tskit <- function(obj_name = "tskit") {
+  if (is.null(obj_name)) {
+    if (!reticulate::py_module_available("tskit")) {
+      warning(
+        "Python module 'tskit' is not available. Attempting to install it ..."
+      )
+      reticulate::py_require("tskit")
+    }
+    return(reticulate::import("tskit", delay_load = TRUE))
+  } else {
+    if (exists(obj_name, envir = .GlobalEnv, inherits = FALSE)) {
+      tskit <- get(obj_name, envir = .GlobalEnv, inherits = FALSE)
+    } else {
+      tskit <- get_tskit(obj_name = NULL)
+    }
+    return(tskit)
+  }
+}
+
 #' @describeIn ts_load Alias for \code{ts_load()}
 #' @export
 ts_read <- ts_load
@@ -96,9 +136,9 @@ ts_write <- ts_dump
 #       https://github.com/HighlanderLab/tskitr/issues/25
 #       # TODO: add min and max time?
 #
-#' Prints a summary of a tree sequence and its contents
+#' Print a summary of a tree sequence and its contents
 #'
-#' @param ts an external pointer to a \code{tsk_treeseq_t} object.
+#' @param ts tree sequence as an external pointer to a \code{tsk_treeseq_t} object.
 #' @details It uses \code{\link{ts_summary}()} and
 #'   \code{\link{ts_metadata_length}()}.
 #'   Note that \code{nbytes} property is not available in
@@ -133,7 +173,6 @@ ts_print <- function(ts) {
         tmp_metadata[["ts"]] > 0
       )
     ),
-    # TODO: report tables metadata? If yes, how?
     tables = data.frame(
       table = c(
         "provenances",
@@ -168,4 +207,65 @@ ts_print <- function(ts) {
     )
   )
   return(ret)
+}
+
+#' Transfer a tree sequence from R to reticulate Python
+#'
+#' @description This function saves a tree sequence from R to disk and
+#'   reads it into reticulate Python so that we can use \code{tskit} Python API on it.
+#' @param ts tree sequence as an external pointer to a \code{tsk_treeseq_t} object.
+#' @param tskit_module reticulate Python module of \code{tskit}. By default,
+#'   it calls \code{\link{get_tskit}()} to obtain the module.
+#' @return Tree sequence in reticulate Python.
+#' @seealso \code{\link{ts_py_to_r}()} and \code{\link{ts_dump}()}.
+#' @examples
+#' ts_file <- system.file("examples/test.trees", package = "tskitr")
+#' # Use the tskitr R API to work with a tree sequence
+#' r_ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
+#' is(r_ts)
+#' ts_num_samples(r_ts) # 160
+#' # Now transfer the tree sequence to reticulate Python and use tskit Python API on it
+#' py_ts <- ts_r_to_py(r_ts)
+#' is(py_ts)
+#' py_ts$num_samples # 160
+#' @export
+ts_r_to_py <- function(ts, tskit_module = get_tskit()) {
+  ts_file <- tempfile()
+  ts_dump(ts, file = ts_file)
+  if (!reticulate::is_py_object(tskit_module)) {
+    stop("tskit_module must be a Python module/object!")
+  }
+  py_ts <- tskit_module$load(ts_file)
+  return(py_ts)
+}
+
+#' Transfer a tree sequence from reticulate Python to R
+#'
+#' @description This function saves a tree sequence from reticulate Python to disk
+#'   and reads it into R so that we can use \code{tskitr} R/C++ API on it.
+#' @param ts tree sequence in reticulate Python.
+#' @return Tree sequence as an external pointer to a \code{tsk_treeseq_t} object.
+#' @seealso \code{\link{ts_r_to_py}()} and \code{\link{ts_dump}()}.
+#' @examples
+#' ts_file <- system.file("examples/test.trees", package = "tskitr")
+#' # Use the tskit Python API to work with a tree sequence (via reticulate)
+#' tskit <- get_tskit()
+#' py_ts <- tskit$load(ts_file)
+#' is(py_ts)
+#' py_ts$num_samples # 160
+#' py_ts2 <- py_ts$simplify(samples = c(0L, 1L, 2L, 3L))
+#' py_ts2$num_samples # 4
+#' # Now transfer the tree sequence to R and use tskitr R/C++ API on it
+#' r_ts2 <- ts_py_to_r(py_ts2)
+#' is(r_ts2)
+#' ts_num_samples(r_ts2) # 4
+#' @export
+ts_py_to_r <- function(ts) {
+  ts_file <- tempfile()
+  if (!reticulate::is_py_object(ts)) {
+    stop("ts must be a Python object!")
+  }
+  ts$dump(ts_file)
+  r_ts <- ts_load(ts_file)
+  return(r_ts)
 }

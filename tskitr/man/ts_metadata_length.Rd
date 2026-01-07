@@ -7,7 +7,7 @@
 ts_metadata_length(ts)
 }
 \arguments{
-\item{ts}{an external pointer to a \code{tsk_treeseq_t} object.}
+\item{ts}{tree sequence as an external pointer to a \code{tsk_treeseq_t} object.}
 }
 \value{
 A named list with the length of metadata.
@@ -20,8 +20,7 @@ from the tskit C API. See the linked documentation for more details.
 \details{
 This function returns the summary of properties and number of records
   in a tree sequence, by calling
-  \code{tsk_treeseq_get_metadata_length()} \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_metadata_length} on tree sequence,
-  \code{ts->tables->metadata_length} on tables
+  \code{tsk_treeseq_get_metadata_length()} \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_metadata_length} on tree sequence and
 }
 \examples{
 ts_file <- system.file("examples/test.trees", package = "tskitr")

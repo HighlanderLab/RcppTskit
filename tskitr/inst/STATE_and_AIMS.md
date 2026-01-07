@@ -16,7 +16,7 @@ The tree sequence ecosystem is rapidly evolving (see https://tskit.dev). There a
 
   * `stdpopsim` (https://popsim-consortium.github.io/stdpopsim-docs, https://github.com/popsim-consortium/stdpopsim) is a standard library of population genetic models used in simulations with `msprime` and `SLiM`. It has Python API and command line interface.
 
-  * `slendr` (https://bodkan.net/slendr, https://github.com/bodkan/slendr) is an R package for describing population genetic models, simulating them with either `msprime` or `SLiM`, and analysing resulting tree sequences using `tskit`. It calls `msprime`, `pyslim`, and `tskit` via R package `reticulate` (that enables calling Python from within R), while it calls `SLiM` via R `system()/shell()` function. It implemented R wrappers for a number of `tskit` functions, such as `ts_read()`, `ts_write()`, `ts_simplify()`, `ts_mutate()`, etc. The wrappers call Python functions (via reticulate) and perform additional actions required for integration with R and `slendr` functionality.
+  * `slendr` (https://bodkan.net/slendr, https://github.com/bodkan/slendr) is an R package for describing population genetic models, simulating them with either `msprime` or `SLiM`, and analysing resulting tree sequences using `tskit`. It calls `msprime`, `pyslim`, and `tskit` via `reticulate` R package (that enables calling Python from within R), while it calls `SLiM` via R `system()/shell()` function. It implemented R wrappers for a number of `tskit` functions, such as `ts_read()`, `ts_write()`, `ts_simplify()`, `ts_mutate()`, etc. The wrappers call Python functions (via `reticulate`) and perform additional actions required for integration with R and `slendr` functionality.
 
   * `slimr` (https://rdinnager.github.io/slimr, https://github.com/rdinnager/slimr) provides an R API for specifying and running SLiM scripts and analysing results in R. It runs `SLiM` via R package `processx`.
 
@@ -24,7 +24,7 @@ The tree sequence ecosystem is rapidly evolving (see https://tskit.dev). There a
 
 As described above, the tree sequence ecosystem is extensive. Python is the most widely used and complete interface for simulation and analysis of tree sequences.
 
-There is an interest for work with tree sequences in R. Because we can call Python from within R with `reticulate`, there is no pressing need for a dedicated R support for work with tree sequences. See https://tskit.dev/tutorials/tskitr.html on how this looks like and further details at https://rstudio.github.io/reticulate. In a way, this situation will positively focus the community on the Python collection of packages. While there are some differences between R and Python, many R users will be able to work with the extensive Python documentation and examples. For example, the reticulate-based-calls from within R look like this:
+There is an interest for work with tree sequences in R. Because we can call Python from within R with `reticulate`, there is no pressing need for a dedicated R support for work with tree sequences. See https://tskit.dev/tutorials/tskitr.html on how this looks like and further details at https://rstudio.github.io/reticulate. In a way, this situation will positively focus the community on the Python collection of packages. While there are differences between R and Python, many R users will be able to follow the extensive `tskit` Python API documentation and examples. For example, the `reticulate` approach of working with tree sequences from within R looks like this:
 
 TODO: Move reticulate code to an external file (since it's quite long)? #28
       https://github.com/HighlanderLab/tskitr/issues/28
@@ -54,11 +54,11 @@ cat(py_str(ts))
 cat(py_repr(ts))
 # <tskit.trees.TreeSequence object at 0x15d602990>
 lobstr::obj_addr(ts)
-# 0x165359eb0
+# 0x177073e40
 py_id(ts)
 # [1] "5861550480"
-# --> a complex object lives in Python session (managed by reticulate)
-#     and is wrapped by an R object
+# --> a complex object exist in a Python session (managed by reticulate)
+#     and is wrapped by an R object in an R session
 #     https://rstudio.github.io/reticulate/#type-conversions
 
 print(ts$num_samples)
@@ -67,10 +67,10 @@ print(ts$num_samples)
 #     https://rstudio.github.io/reticulate/#type-conversions
 
 ts <- msprime$sim_mutations(ts, rate = 0.1)
-ts <- ts$simplify(0:4)
+ts <- ts$simplify(samples = c(0L, 1L, 2L, 3L))
 G <- ts$genotype_matrix()
 str(G)
-# int [1:54, 1:5] 0 0 0 0 0 ...
+# int [1:54, 1:4] 0 0 0 0 0 ...
 # py_id(G)
 # Error: ! Expected a python object, received a integer
 # --> a simple object (like a NumPy array) is converted to an R object
@@ -82,7 +82,7 @@ allele_frequency <- rowMeans(G)
 allele_frequency
 ```
 
-To provide idiomatic R interface to some population genetic simulation steps and operations with tree sequences, `slendr` implemented bespoke functions and wrapper functions that use `reticulate` to call Python packages and their functions. This further lowers barriers for R users. For example, the code calls from within R look like this:
+To provide idiomatic R interface to some population genetic simulation steps and operations with tree sequences, `slendr` implemented bespoke functions and wrapper functions that call Python packages and their functions via `reticulate`. As such, `slendr` further lowers barriers for R users. For example, the `slendr/reticulate` approach of working with tree sequences from within R looks like this:
 
 TODO: Move slendr/reticulate example to an external file (since it's quite long)? #27
      https://github.com/HighlanderLab/tskitr/issues/27
@@ -127,10 +127,11 @@ cat(reticulate::py_str(ts))
 cat(reticulate::py_repr(ts))
 # <tskit.trees.TreeSequence object at 0x15f556c10>
 lobstr::obj_addr(ts)
+# TODO: show R wrapper object address
 reticulate::py_id(ts)
 # [1] "5894401040"
-# --> a complex object lives in Python session (managed by reticulate)
-#     and is wrapped by an R object
+# --> a complex object lives in a Python session (managed by reticulate)
+#     and is wrapped by an R object in an R session
 #     https://rstudio.github.io/reticulate/#type-conversions
 
 print(ts$num_samples)
@@ -166,7 +167,7 @@ allele_frequency <- rowMeans(G)
 allele_frequency
 ```
 
-One downside of using `reticulate` is the overhead of calling Python functions, which can add up if they are called many times, say within an R loop. This overhead is minimal for most analyses as these would call a few functions, so most of the work, looping, etc. is done on Python side, often in `tskit`'s C code). However, the overhead can be limiting for repeated calling of `tskit` functions, say for tree sequence recording and bespoke analyses (though ideally these would be implemented in Python and possibly ported to C/C++). Importantly, metadata functionality is only available in Python, though `SLiM` does something of it's own
+One downside of using `reticulate` is the overhead of calling Python functions. This overhead is minimal for most analyses - these call a few functions, which do all the work, looping, etc. on Python side, often calling `tskit`'s C API). However, the overhead can be limiting for repeated calling of `tskit` functions, say for tree sequence recording in an R session/package. Note, that while metadata is available in C and Python APIs, it's encoding/decoding is only available in Python API, though `SLiM` does something of it's own in C++!
 TODO: Study what `SLiM` does with metadata #24
       https://github.com/HighlanderLab/tskitr/issues/24
 
@@ -218,7 +219,7 @@ ts_print(ts)
 # ...
 ```
 
-TODO: Do we need/want any other summary functions/methods on ts? #25
+TODO: Do we need/want any other summary functions/methods for ts? #25
       https://github.com/HighlanderLab/tskitr/issues/25
 
 ### 2) Call `tskit` C API in C++ code in an R session
@@ -244,29 +245,46 @@ codeString <- '
   }'
 ts_num_individuals2 <- cppFunction(code = codeString,
   depends = "tskitr", plugins = "tskitr")
-# Both of the depends and plugins arguments are needed!
+# We must specify both the `depends` and `plugins` arguments!
 
 # Load a tree sequence
 ts_file <- system.file("examples/test.trees", package = "tskitr")
-ts <- tskitr::ts_load(ts_file)
+ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 
 # Apply the compiled function
 ts_num_individuals2(ts)
 # [1] 80
 
-# An identical tskitr implementation of the function
+# An identical tskitr implementation
 ts_num_individuals(ts)
 # [1] 80
 
-# Assuming you have modified the tree sequence with the C/C++ code,
-# you might want to write it to disk and load it into Python for analysis
-# (possibly via reticulate)
-mod_ts_file <- file.path(tempdir(), "mod_test.trees")
-ts_dump(ts, file = mod_ts_file)
-```
+# If you have a tree sequence in R and you want to use Python API of tskit,
+# you can write it to disk and load it into a Python session
+ts_file <- tempfile()
+print(ts_file)
+ts_dump(ts, file = ts_file)
+# ... continue in a Python session ...
+# import tskit
+# ts = tskit.load("insert_ts_file_path_here")
+# ts.num_individuals # 80
+# ts2 = ts.simplify(samples = [0, 1, 2, 3])
+# ts2.num_individuals # 2
+# ts2.dump("insert_ts_file_path_here")
+# ... and bring it back to R ...
+ts2 <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
+ts_num_individuals(ts2) # 2
 
-TODO: Develop ts_r_to_py() to push ts to reticulate/Python session for analysis #TODO
-      TODO-ADD-URL
+# There are two neat wrappers leveraging reticulate Python
+py_ts <- ts_r_to_py(ts)
+# ... continue in R/Python (via reticulate) ...
+py_ts$num_individuals # 160
+py_ts2 = py_ts$simplify(samples = c(0L, 1L, 2L, 3L))
+py_ts2$num_individuals # 2
+# ... and bring it back to R ...
+ts2 <- ts_py_to_r(py_ts2)
+ts_num_individuals(ts2) # 2
+```
 
 ### 3) Call `tskit` C API in C++ code in another R package
 
@@ -299,8 +317,8 @@ remotes::install_github(
 )
 
 # Install AlphaSimR
-# (commit with a proof of concept of using tskit C API;
-#  study the file contents in there!)
+# (Commit with a proof of concept of using tskit C API;
+#  study the file contents in there! Can also use later commits.)
 remotes::install_github(
   repo = "HighlanderLab/AlphaSimR",
   ref = "12657b08e7054d88bc214413d13f36c7cde60d95"
@@ -316,14 +334,32 @@ ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 tskitr::ts_num_individuals(ts)
 AlphaSimR::ts_num_individuals2(ts)
 
-# Assuming you modify the tree sequence with the C/C++ code, you will likely
-# want to export it to disk and analyse it using Python API (possibly via reticulate)
-mod_ts_file <- file.path(tempdir(), "mod_test.trees")
-ts_dump(ts, file = mod_ts_file)
-```
+# If you have a tree sequence in R and you want to use Python API of tskit,
+# you can write it to disk and load it into a Python session
+ts_file <- tempfile()
+print(ts_file)
+ts_dump(ts, file = ts_file)
+# ... continue in a Python session ...
+# import tskit
+# ts = tskit.load("insert_ts_file_path_here")
+# ts.num_individuals # 80
+# ts2 = ts.simplify(samples = [0, 1, 2, 3])
+# ts2.num_individuals # 2
+# ts2.dump("insert_ts_file_path_here")
+# ... and bring it back to R
+ts2 <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
+ts_num_individuals(ts2) # 2
 
-TODO: Develop ts_r_to_py() to push ts to reticulate/Python session for analysis #TODO
-      TODO-ADD-URL
+# There are two neat wrappers leveraging reticulate Python
+py_ts <- ts_r_to_py(ts)
+# ... continue in R/Python (via reticulate) ...
+py_ts$num_individuals # 160
+py_ts2 = py_ts$simplify(samples = c(0L, 1L, 2L, 3L))
+py_ts2$num_individuals # 2
+# ... and bring it back to R
+ts2 <- ts_py_to_r(py_ts2)
+ts_num_individuals(ts2) # 2
+```
 
 ### 4) Call `tskit` C API in R code in an R session or another R package
 

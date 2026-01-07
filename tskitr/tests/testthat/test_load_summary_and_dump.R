@@ -10,6 +10,7 @@ test_that("ts_load(), ts_summary(), and ts_dump(x) work", {
 
   # ---- ts_summary() ----
 
+  # Simple comparison of summaries
   n <- ts_summary(ts)
   expect_equal(
     n,
@@ -101,6 +102,8 @@ test_that("ts_load(), ts_summary(), and ts_dump(x) work", {
   ts_dump(ts, dump_file)
   rm(ts)
   ts <- tskitr::ts_load(dump_file) # slendr also has ts_load()!
+
+  # Simple comparison of summaries
   n <- ts_summary(ts)
   expect_equal(
     n,
@@ -123,15 +126,15 @@ test_that("ts_load(), ts_summary(), and ts_dump(x) work", {
 
   # ---- ts_metadata_length() ----
 
+  # Simple comparison of the lengths of metadata
   n <- ts_metadata_length(ts)
   expect_equal(
     n,
     list(
       # we got these numbers from inst/examples/create_test.trees.R
       "ts" = 0L,
-      "tables" = 0L,
-      "migrations" = 0L,
       "populations" = 33L,
+      "migrations" = 0L,
       "individuals" = 0L,
       "nodes" = 0L,
       "edges" = 0L,
@@ -140,6 +143,7 @@ test_that("ts_load(), ts_summary(), and ts_dump(x) work", {
     )
   )
 
+  # TODO: Another set of tests for a tree sequence with metadata
   ts_file <- system.file("examples/testTODO.trees", package = "tskitr")
   ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 
@@ -149,7 +153,6 @@ test_that("ts_load(), ts_summary(), and ts_dump(x) work", {
     list(
       # we got these numbers from inst/examples/create_test.trees.R
       "ts" = 0L,
-      "tables" = 0L,
       "migrations" = 0L,
       "populations" = 33L,
       "individuals" = 0L,

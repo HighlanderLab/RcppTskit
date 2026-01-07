@@ -1,6 +1,22 @@
 # install.packages("reticulate")
-reticulate::py_require("msprime")
-msprime <- reticulate::import("msprime")
+library(reticulate)
+
+# Using Python packages installed via reticulate
+py_require("msprime")
+# Using Python packages installed via conda
+use_condaenv("arg_work")
+
+# Access to main Python environment (say if you have run a script and then objects are in main)
+# main <- import_main()
+# main$x
+# ... or
+# py$x
+# Access builtin Python functionality
+builtins <- import_builtins()
+
+# ARG packages
+msprime <- import("msprime")
+tskit <- import("tskit")
 
 # Generate a tree sequence for testing
 ts <- msprime$sim_ancestry(
@@ -11,6 +27,8 @@ ts <- msprime$sim_ancestry(
 )
 ts <- msprime$sim_mutations(ts, rate = 1e-2, random_seed = 42)
 ts
+cat(py_str(ts))
+builtins$print(ts)
 ts$num_provenances # 2
 ts$num_populations # 1
 ts$num_migrations # 0
@@ -24,24 +42,29 @@ ts$num_mutations # 2700
 ts$sequence_length # 10000.0
 ts$time_units # generations
 
-# TODO:how do I run
-len(ts$metadata)?ts$metadata
-ts$tables$metadata
-ts$tables$migrations$metadata
-ts$tables$populations$metadata
-ts$tables$individuals$metadata
-ts$tables$nodes$metadata
-ts$tables$edges$metadata
-ts$tables$sites$metadata
-ts$tables$mutations$metadata
+ts$metadata # b''
+builtins$type(ts$metadata) # <class 'bytes'>
+py_len(ts$metadata) # 0
+# ts$metadata.shape # 'bytes' object has no attribute 'shape'
+
+ts$tables.metadata # AttributeError: 'TreeSequence' object has no attribute 'tables.metadata'
+# hmm, this works in Python!
+ts$tables$metadata # b'', aha
+builtins$type(ts$tables$metadata) # bytes
+py_len(ts$tables.metadata) # 0
+ts$tables.metadata.shape # 'bytes' object has no attribute 'shape'
+
+ts$tables.migrations.metadata # array() ...
+type(ts$tables.migrations.metadata) # numpy.ndarray
+len(ts$tables.migrations.metadata) # 0
+ts$tables.migrations.metadata.shape # (0,)
 
 ts$dump("inst/examples/test.trees")
 ts_original <- ts
 
-tskit <- reticulate::import("tskit")
+
 ts <- tskit$load("inst/examples/test.trees")
 ts
-
 
 # Create a second tree sequence with metadata in some tables
 ts2_tables <- ts$dump_tables()

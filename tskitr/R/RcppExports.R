@@ -3,11 +3,10 @@
 
 #' @name ts_metadata_length
 #' @title Get the length of metadata in a tree sequence and its tables
-#' @param ts an external pointer to a \code{tsk_treeseq_t} object.
+#' @param ts tree sequence as an external pointer to a \code{tsk_treeseq_t} object.
 #' @details This function returns the summary of properties and number of records
 #'   in a tree sequence, by calling
-#'   \code{tsk_treeseq_get_metadata_length()} \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_metadata_length} on tree sequence,
-#'   \code{ts->tables->metadata_length} on tables
+#'   \code{tsk_treeseq_get_metadata_length()} \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_metadata_length} on tree sequence and
 NULL
 
 #' Report the version of installed kastore C API
@@ -38,10 +37,10 @@ tskit_version <- function() {
 #'
 #' @param file a string specifying the full path of the tree sequence file.
 #' @param options integer bitwise options (see details).
-#' @return An external pointer to a \code{tsk_treeseq_t} object.
 #' @details This function calls \code{tsk_treeseq_load()} from the tskit C API.
 #'   See \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_load}
 #'   for more details.
+#' @return Tree sequence as an external pointer to a \code{tsk_treeseq_t} object.
 #' @examples
 #' ts_file <- system.file("examples/test.trees", package = "tskitr")
 #' ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
@@ -55,12 +54,13 @@ ts_load <- function(file, options = 0L) {
 
 #' Write a tree sequence to file.
 #'
-#' @param ts an external pointer to a \code{tsk_treeseq_t} object.
+#' @param ts tree sequence as an external pointer to a \code{tsk_treeseq_t} object.
 #' @param file a string specifying the full path of the tree sequence file.
 #' @param options integer bitwise options (see details).
 #' @details This function calls \code{tsk_treeseq_dump()} from the tskit C API
 #'   See \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_dump}
 #'   for more details.
+#' @return No return value, called for side effects.
 #' @examples
 #' ts_file <- system.file("examples/test.trees", package = "tskitr")
 #' ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
@@ -74,7 +74,7 @@ ts_dump <- function(ts, file, options = 0L) {
 
 #' @name ts_summary
 #' @title Get the summary of properties and number of records in a tree sequence
-#' @param ts an external pointer to a \code{tsk_treeseq_t} object.
+#' @param ts tree sequence as an external pointer to a \code{tsk_treeseq_t} object.
 #' @details These functions return the summary of properties and number of records
 #'   in a tree sequence, by calling
 #'   \code{tsk_treeseq_get_num_provenances()} \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_provenances},
@@ -138,7 +138,7 @@ ts_num_individuals <- function(ts) {
     .Call(`_tskitr_ts_num_individuals`, ts)
 }
 
-#' @describeIn ts_summary Get the number of samples in a tree sequence
+#' @describeIn ts_summary Get the number of samples (of nodes) in a tree sequence
 #' @export
 ts_num_samples <- function(ts) {
     .Call(`_tskitr_ts_num_samples`, ts)

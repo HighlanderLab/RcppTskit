@@ -10,11 +10,14 @@ ts_dump(ts, file, options = 0L)
 ts_write(ts, file, options = 0L)
 }
 \arguments{
-\item{ts}{an external pointer to a \code{tsk_treeseq_t} object.}
+\item{ts}{tree sequence as an external pointer to a \code{tsk_treeseq_t} object.}
 
 \item{file}{a string specifying the full path of the tree sequence file.}
 
 \item{options}{integer bitwise options (see details).}
+}
+\value{
+No return value, called for side effects.
 }
 \description{
 Write a tree sequence to file.

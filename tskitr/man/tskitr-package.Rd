@@ -6,15 +6,17 @@
 \alias{tskitr-package}
 \title{tskitr: R access to the tskit C API}
 \description{
-Tskit enables performant storage, manipulation and analysis of ancestral
-recombination graphs using succinct tree sequence encoding; see https://tskit.dev.
+Tskit (`tskit`)  enables performant storage, manipulation, and analysis of
+ancestral recombination graphs using succinct tree sequence encoding; see
+https://tskit.dev.
 Tskit provides Python, C, and Rust APIs. The Python API can be called from R
-via the `reticulate` package to seamlessly load and analyse tree sequences;
+via the `reticulate` R package to seamlessly load and analyse a tree sequence;
 see https://tskit.dev/tutorials/tskitr.html.
 `tskitr` provides R access to the tskit C API for use cases where the
-`reticulate` approach is not suitable. For example, where high-performance
-and low-level work with tree sequences is required. R access to the parts of
-C API is added as the need arises.
+`reticulate` approach is not optimal. For example, for high-performance
+and low-level work with tree sequences. Currently, `tskitr` provides a very
+limited number of R functions due to the availability of extensive Python API
+and the `reticulate` approach.
 }
 \examples{
 \dontshow{# Providing the examples here so we test them via R CMD check}

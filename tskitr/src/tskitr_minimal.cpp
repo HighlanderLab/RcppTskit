@@ -51,9 +51,9 @@ int table_collection_num_nodes_zero_check() {
     return n;
 }
 
-// Finalizer function to free tsk_treeseq_t when it is garbage collected
+// Finaliser function to free tsk_treeseq_t when it is garbage collected
 //
-// @param xptr_sexp an external pointer to a \code{tsk_treeseq_t} object.
+// @param xptr_sexp tree sequence as an external pointer to a \code{tsk_treeseq_t} object.
 // @details Frees memory allocated to a \code{tsk_treeseq_t} object and deletes
 //   its pointer by calling \code{tsk_treeseq_free()} from the tskit C API.
 //   See \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_free}
@@ -74,10 +74,10 @@ void treeseq_xptr_finalize(SEXP xptr_sexp) {
 //'
 //' @param file a string specifying the full path of the tree sequence file.
 //' @param options integer bitwise options (see details).
-//' @return An external pointer to a \code{tsk_treeseq_t} object.
 //' @details This function calls \code{tsk_treeseq_load()} from the tskit C API.
 //'   See \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_load}
 //'   for more details.
+//' @return Tree sequence as an external pointer to a \code{tsk_treeseq_t} object.
 //' @examples
 //' ts_file <- system.file("examples/test.trees", package = "tskitr")
 //' ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
@@ -105,12 +105,13 @@ SEXP ts_load(std::string file, int options = 0) {
 
 //' Write a tree sequence to file.
 //'
-//' @param ts an external pointer to a \code{tsk_treeseq_t} object.
+//' @param ts tree sequence as an external pointer to a \code{tsk_treeseq_t} object.
 //' @param file a string specifying the full path of the tree sequence file.
 //' @param options integer bitwise options (see details).
 //' @details This function calls \code{tsk_treeseq_dump()} from the tskit C API
 //'   See \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_dump}
 //'   for more details.
+//' @return No return value, called for side effects.
 //' @examples
 //' ts_file <- system.file("examples/test.trees", package = "tskitr")
 //' ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
@@ -129,7 +130,7 @@ void ts_dump(SEXP ts, std::string file, int options = 0) {
 
 //' @name ts_summary
 //' @title Get the summary of properties and number of records in a tree sequence
-//' @param ts an external pointer to a \code{tsk_treeseq_t} object.
+//' @param ts tree sequence as an external pointer to a \code{tsk_treeseq_t} object.
 //' @details These functions return the summary of properties and number of records
 //'   in a tree sequence, by calling
 //'   \code{tsk_treeseq_get_num_provenances()} \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_provenances},
@@ -215,7 +216,7 @@ int ts_num_individuals(SEXP ts) {
     return static_cast<int>(tsk_treeseq_get_num_individuals(xptr));
 }
 
-//' @describeIn ts_summary Get the number of samples in a tree sequence
+//' @describeIn ts_summary Get the number of samples (of nodes) in a tree sequence
 //' @export
 // [[Rcpp::export]]
 int ts_num_samples(SEXP ts) {
@@ -286,6 +287,7 @@ Rcpp::String ts_time_units(SEXP ts) {
 // ts_file <- system.file("examples/test.trees", package = "tskitr")
 // ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 // ts_metadata(ts)
+// slendr::ts_metadata(slim_ts)
 Rcpp::String ts_metadata(SEXP ts) {
     Rcpp::XPtr<tsk_treeseq_t> xptr(ts);
     const char *p = tsk_treeseq_get_metadata(xptr);
@@ -295,13 +297,11 @@ Rcpp::String ts_metadata(SEXP ts) {
 
 //' @name ts_metadata_length
 //' @title Get the length of metadata in a tree sequence and its tables
-//' @param ts an external pointer to a \code{tsk_treeseq_t} object.
+//' @param ts tree sequence as an external pointer to a \code{tsk_treeseq_t} object.
 //' @details This function returns the summary of properties and number of records
 //'   in a tree sequence, by calling
-//'   \code{tsk_treeseq_get_metadata_length()} \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_metadata_length} on tree sequence,
-//'   \code{ts->tables->metadata_length} on tables
-//    (TODO: is tables metadata a legit thing or am I getting this wrong?) and
-//    \code{ts->tables->x->metadata_length} on each table \code{x}
+//'   \code{tsk_treeseq_get_metadata_length()} \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_metadata_length} on tree sequence and
+//    \code{ts->tables->x->metadata_length} on each table \code{x}, e.g., \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_population_table_t.metadata_length},
 //'   from the tskit C API. See the linked documentation for more details.
 //' @return A named list with the length of metadata.
 //' @examples
@@ -315,8 +315,9 @@ Rcpp::List ts_metadata_length(SEXP ts) {
     const tsk_table_collection_t *tables = xptr->tables;
     return Rcpp::List::create(
         Rcpp::_["ts"] = static_cast<int>(tsk_treeseq_get_metadata_length(xptr)),
-        // TODO: is tables metadata a legit thing or am I getting this wrong?
-        Rcpp::_["tables"] = static_cast<int>(tables->metadata_length),
+        // The tables metadata is just the tree sequence metadata since
+        // tsk_treeseq_get_metadata_length() returns self->tables->metadata_length
+        // Rcpp::_["tables"] = static_cast<int>(tables->metadata_length),
         Rcpp::_["populations"] = static_cast<int>(tables->populations.metadata_length),
         Rcpp::_["migrations"] = static_cast<int>(tables->migrations.metadata_length),
         Rcpp::_["individuals"] = static_cast<int>(tables->individuals.metadata_length),
