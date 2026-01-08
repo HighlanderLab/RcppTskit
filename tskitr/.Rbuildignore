@@ -6,6 +6,7 @@
 ^test\.trees$
 ^.*\.o$
 ^.*\.so$
+^\.covrignore$
 ^\.github$
 pkg_dev_notes.md
 ^codecov\.yml$

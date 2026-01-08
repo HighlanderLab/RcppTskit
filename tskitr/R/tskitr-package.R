@@ -13,6 +13,7 @@
 #' @keywords internal
 #'
 #' @useDynLib tskitr, .registration = TRUE
+#' @importFrom methods is
 #' @importFrom Rcpp registerPlugin cppFunction
 #' @importFrom reticulate is_py_object import py_module_available py_require
 #' @importFrom Rdpack reprompt

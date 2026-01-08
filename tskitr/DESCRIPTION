@@ -20,7 +20,7 @@ Description: Tskit (`tskit`) enables performant storage, manipulation, and analy
   and the `reticulate` approach.
 URL: https://github.com/highlanderlab/tskitr
 License: MIT + file LICENSE
-Imports: Rcpp (>= 1.1.0), Rdpack, reticulate
+Imports: methods, Rcpp (>= 1.1.0), Rdpack, reticulate
 LinkingTo: Rcpp
 Suggests:
     spelling, testthat
