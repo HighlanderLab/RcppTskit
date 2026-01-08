@@ -20,4 +20,4 @@ jobs:
         uses: etiennebacher/setup-jarl@v0.1.0
 
       - name: Check
-        run: jarl check --fix
+        run: cd tskitr; jarl check R/*.R

@@ -36,7 +36,7 @@ jobs:
         uses: posit-dev/setup-air@v1
 
       - name: Format
-        run: air format .
+        run: cd tskitr; air format .
 
       - name: Suggest
         uses: reviewdog/action-suggester@v1
