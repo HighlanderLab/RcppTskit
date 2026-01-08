@@ -18,6 +18,12 @@ See more details on the state of the tree sequence ecosystem and aims for
 
 ## Status
 
+<!-- badges: start -->
+  [![R-CMD-check](https://github.com/HighlanderLab/tskitr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/HighlanderLab/tskitr/actions/workflows/R-CMD-check.yaml)
+
+  [![Codecov test coverage](https://codecov.io/gh/HighlanderLab/tskitr/graph/badge.svg)](https://app.codecov.io/gh/HighlanderLab/tskitr)
+<!-- badges: end -->
+
 TODO: Add R package badges (build status, CRAN version, etc.) to README.md #1
       https://github.com/HighlanderLab/tskitr/issues/1
 

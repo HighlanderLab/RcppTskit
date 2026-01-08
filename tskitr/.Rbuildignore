@@ -2,7 +2,10 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^[.]?air[.]toml$
+^[.]?jarl[.]toml$
 ^test\.trees$
 ^.*\.o$
 ^.*\.so$
 ^\.github$
+pkg_dev_notes.md
+^codecov\.yml$

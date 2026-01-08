@@ -37,6 +37,7 @@ Rcpp::IntegerVector tskit_version() {
         Rcpp::_["patch"] = TSK_VERSION_PATCH);
 }
 
+// # nocov start
 // TODO: Decide what tskit functionality we want to expose as R functions #21
 //       https://github.com/HighlanderLab/tskitr/issues/21
 int table_collection_num_nodes_zero_check() {
@@ -50,6 +51,7 @@ int table_collection_num_nodes_zero_check() {
     tsk_table_collection_free(&tables);
     return n;
 }
+// # nocov end
 
 // Finaliser function to free tsk_treeseq_t when it is garbage collected
 //
@@ -282,6 +284,7 @@ Rcpp::String ts_time_units(SEXP ts) {
     return Rcpp::String(std::string(p, p + n));
 }
 
+// # nocov start
 // This is how we would get metadata, but it will be raw bytes,
 // so would have to work with schema and codes ...
 // ts_file <- system.file("examples/test.trees", package = "tskitr")
@@ -294,6 +297,7 @@ Rcpp::String ts_metadata(SEXP ts) {
     tsk_size_t n = tsk_treeseq_get_metadata_length(xptr);
     return Rcpp::String(std::string(p, p + n));
 }
+// # nocov end
 
 //' @name ts_metadata_length
 //' @title Get the length of metadata in a tree sequence and its tables
