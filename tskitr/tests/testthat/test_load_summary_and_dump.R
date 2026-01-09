@@ -193,24 +193,82 @@ test_that("ts_load(), ts_summary(), and ts_dump(x) work", {
     )
   )
 
-  # TODO: Another set of tests for a tree sequence with metadata
-  skip("Skipping tests for tree sequence with metadata for now!")
-  ts_file <- system.file("examples/testTODO.trees", package = "tskitr")
+  ts_file <- system.file("examples/test2.trees", package = "tskitr")
   ts <- tskitr::ts_load(ts_file) # slendr also has ts_load()!
 
-  n <- ts_metadata_length(ts)
+  n <- ts_summary(ts)
   expect_equal(
     n,
     list(
-      # we got these numbers from inst/examples/create_test.trees.R
-      "ts" = 0L,
-      "migrations" = 0L,
+      # we got these numbers from inst/examples/create_test.trees.{py,R}
+      "num_provenances" = 2L,
+      "num_populations" = 1L,
+      "num_migrations" = 0L,
+      "num_individuals" = 81L,
+      "num_samples" = 160L,
+      "num_nodes" = 344L,
+      "num_edges" = 414L,
+      "num_trees" = 26L,
+      "num_sites" = 2376L,
+      "num_mutations" = 2700L,
+      "sequence_length" = 10000.0,
+      "time_units" = "generations"
+    )
+  )
+
+  m <- ts_metadata_length(ts)
+  expect_equal(
+    m,
+    list(
+      # we got these numbers from inst/examples/create_test.trees.{py,R}
+      "ts" = 23L,
       "populations" = 33L,
-      "individuals" = 0L,
+      "migrations" = 0L,
+      "individuals" = 21L,
       "nodes" = 0L,
       "edges" = 0L,
       "sites" = 0L,
       "mutations" = 0L
+    )
+  )
+
+  p <- ts_print(ts)
+  expect_equal(
+    p,
+    list(
+      ts = data.frame(
+        property = c(
+          "num_samples",
+          "sequence_length",
+          "num_trees",
+          "time_units",
+          "has_metadata"
+        ),
+        value = c(160, 10000, 26, "generations", TRUE)
+      ),
+      tables = data.frame(
+        table = c(
+          "provenances",
+          "populations",
+          "migrations",
+          "individuals",
+          "nodes",
+          "edges",
+          "sites",
+          "mutations"
+        ),
+        number = c(2, 1, 0, 81, 344, 414, 2376, 2700),
+        has_metadata = c(
+          NA, # provenances have no metadata
+          TRUE,
+          FALSE,
+          TRUE,
+          FALSE,
+          FALSE,
+          FALSE,
+          FALSE
+        )
+      )
     )
   )
 })

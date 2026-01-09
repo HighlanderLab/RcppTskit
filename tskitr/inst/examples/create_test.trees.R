@@ -47,72 +47,58 @@ ts$time_units # generations
 ts$metadata # b''
 builtins$type(ts$metadata) # <class 'bytes'>
 py_len(ts$metadata) # 0
-# ts$metadata.shape # 'bytes' object has no attribute 'shape'
+# ts$metadata$shape # 'bytes' object has no attribute 'shape'
 
-ts$tables.metadata # AttributeError: 'TreeSequence' object has no attribute 'tables.metadata'
-# hmm, this works in Python!
-ts$tables$metadata # b'', aha
-builtins$type(ts$tables$metadata) # bytes
-py_len(ts$tables.metadata) # 0
-ts$tables.metadata.shape # 'bytes' object has no attribute 'shape'
+schema = ts$metadata_schema
+# empty
 
-ts$tables.migrations.metadata # array() ...
-type(ts$tables.migrations.metadata) # numpy.ndarray
-len(ts$tables.migrations.metadata) # 0
-ts$tables.migrations.metadata.shape # (0,)
+ts$tables$populations$metadata # R vector
+builtins$type(ts$tables$populations$metadata) # numpy.ndarray
+length(ts$tables$populations$metadata) # 33
+# ts$tables$populations$metadata$shape # $ operator is invalid for atomic vectors
+# ts$tables$populations$metadata.shape # AttributeError: 'ImmutablePopulationTable' object has no attribute 'metadata.shape'
+
+schema = ts$tables$populations$metadata_schema
+# {"additionalProperties":true,"codec":"json","properties":{"description":{"type":["string","null"]},"name":{"type":"string"}},"required":["name","description"],"type":"object"}
+schema$asdict()
+# $additionalProperties
+# [1] TRUE
+#
+# $codec
+# [1] "json"
+# ...
+
+ts$tables$migrations$metadata # integer(0)
+builtins$type(ts$tables$migrations$metadata) # numpy.ndarray
+length(ts$tables$migrations$metadata) # 0
+# ts$tables$migrations$metadata$shape # $ operator is invalid for atomic vectors
+# ts$tables$migrations$metadata.shape # AttributeError: 'ImmutablePopulationTable' object has no attribute 'metadata.shape'
+
+ts$tables$individuals$metadata # integer(0)
+builtins$type(ts$tables$individuals$metadata) # numpy.ndarray
+length(ts$tables$individuals$metadata) # 0
+# ts$tables$individuals$metadata$shape # $ operator is invalid for atomic vectors
+# ts$tables$individuals$metadata.shape # AttributeError: 'ImmutablePopulationTable' object has no attribute 'metadata.shape'
 
 ts$dump("inst/examples/test.trees")
-ts_original <- ts
-
-
-ts <- tskit$load("inst/examples/test.trees")
-ts
+# ts <- tskit$load("inst/examples/test.trees")
 
 # Create a second tree sequence with metadata in some tables
-ts2_tables <- ts$dump_tables()
-set.seed(123)
-ts2_tables$metadata <- charToRaw(
-  paste0("{\"seed\":", sample.int(100000, 1), ",\"note\":\"ts2\"}")
-)
+# basic_schema = tskit$MetadataSchema("{'codec': 'json'}")
+# Can't get this to work via reticulate :(
+# see create_test.trees.py
 
-node_md <- rep(list(raw(0)), ts2_tables$nodes$num_rows)
-node_md[[1]] <- charToRaw("node:1")
-node_md[[ts2_tables$nodes$num_rows]] <- charToRaw("node:last")
-node_md_packed <- tskit$pack_bytes(node_md)
-ts2_tables$nodes$set_columns(
-  flags = ts2_tables$nodes$flags,
-  time = ts2_tables$nodes$time,
-  population = ts2_tables$nodes$population,
-  individual = ts2_tables$nodes$individual,
-  metadata = node_md_packed[[1]],
-  metadata_offset = node_md_packed[[2]]
-)
+ts = tskit$load("inst/examples/test2.trees")
+ts
+ts$num_individuals # 81
 
-site_md <- rep(list(raw(0)), ts2_tables$sites$num_rows)
-if (ts2_tables$sites$num_rows > 0) {
-  site_md[[1]] <- charToRaw("site:1")
-}
-if (ts2_tables$sites$num_rows > 1) {
-  site_md[[2]] <- charToRaw("site:2")
-}
-site_md_packed <- tskit$pack_bytes(site_md)
-ts2_tables$sites$set_columns(
-  position = ts2_tables$sites$position,
-  ancestral_state = ts2_tables$sites$ancestral_state,
-  ancestral_state_offset = ts2_tables$sites$ancestral_state_offset,
-  metadata = site_md_packed[[1]],
-  metadata_offset = site_md_packed[[2]]
-)
+ts$metadata
+# $mean_coverage
+# [1] 200.5
+builtins$type(ts$metadata) # dict
+len(ts.metadata) # 1
+ts$metadata_schema # {"codec":"json"}
 
-pop_md <- rep(list(raw(0)), ts2_tables$populations$num_rows)
-if (ts2_tables$populations$num_rows > 0) {
-  pop_md[[1]] <- charToRaw("pop:1")
-}
-pop_md_packed <- tskit$pack_bytes(pop_md)
-ts2_tables$populations$set_columns(
-  metadata = pop_md_packed[[1]],
-  metadata_offset = pop_md_packed[[2]]
-)
-
-ts2 <- ts2_tables$tree_sequence()
-ts2$dump("inst/examples/test_with_metadata.trees")
+ts$tables$individuals$metadata # R vector
+builtins$type(ts$tables$individuals$metadata) # numpy.ndarray
+length(ts$tables$individuals$metadata) # 21
