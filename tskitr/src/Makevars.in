@@ -17,11 +17,11 @@ TSKIT_OBJECTS = $(TSKIT_SOURCES:.c=.o)
 # TSKITR_CPP_SOURCES = $(wildcard *.cpp) # wildcard is a GNU extension and not desired on CRAN
 TSKITR_CPP_SOURCES = \
 	tskitr.cpp \
-	test_tsk_bug_assert.cpp \
+	test_tsk_abort_stderr.cpp \
 	RcppExports.cpp
 # $(info TSKITR_CPP_SOURCES = $(TSKITR_CPP_SOURCES)) # for debugging, info is also a GNU extension
 TSKITR_C_SOURCES = \
-	test_tsk_bug_assert_c.c
+	test_tsk_abort_stderr_c.c
 # $(info TSKITR_C_SOURCES = $(TSKITR_C_SOURCES)) # for debugging, info is also a GNU extension
 TSKITR_OBJECTS = $(TSKITR_CPP_SOURCES:.cpp=.o) $(TSKITR_C_SOURCES:.c=.o)
 # $(info TSKITR_OBJECTS = $(TSKITR_OBJECTS)) # for debugging, info is also a GNU extension
@@ -41,12 +41,14 @@ PKG_CPPFLAGS = \
 
 # Compiler flags
 PKG_CFLAGS = -DNDEBUG # to remove calls to assert() as per the R extensions manual
+# PKG_CFLAGS = -DNDEBUG -DTSK_TRACE_ERRORS
 # TODO: Should we port any flags from extern/tskit/c/meson.build to R build system? #6
 #       https://github.com/HighlanderLab/tskitr/issues/6
 #       See default flags used by clang  (see below output from devtools::install())
 # clang -arch arm64 -I../inst/include -I../inst/include/tskit -I../inst/include/tskit/tskit -I/opt/homebrew/opt/gettext/include  -falign-functions=64 -Wall -g -O2  -c tskit/convert.c -o tskit/convert.o
 # PKG_CFLAGS   = -O2 -Wall
 # PKG_CXXFLAGS = -O2 -Wall
+# PKG_CXXFLAGS = -DTSK_TRACE_ERRORS
 
 # Explicit compile rule for tskit C files
 tskit/%.o: tskit/%.c

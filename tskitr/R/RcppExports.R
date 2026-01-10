@@ -9,6 +9,14 @@ test_tsk_bug_assert_cpp <- function() {
     invisible(.Call(`_tskitr_test_tsk_bug_assert_cpp`))
 }
 
+test_tsk_trace_error_c <- function() {
+    invisible(.Call(`_tskitr_test_tsk_trace_error_c`))
+}
+
+test_tsk_trace_error_cpp <- function() {
+    invisible(.Call(`_tskitr_test_tsk_trace_error_cpp`))
+}
+
 #' Report the version of installed kastore C API
 #'
 #' @details The version is stored in the installed header \code{kastore.h}.
