@@ -15,4 +15,4 @@ extern "C" void tskitr_trace_error_c(void);
 void test_tsk_trace_error_c() { tskitr_trace_error_c(); }
 
 // [[Rcpp::export]]
-void test_tsk_trace_error_cpp() { tsk_trace_error(-1); }
+void test_tsk_trace_error_cpp() { (void)tsk_trace_error(-1); }

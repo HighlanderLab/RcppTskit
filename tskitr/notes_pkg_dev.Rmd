@@ -5,6 +5,10 @@
 * TODO: Rename ts_load() to ts_load_ptr() and create ts_load() returning S3/S4/R6 object #22
         https://github.com/HighlanderLab/tskitr/issues/22
 
+I guess we should create a minimal S4 class and a minimal R6 class
+and then try to load a tree sequence and grow it further and
+time the performance with each class.
+
 ## Setup
 
 ```
