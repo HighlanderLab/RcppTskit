@@ -1,0 +1,31 @@
+Package: RcppTskit
+Type: Package
+Title: R access to the tskit C API
+Version: 0.0.1
+Date: 2026-01-07
+Authors@R:
+  person(given = "Gregor", family = "Gorjanc",
+         email = "gregor.gorjanc@gmail.com",
+         role = c("aut", "cre"),
+         comment = c(ORCID = "0000-0001-8008-2787"))
+Description: Tskit enables performant storage, manipulation, and analysis
+  of ancestral recombination graphs (ARGs) using succinct tree sequence encoding.
+  See https://tskit.dev for project news, documentation, and tutorials.
+  Tskit provides Python, C, and Rust APIs. The Python API can be called from R
+  via the `reticulate` R package to seamlessly load and analyse
+  a tree sequence as described at https://tskit.dev/tutorials/RcppTskit.html.
+  `RcppTskit` provides R access to the `tskit` C API for use cases where the
+  `reticulate` approach is not optimal. For example, for high-performance and
+  low-level work with tree sequences. Currently, `RcppTskit` provides a very
+  limited number of R functions due to the availability of extensive Python API
+  and the `reticulate` approach.
+URL: https://github.com/highlanderlab/RcppTskit
+License: MIT + file LICENSE
+Imports: methods, Rcpp (>= 1.1.0), Rdpack, reticulate
+LinkingTo: Rcpp
+Suggests:
+    spelling, testthat
+RdMacros: Rdpack
+RoxygenNote: 7.3.3
+Encoding: UTF-8
+Language: en-GB

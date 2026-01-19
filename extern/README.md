@@ -3,12 +3,12 @@
 This directory holds git submodule for tskit and instructions on copying its
 C code into R package.
 
-All commands are run from the root of the tskitr repository:
+All commands are run from the root of the RcppTskit repository:
 
 ```
 ls -l
 # extern # Git submodules for tskit and instructions on copying its C code
-# tskitr # R package
+# RcppTskit # R package
 ```
 
 Below instructions show how to add, update, and inspect the tskit code changes.
@@ -69,103 +69,103 @@ Copy files to R package for the first time:
 
 ```
 # Create folders
-mkdir -p tskitr/inst/include/tskit
-mkdir -p tskitr/inst/include/tskit/tskit
-mkdir -p tskitr/src/tskit
+mkdir -p RcppTskit/inst/include/tskit
+mkdir -p RcppTskit/inst/include/tskit/tskit
+mkdir -p RcppTskit/src/tskit
 
 # Header files
-cp extern/tskit/LICENSE tskitr/inst/include/tskit/.
-cp extern/tskit/c/VERSION.txt tskitr/inst/include/tskit/.
-cp extern/tskit/c/subprojects/kastore/VERSION.txt tskitr/inst/include/tskit/tskit/VERSION_kastore.txt
-cp extern/tskit/c/tskit.h tskitr/inst/include/tskit/.
-cp extern/tskit/c/tskit/convert.h tskitr/inst/include/tskit/tskit/.
-cp extern/tskit/c/tskit/core.h tskitr/inst/include/tskit/tskit/.
-cp extern/tskit/c/tskit/genotypes.h tskitr/inst/include/tskit/tskit/.
-cp extern/tskit/c/tskit/haplotype_matching.h tskitr/inst/include/tskit/tskit/.
-cp extern/tskit/c/tskit/stats.h tskitr/inst/include/tskit/tskit/.
-cp extern/tskit/c/tskit/tables.h tskitr/inst/include/tskit/tskit/.
-cp extern/tskit/c/tskit/trees.h tskitr/inst/include/tskit/tskit/.
-cp extern/tskit/c/subprojects/kastore/kastore.h tskitr/inst/include/tskit/tskit/.
+cp extern/tskit/LICENSE RcppTskit/inst/include/tskit/.
+cp extern/tskit/c/VERSION.txt RcppTskit/inst/include/tskit/.
+cp extern/tskit/c/subprojects/kastore/VERSION.txt RcppTskit/inst/include/tskit/tskit/VERSION_kastore.txt
+cp extern/tskit/c/tskit.h RcppTskit/inst/include/tskit/.
+cp extern/tskit/c/tskit/convert.h RcppTskit/inst/include/tskit/tskit/.
+cp extern/tskit/c/tskit/core.h RcppTskit/inst/include/tskit/tskit/.
+cp extern/tskit/c/tskit/genotypes.h RcppTskit/inst/include/tskit/tskit/.
+cp extern/tskit/c/tskit/haplotype_matching.h RcppTskit/inst/include/tskit/tskit/.
+cp extern/tskit/c/tskit/stats.h RcppTskit/inst/include/tskit/tskit/.
+cp extern/tskit/c/tskit/tables.h RcppTskit/inst/include/tskit/tskit/.
+cp extern/tskit/c/tskit/trees.h RcppTskit/inst/include/tskit/tskit/.
+cp extern/tskit/c/subprojects/kastore/kastore.h RcppTskit/inst/include/tskit/tskit/.
 
 # Code files
-cp extern/tskit/LICENSE tskitr/src/tskit/.
-cp extern/tskit/c/VERSION.txt tskitr/src/tskit/.
-cp extern/tskit/c/subprojects/kastore/VERSION.txt tskitr/src/tskit/VERSION_kastore.txt
-cp extern/tskit/c/tskit/convert.c tskitr/src/tskit/.
-cp extern/tskit/c/tskit/core.c tskitr/src/tskit/.
-cp extern/tskit/c/tskit/genotypes.c tskitr/src/tskit/.
-cp extern/tskit/c/tskit/haplotype_matching.c tskitr/src/tskit/.
-cp extern/tskit/c/tskit/stats.c tskitr/src/tskit/.
-cp extern/tskit/c/tskit/tables.c tskitr/src/tskit/.
-cp extern/tskit/c/tskit/trees.c tskitr/src/tskit/.
-cp extern/tskit/c/subprojects/kastore/kastore.c tskitr/src/tskit/.
+cp extern/tskit/LICENSE RcppTskit/src/tskit/.
+cp extern/tskit/c/VERSION.txt RcppTskit/src/tskit/.
+cp extern/tskit/c/subprojects/kastore/VERSION.txt RcppTskit/src/tskit/VERSION_kastore.txt
+cp extern/tskit/c/tskit/convert.c RcppTskit/src/tskit/.
+cp extern/tskit/c/tskit/core.c RcppTskit/src/tskit/.
+cp extern/tskit/c/tskit/genotypes.c RcppTskit/src/tskit/.
+cp extern/tskit/c/tskit/haplotype_matching.c RcppTskit/src/tskit/.
+cp extern/tskit/c/tskit/stats.c RcppTskit/src/tskit/.
+cp extern/tskit/c/tskit/tables.c RcppTskit/src/tskit/.
+cp extern/tskit/c/tskit/trees.c RcppTskit/src/tskit/.
+cp extern/tskit/c/subprojects/kastore/kastore.c RcppTskit/src/tskit/.
 
 Check differences between old copy and new version:
 
 ```
 # Header files
-diff extern/tskit/LICENSE tskitr/inst/include/tskit/LICENSE
-diff extern/tskit/c/VERSION.txt tskitr/inst/include/tskit/VERSION.txt
-diff extern/tskit/c/subprojects/kastore/VERSION.txt tskitr/inst/include/tskit/tskit/VERSION_kastore.txt
-diff extern/tskit/c/tskit.h tskitr/inst/include/tskit/tskit.h
-diff extern/tskit/c/tskit/convert.h tskitr/inst/include/tskit/tskit/convert.h
-diff extern/tskit/c/tskit/core.h tskitr/inst/include/tskit/tskit/core.h
-diff extern/tskit/c/tskit/genotypes.h tskitr/inst/include/tskit/tskit/genotypes.h
-diff extern/tskit/c/tskit/haplotype_matching.h tskitr/inst/include/tskit/tskit/haplotype_matching.h
-diff extern/tskit/c/tskit/stats.h tskitr/inst/include/tskit/tskit/stats.h
-diff extern/tskit/c/tskit/tables.h tskitr/inst/include/tskit/tskit/tables.h
-diff extern/tskit/c/tskit/trees.h tskitr/inst/include/tskit/tskit/trees.h
-diff extern/tskit/c/subprojects/kastore/kastore.h tskitr/inst/include/tskit/tskit/kastore.h
+diff extern/tskit/LICENSE RcppTskit/inst/include/tskit/LICENSE
+diff extern/tskit/c/VERSION.txt RcppTskit/inst/include/tskit/VERSION.txt
+diff extern/tskit/c/subprojects/kastore/VERSION.txt RcppTskit/inst/include/tskit/tskit/VERSION_kastore.txt
+diff extern/tskit/c/tskit.h RcppTskit/inst/include/tskit/tskit.h
+diff extern/tskit/c/tskit/convert.h RcppTskit/inst/include/tskit/tskit/convert.h
+diff extern/tskit/c/tskit/core.h RcppTskit/inst/include/tskit/tskit/core.h
+diff extern/tskit/c/tskit/genotypes.h RcppTskit/inst/include/tskit/tskit/genotypes.h
+diff extern/tskit/c/tskit/haplotype_matching.h RcppTskit/inst/include/tskit/tskit/haplotype_matching.h
+diff extern/tskit/c/tskit/stats.h RcppTskit/inst/include/tskit/tskit/stats.h
+diff extern/tskit/c/tskit/tables.h RcppTskit/inst/include/tskit/tskit/tables.h
+diff extern/tskit/c/tskit/trees.h RcppTskit/inst/include/tskit/tskit/trees.h
+diff extern/tskit/c/subprojects/kastore/kastore.h RcppTskit/inst/include/tskit/tskit/kastore.h
 
 # Code files
-diff extern/tskit/LICENSE tskitr/src/tskit/LICENSE
-diff extern/tskit/c/VERSION.txt tskitr/src/tskit/VERSION.txt
-diff extern/tskit/c/subprojects/kastore/VERSION.txt tskitr/src/tskit/VERSION_kastore.txt
-diff extern/tskit/c/tskit/convert.c tskitr/src/tskit/convert.c
-diff extern/tskit/c/tskit/core.c tskitr/src/tskit/core.c
-diff extern/tskit/c/tskit/genotypes.c tskitr/src/tskit/genotypes.c
-diff extern/tskit/c/tskit/haplotype_matching.c tskitr/src/tskit/haplotype_matching.c
-diff extern/tskit/c/tskit/stats.c tskitr/src/tskit/stats.c
-diff extern/tskit/c/tskit/tables.c tskitr/src/tskit/tables.c
-diff extern/tskit/c/tskit/trees.c tskitr/src/tskit/trees.c
-diff extern/tskit/c/subprojects/kastore/kastore.c tskitr/src/tskit/kastore.c
+diff extern/tskit/LICENSE RcppTskit/src/tskit/LICENSE
+diff extern/tskit/c/VERSION.txt RcppTskit/src/tskit/VERSION.txt
+diff extern/tskit/c/subprojects/kastore/VERSION.txt RcppTskit/src/tskit/VERSION_kastore.txt
+diff extern/tskit/c/tskit/convert.c RcppTskit/src/tskit/convert.c
+diff extern/tskit/c/tskit/core.c RcppTskit/src/tskit/core.c
+diff extern/tskit/c/tskit/genotypes.c RcppTskit/src/tskit/genotypes.c
+diff extern/tskit/c/tskit/haplotype_matching.c RcppTskit/src/tskit/haplotype_matching.c
+diff extern/tskit/c/tskit/stats.c RcppTskit/src/tskit/stats.c
+diff extern/tskit/c/tskit/tables.c RcppTskit/src/tskit/tables.c
+diff extern/tskit/c/tskit/trees.c RcppTskit/src/tskit/trees.c
+diff extern/tskit/c/subprojects/kastore/kastore.c RcppTskit/src/tskit/kastore.c
 
 Update the files in R package:
 
 ```
 # Header files
-cp -i extern/tskit/LICENSE tskitr/inst/include/tskit/.
-cp -i extern/tskit/c/VERSION.txt tskitr/inst/include/tskit/.
-cp -i extern/tskit/c/subprojects/kastore/VERSION.txt tskitr/inst/include/tskit/tskit/VERSION_kastore.txt
-cp -i extern/tskit/c/tskit.h  tskitr/inst/include/tskit/.
-cp -i extern/tskit/c/tskit/convert.h tskitr/inst/include/tskit/tskit/.
-cp -i extern/tskit/c/tskit/core.h tskitr/inst/include/tskit/tskit/.
-cp -i extern/tskit/c/tskit/genotypes.h tskitr/inst/include/tskit/tskit/.
-cp -i extern/tskit/c/tskit/haplotype_matching.h tskitr/inst/include/tskit/tskit/.
-cp -i extern/tskit/c/tskit/stats.h tskitr/inst/include/tskit/tskit/.
-cp -i extern/tskit/c/tskit/tables.h tskitr/inst/include/tskit/tskit/.
-cp -i extern/tskit/c/tskit/trees.h tskitr/inst/include/tskit/tskit/.
-cp -i extern/tskit/c/subprojects/kastore/kastore.h tskitr/inst/include/tskit/tskit/.
+cp -i extern/tskit/LICENSE RcppTskit/inst/include/tskit/.
+cp -i extern/tskit/c/VERSION.txt RcppTskit/inst/include/tskit/.
+cp -i extern/tskit/c/subprojects/kastore/VERSION.txt RcppTskit/inst/include/tskit/tskit/VERSION_kastore.txt
+cp -i extern/tskit/c/tskit.h  RcppTskit/inst/include/tskit/.
+cp -i extern/tskit/c/tskit/convert.h RcppTskit/inst/include/tskit/tskit/.
+cp -i extern/tskit/c/tskit/core.h RcppTskit/inst/include/tskit/tskit/.
+cp -i extern/tskit/c/tskit/genotypes.h RcppTskit/inst/include/tskit/tskit/.
+cp -i extern/tskit/c/tskit/haplotype_matching.h RcppTskit/inst/include/tskit/tskit/.
+cp -i extern/tskit/c/tskit/stats.h RcppTskit/inst/include/tskit/tskit/.
+cp -i extern/tskit/c/tskit/tables.h RcppTskit/inst/include/tskit/tskit/.
+cp -i extern/tskit/c/tskit/trees.h RcppTskit/inst/include/tskit/tskit/.
+cp -i extern/tskit/c/subprojects/kastore/kastore.h RcppTskit/inst/include/tskit/tskit/.
 
 # Code files
-cp -i extern/tskit/LICENSE tskitr/src/tskit/.
-cp -i extern/tskit/c/VERSION.txt tskitr/src/tskit/.
-cp -i extern/tskit/c/subprojects/kastore/VERSION.txt tskitr/src/tskit/VERSION_kastore.txt
-cp -i extern/tskit/c/tskit/convert.c tskitr/src/tskit/.
-cp -i extern/tskit/c/tskit/core.c tskitr/src/tskit/.
-cp -i extern/tskit/c/tskit/genotypes.c tskitr/src/tskit/.
-cp -i extern/tskit/c/tskit/haplotype_matching.c tskitr/src/tskit/.
-cp -i extern/tskit/c/tskit/stats.c tskitr/src/tskit/.
-cp -i extern/tskit/c/tskit/tables.c tskitr/src/tskit/.
-cp -i extern/tskit/c/tskit/trees.c tskitr/src/tskit/.
-cp -i extern/tskit/c/subprojects/kastore/kastore.c tskitr/src/tskit/.
+cp -i extern/tskit/LICENSE RcppTskit/src/tskit/.
+cp -i extern/tskit/c/VERSION.txt RcppTskit/src/tskit/.
+cp -i extern/tskit/c/subprojects/kastore/VERSION.txt RcppTskit/src/tskit/VERSION_kastore.txt
+cp -i extern/tskit/c/tskit/convert.c RcppTskit/src/tskit/.
+cp -i extern/tskit/c/tskit/core.c RcppTskit/src/tskit/.
+cp -i extern/tskit/c/tskit/genotypes.c RcppTskit/src/tskit/.
+cp -i extern/tskit/c/tskit/haplotype_matching.c RcppTskit/src/tskit/.
+cp -i extern/tskit/c/tskit/stats.c RcppTskit/src/tskit/.
+cp -i extern/tskit/c/tskit/tables.c RcppTskit/src/tskit/.
+cp -i extern/tskit/c/tskit/trees.c RcppTskit/src/tskit/.
+cp -i extern/tskit/c/subprojects/kastore/kastore.c RcppTskit/src/tskit/.
 
 Commit changes:
 
 ```
 git status
-git add tskitr/inst/include/tskit
-git add tskitr/src
+git add RcppTskit/inst/include/tskit
+git add RcppTskit/src
 git commit -m "Update tskit C API to version 1.3.0"
 git push
 ```

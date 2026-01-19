@@ -36,12 +36,12 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          working-directory: tskitr
+          working-directory: RcppTskit
           extra-packages: any::covr, any::xml2
           needs: coverage
 
       - name: Test coverage
-        working-directory: tskitr
+        working-directory: RcppTskit
         run: |
           cov <- covr::package_coverage(
             quiet = FALSE,
@@ -57,8 +57,8 @@ jobs:
           # Fail if error if not on PR, or if on PR and token is given
           # fail_ci_if_error: ${{ github.event_name != 'pull_request' || secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
-          config: tskitr/codecov.yaml
-          files: tskitr/cobertura.xml
+          config: RcppTskit/codecov.yaml
+          files: RcppTskit/cobertura.xml
           plugins: noop
           disable_search: true
           token: ${{ secrets.CODECOV_TOKEN }}

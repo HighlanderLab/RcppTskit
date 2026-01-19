@@ -20,4 +20,4 @@ jobs:
         uses: posit-dev/setup-air@v1
 
       - name: Check
-        run: cd tskitr; air format --check .
+        run: cd RcppTskit; air format --check .

@@ -20,4 +20,4 @@ jobs:
         uses: etiennebacher/setup-jarl@v0.1.0
 
       - name: Check
-        run: cd tskitr; jarl check R/*.R
+        run: cd RcppTskit; jarl check R/*.R
