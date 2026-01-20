@@ -2,12 +2,14 @@
 % Please edit documentation in R/RcppTskit-package.R
 \name{ts_r_to_py}
 \alias{ts_r_to_py}
+\alias{ts_r_to_py_ptr}
 \title{Transfer a tree sequence from R to reticulate Python}
 \usage{
-ts_r_to_py(ts, tskit_module = get_tskit_py(), cleanup = TRUE)
+ts_r_to_py_ptr(ts, tskit_module = get_tskit_py(), cleanup = TRUE)
 }
 \arguments{
-\item{ts}{tree sequence as an external pointer to a \code{tsk_treeseq_t} object.}
+\item{ts}{tree sequence as a \code{\link{TreeSequence}} object or
+external pointer (\code{externalptr}) to a \code{tsk_treeseq_t} object.}
 
 \item{tskit_module}{reticulate Python module of \code{tskit}. By default,
 it calls \code{\link{get_tskit_py}()} to obtain the module.}
@@ -19,19 +21,36 @@ Tree sequence in reticulate Python.
 }
 \description{
 This function saves a tree sequence from R to disk and
-  reads it into reticulate Python so that we can use \code{tskit} Python API on it.
+  reads it into reticulate Python for use with \code{tskit} Python API.
 }
 \examples{
 ts_file <- system.file("examples/test.trees", package = "RcppTskit")
-# Use RcppTskit to work with a tree sequence
+
+# TreeSequence class object
+# ... Use RcppTskit to work with a tree sequence
 ts_r <- ts_load(ts_file)
 is(ts_r)
-ts_num_samples(ts_r) # 160
-# Now transfer the tree sequence to reticulate Python and use tskit Python API
-ts_py <- ts_r_to_py(ts_r)
+ts_r$num_samples() # 160
+# ... Transfer the tree sequence to reticulate Python and use tskit Python API
+ts_py <- ts_r$r_to_py()
 is(ts_py)
 ts_py$num_samples # 160
+ts2_py <- ts_py$simplify(samples = c(0L, 1L, 2L, 3L))
+ts2_py$num_samples # 4
+
+# External pointer object
+# ... Use RcppTskit to work with a tree sequence
+ts_r_ptr <- ts_r$pointer
+is(ts_r_ptr)
+ts_num_samples_ptr(ts_r_ptr) # 160
+# ... Now transfer the tree sequence to reticulate Python and use tskit Python API
+ts_py <- ts_r_to_py_ptr(ts_r_ptr)
+is(ts_py)
+ts_py$num_samples # 160
+ts2_py <- ts_py$simplify(samples = c(0L, 1L, 2L, 3L))
+ts2_py$num_samples # 4
 }
 \seealso{
-\code{\link{ts_py_to_r}()} and \code{\link{ts_dump}()}.
+\code{\link{ts_py_to_r}()}, \code{\link{ts_load}()}, and
+  \code{\link{ts_dump}()}.
 }

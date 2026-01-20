@@ -2,12 +2,29 @@
 
 ## Next TODOs
 
-* TODO: Rename ts_load() to ts_load_ptr() and create ts_load() returning S3/S4/R6 object #22
-        https://github.com/HighlanderLab/RcppTskit/issues/22
+ Missing link(s) in Rd file 'TreeSequence.Rd':
+     ‘ts_dump’ ‘ts_summary’
 
-I guess we should create a minimal S4 class and a minimal R6 class
-and then try to load a tree sequence and grow it further and
-time the performance with each class.
+   Missing link(s) in Rd file 'ts_print.Rd':
+     ‘ts_summary’
+
+   Missing link(s) in Rd file 'ts_py_to_r.Rd':
+     ‘ts_dump’
+
+   Missing link(s) in Rd file 'ts_r_to_py.Rd':
+     ‘ts_dump’
+
+   See section 'Cross-references' in the 'Writing R Extensions' manual.
+
+   Found the following Rd file(s) with Rd \link{} targets missing package
+   anchors:
+     TreeSequence.Rd: ts_dump, ts_summary
+     ts_print.Rd: ts_summary
+     ts_py_to_r.Rd: ts_dump
+     ts_r_to_py.Rd: ts_dump
+   Please provide package anchors for all Rd \link{} targets not in the
+   package itself and the base packages.
+
 
 * TODO building tree sequence
 extern/tskit/c/tests/testlib.c has lots of examples of constructing a tree sequence using C

@@ -2,16 +2,18 @@
 % Please edit documentation in R/RcppTskit-package.R
 \name{ts_print}
 \alias{ts_print}
+\alias{ts_print_ptr}
 \title{Print a summary of a tree sequence and its contents}
 \usage{
-ts_print(ts)
+ts_print_ptr(ts)
 }
 \arguments{
-\item{ts}{tree sequence as an external pointer to a \code{tsk_treeseq_t} object.}
+\item{ts}{tree sequence as a \code{\link{TreeSequence}} object or
+an external pointer (\code{externalptr}) to a \code{tsk_treeseq_t} object.}
 }
 \value{
 list with two data.frames; the first contains tree sequence
-  properties and their value; the second contains number of rows in
+  properties and their value; the second contains the numbers of rows in
   tables and the length of their metadata.
 }
 \description{
@@ -20,12 +22,18 @@ Print a summary of a tree sequence and its contents
 \details{
 It uses \code{\link{ts_summary}()} and
   \code{\link{ts_metadata_length}()}.
-  Note that \code{nbytes} property is not available in
-  \code{tskit} C API compared to Python API.
+  Note that \code{nbytes} property is not available in \code{tskit} C API
+  compared to Python API, so also not available here.
 }
 \examples{
 ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+
+# TreeSequence class object
 ts <- ts_load(ts_file)
-ts_print(ts)
+ts$print()
 ts
+
+# External pointer object
+ts_ptr <- ts$pointer
+ts_print_ptr(ts_ptr)
 }

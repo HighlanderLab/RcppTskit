@@ -2,8 +2,11 @@
 % Please edit documentation in R/RcppTskit-package.R
 \name{ts_py_to_r}
 \alias{ts_py_to_r}
+\alias{ts_py_to_r_ptr}
 \title{Transfer a tree sequence from reticulate Python to R}
 \usage{
+ts_py_to_r_ptr(ts, cleanup = TRUE)
+
 ts_py_to_r(ts, cleanup = TRUE)
 }
 \arguments{
@@ -12,14 +15,21 @@ ts_py_to_r(ts, cleanup = TRUE)
 \item{cleanup}{logical delete the temporary file at the end of the function?}
 }
 \value{
-Tree sequence as an external pointer to a \code{tsk_treeseq_t} object.
+tree sequence as a \code{\link{TreeSequence}} object or
+  external pointer (\code{externalptr}) to a \code{tsk_treeseq_t} object.
 }
 \description{
 This function saves a tree sequence from reticulate Python to disk
-  and reads it into R so that we can use \code{RcppTskit}.
+  and reads it into R for use with \code{RcppTskit}.
 }
+\section{Functions}{
+\itemize{
+\item \code{ts_py_to_r()}: Transfer a tree sequence from reticulate Python to R
+
+}}
 \examples{
 ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+
 # Use the tskit Python API to work with a tree sequence (via reticulate)
 tskit <- get_tskit_py()
 ts_py <- tskit$load(ts_file)
@@ -27,11 +37,20 @@ is(ts_py)
 ts_py$num_samples # 160
 ts2_py <- ts_py$simplify(samples = c(0L, 1L, 2L, 3L))
 ts2_py$num_samples # 4
-# Now transfer the tree sequence to R and use RcppTskit
+
+# Transfer the tree sequence to R and use RcppTskit
+
+# TreeSequence object
 ts2_r <- ts_py_to_r(ts2_py)
 is(ts2_r)
-ts_num_samples(ts2_r) # 4
+ts2_r$num_samples() # 4
+
+# External pointer object
+ts2_r_ptr <- ts_py_to_r_ptr(ts2_py)
+is(ts2_r)
+ts_num_samples_ptr(ts2_r_ptr) # 4
 }
 \seealso{
-\code{\link{ts_r_to_py}()} and \code{\link{ts_dump}()}.
+\code{\link{ts_r_to_py}()}, \code{\link{ts_load}()}, and
+  \code{\link{ts_dump}()}.
 }

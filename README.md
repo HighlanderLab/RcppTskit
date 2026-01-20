@@ -19,7 +19,7 @@ See more details on the state of the tree sequence ecosystem and aims for
 including examples on how to use it on its own or to develop new R packages.
 
 TODO: Think how to best point to use cases. Probably best to point to vignette!?
-      TODO: add vignette issue link here
+      https://github.com/HighlanderLab/RcppTskit/issues/10
 
 ## Status
 

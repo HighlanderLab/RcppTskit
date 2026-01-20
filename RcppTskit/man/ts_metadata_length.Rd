@@ -2,13 +2,14 @@
 % Please edit documentation in R/RcppExports.R
 \name{ts_metadata_length}
 \alias{ts_metadata_length}
+\alias{ts_metadata_length_ptr}
 \title{Get the length of metadata in a tree sequence and its tables}
 \usage{
-ts_metadata_length(ts)
+ts_metadata_length_ptr(ts)
 }
 \arguments{
-\item{ts}{tree sequence as an external pointer to a \code{tsk_treeseq_t}
-object.}
+\item{ts}{tree sequence as a \code{\link{TreeSequence}} object or
+an external pointer to tree sequence as a \code{tsk_treeseq_t} object.}
 }
 \value{
 A named list with the length of metadata.
@@ -18,16 +19,21 @@ Get the length of metadata in a tree sequence and its tables
 }
 \details{
 This function returns the length of metadata stored on the tree
-  sequence and in each table by calling
+  sequence and in each table by calling tskit C API:
   \code{tsk_treeseq_get_metadata_length()}
 \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_metadata_length}
   on tree sequence and
   \code{ts->tables->x->metadata_length} on each table \code{x}, e.g.,
-\url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_population_table_t.metadata_length},
-  from the tskit C API. See the linked documentation for more details.
+\url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_population_table_t.metadata_length}.
 }
 \examples{
 ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+
+# TreeSequence class object
 ts <- ts_load(ts_file)
-ts_metadata_length(ts)
+ts$metadata_length()
+
+# External pointer object
+ts_ptr <- ts$pointer
+ts_metadata_length_ptr(ts_ptr)
 }

@@ -183,7 +183,7 @@ You can see examples for all of these in `vignette(TODO)` and
 for 1-3) also in in `?RcppTskit`.
 
 TODO: Move all these example codes and outputs into vignette
-      TODO: add vignette issue link here
+      https://github.com/HighlanderLab/RcppTskit/issues/10
 
 ```
 # Install RcppTskit
@@ -302,7 +302,7 @@ ts_num_individuals(ts)
 ### 4) Call `tskit` C API in C++ code in another R package
 
 TODO: Move these details to a vignette!?
-      TODO: add vignette issue link here
+      https://github.com/HighlanderLab/RcppTskit/issues/10
 
 Follow the steps below in your R package. To see details of each step, see the files in R package `AlphaSimR` at this [commit](https://github.com/HighlanderLab/AlphaSimR/commit/12657b08e7054d88bc214413d13f36c7cde60d95) (that has a proof of concept of using `tskit` C API via `RcppTskit`).
 

@@ -1,138 +1,190 @@
-# ---- S4 class ----
-
-#' @description TODO and add a title
-#'
-#' @slot/field pointer TODO
-#'
-#' @examples
-#' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
-#' ts <- new("TreeSequenceS4", pointer = ts_pointer)
-#' is(ts)
-#' ts
-# TODO: Create ts_load(file, options) that calls
-#       stopifnot(is.character(file))
-#       stopifnot(is.numeric(options))
-#       if (!is.integer(options)) options <- as.integer(options)
-#       ts_pointer <- ts_load_ptr(file, options)
-#       new("TreeSequenceS4", pointer = ts_pointer)
-#
-#       Create ts_init() that calls
-#       ts_pointer <- ts_init_ptr() # this does not exist yet!
-#       new("TreeSequenceS4", pointer = ts_pointer)
-setClass("TreeSequenceS4", slots = c(pointer = "externalptr"))
-
-setMethod("show", signature(object = "TreeSequenceS4"), function(object) {
-  cat("An object of class", classLabel(class(object)), "\n")
-  print(ts_print(object@pointer))
-  invisible()
-})
-
-# ---- R6 class ----
-
-TreeSequenceR6 <- R6::R6Class(
-  "TreeSequenceR6",
+#' @title Succinct Tree Sequence R6 Class
+#' @description An R6 class to hold an external pointer to a tskit tree sequence.
+#' As an R6 class, it's functions will look Pythonic and hence resemble the
+#' tskit Python API. Since the class only holds the pointer, it is lightweight.
+#' The pointer does not provide direct view for users and currently there is
+#' only a limited number of methods available to summarise the tree sequence.
+#' @export
+TreeSequence <- R6::R6Class(
+  classname = "TreeSequence",
   public = list(
-    #' @field pointer TODO
+    #' @field pointer external pointer to the tree sequence
     pointer = "externalptr",
 
-    #' @description TODO and add a title
-    #'
-    #' @param file TODO
-    #' @param options TODO
-    #'
-    #' @examples
-    #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
-    #' ts <- TreeSequenceR6$new(ts_file)
-    #' is(ts)
-    # TODO: Create ts_load(file, options) that calls
-    #       TreeSequenceR6$new(file = ts_file, options = options)
-    #
-    #       Create ts_init() that calls
-    #       TreeSequenceR6$new(file = NULL)
-    initialize = function(file, options = 0L) {
-      if (is.null(file)) {
-        # TODO: Implement ts_init_ptr()
-        # self$pointer <- ts_init_ptr()
-      } else {
-        stopifnot(is.character(file))
-        stopifnot(is.numeric(options))
+    #' @description Create a \code{\link{TreeSequence}} from a file or a pointer.
+    #'   See \code{\link{ts_load}()} for details and examples.
+    #' @param file see \code{\link{ts_load}()}
+    #' @param options see \code{\link{ts_load}()}
+    #' @param pointer an external pointer to a tree sequence
+    initialize = function(file, options = 0L, pointer = NULL) {
+      if (missing(file) & is.null(pointer)) {
+        stop("you must provide a file name or a pointer!")
+      }
+      if (!missing(file) & !is.null(pointer)) {
+        stop("you must provide either a file name or a pointer!")
+      }
+      if (!missing(file)) {
+        if (!is.character(file)) {
+          stop("file must be a character string!")
+        }
+        if (!is.numeric(options)) {
+          stop("options must be numeric/integer!")
+        }
         if (!is.integer(options)) {
           options <- as.integer(options)
         }
-        # TODO: switch to ts_load_ptr()
-        self$pointer <- ts_load(file, options = options)
+        self$pointer <- ts_load_ptr(file = file, options = options)
+      } else {
+        if (!is.null(pointer) && !is(pointer, "externalptr")) {
+          stop("pointer must be an object of externalptr class!")
+        }
+        self$pointer <- pointer
       }
       invisible(self)
     },
 
-    #' @description TODO
-    #' @examples
-    #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
-    #' ts <- TreeSequenceR6$new(ts_file)
-    #' ts
+    #' @description Write a tree sequence to a file.
+    #'   See \code{\link{ts_dump}()} for details and examples.
+    #' @param file see \code{\link{ts_dump}()}
+    #' @param options see \code{\link{ts_dump}()}
+    dump = function(file, options = 0L) {
+      ts_dump_ptr(self$pointer, file = file, options = options)
+    },
+
+    #' @description Write a tree sequence to a file.
+    #'   Alias for \code{TreeSequence$dump(file, options)}.
+    #'   See \code{\link{ts_dump}()} for details and examples.
+    #' @param file see \code{\link{ts_dump}()}
+    #' @param options see \code{\link{ts_dump}()}
+    write = function(file, options = 0L) {
+      self$dump(file = file, options = options)
+    },
+
+    #' @description Print a summary of a tree sequence and its contents.
+    #'   See \code{\link{ts_print}()} for details and examples.
     print = function() {
-      print(ts_print(self$pointer))
+      cat("Object of class 'TreeSequence'\n")
+      print(ts_print_ptr(self$pointer))
+    },
+
+    #' @description Summary of properties and number of records in a tree sequence.
+    #'   See \code{\link{ts_summary}()} for details and examples.
+    summary = function() {
+      ts_summary_ptr(self$pointer)
+    },
+
+    #' @description Get the number of provenances in a tree sequence.
+    #'   See \code{\link{ts_summary}()} for details and examples.
+    num_provenances = function() {
+      ts_num_provenances_ptr(self$pointer)
+    },
+
+    #' @description Get the number of populations in a tree sequence.
+    #'   See \code{\link{ts_summary}()} for details and examples.
+    num_populations = function() {
+      ts_num_populations_ptr(self$pointer)
+    },
+
+    #' @description Get the number of migrations in a tree sequence.
+    #'   See \code{\link{ts_summary}()} for details and examples.
+    num_migrations = function() {
+      ts_num_migrations_ptr(self$pointer)
+    },
+
+    #' @description Get the number of individuals in a tree sequence.
+    #'   See \code{\link{ts_summary}()} for details and examples.
+    num_individuals = function() {
+      ts_num_individuals_ptr(self$pointer)
+    },
+
+    #' @description Get the number of samples (of nodes) in a tree sequence.
+    #'   See \code{\link{ts_summary}()} for details and examples.
+    num_samples = function() {
+      ts_num_samples_ptr(self$pointer)
+    },
+
+    #' @description Get the number of nodes in a tree sequence.
+    #'   See \code{\link{ts_summary}()} for details and examples.
+    num_nodes = function() {
+      ts_num_nodes_ptr(self$pointer)
+    },
+
+    #' @description Get the number of edges in a tree sequence.
+    #'   See \code{\link{ts_summary}()} for details and examples.
+    num_edges = function() {
+      ts_num_edges_ptr(self$pointer)
+    },
+
+    #' @description Get the number of trees in a tree sequence.
+    #'   See \code{\link{ts_summary}()} for details and examples.
+    num_trees = function() {
+      ts_num_trees_ptr(self$pointer)
+    },
+
+    #' @description Get the number of sites in a tree sequence.
+    #'   See \code{\link{ts_summary}()} for details and examples.
+    num_sites = function() {
+      ts_num_sites_ptr(self$pointer)
+    },
+
+    #' @description Get the number of mutations in a tree sequence.
+    #'   See \code{\link{ts_summary}()} for details and examples.
+    num_mutations = function() {
+      ts_num_mutations_ptr(self$pointer)
+    },
+
+    #' @description Get the sequence length.
+    #'   See \code{\link{ts_summary}()} for details and examples.
+    sequence_length = function() {
+      ts_sequence_length_ptr(self$pointer)
+    },
+
+    #' @description Get the time units string.
+    #'   See \code{\link{ts_summary}()} for details and examples.
+    time_units = function() {
+      ts_time_units_ptr(self$pointer)
+    },
+
+    #' @description Get the length of metadata in a tree sequence and its tables.
+    #'   See \code{\link{ts_metadata_length}()} for details and examples.
+    metadata_length = function() {
+      ts_metadata_length_ptr(self$pointer)
+    },
+
+    #' @description Transfer a tree sequence from R to reticulate Python.
+    #'   See \code{\link{ts_r_to_py}()} for details and examples.
+    #' @param tskit_module see \code{\link{ts_r_to_py}()}
+    #' @param cleanup see \code{\link{ts_r_to_py}()}
+    r_to_py = function(tskit_module = get_tskit_py(), cleanup = TRUE) {
+      ts_r_to_py_ptr(
+        self$pointer,
+        tskit_module = tskit_module,
+        cleanup = cleanup
+      )
     }
   )
 )
 
-# ---- Examples ----
+#' @name TreeSequence-load-alias
+#' @title Create a \code{\link{TreeSequence}} from a file
+#' @description
+#'   Alias for \code{TreeSequence$new(file, options)}
+#'   See \code{\link{ts_load}()} for details and examples.
+#' @param file see \code{\link{ts_load}()}
+#' @param options see \code{\link{ts_load}()}
+TreeSequence$load <- function(file, options = 0L) {
+  TreeSequence$new(file = file, options = options)
+}
+# This one has to be outside of the R6 class definition to work as a generator
 
-#' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
-#'
-#' # TODO: implement ts_load() that calls ts_load() and returns ts_s4
-#' ts_pointer <- ts_load(ts_file)
-#' ts_s4 <- new("TreeSequenceS4", pointer = ts_pointer)
-#' ts_s4
-#' ts_s4@pointer
-#'
-#' ts_r6 <- TreeSequenceR6$new(ts_file)
-#' ts_r6
-#' ts_r6$pointer
-
-# TODO: Develop C++ code to grow tree sequence using S4 class
-#       ts_grow(ts_s4@pointer)
-
-# TODO: Develop C++ code to grow tree sequence using R6 class
-#       ts_grow(ts_r6$pointer)
-
-# TODO: Time the above approaches
-
-# Hmm, the above timing exercise will not be informative
-# because C++ code will operate with pointer, which will be part of
-# the classes and the C++ code will hence run as fast as it can.
-# So, we should really only be timing how fast/slow would be operations
-# with the S4 or R6 class on R side!?
-#
-# What will we be really doing in AlphaSimR?
-# Everytime we will call cross() functions, which does meiosis,
-# we will grow the SP$ts object. This will be done on C++ side.
-# This might look something like this:
-#
-# progeny <- randCross(parents, ..., simParam = SP)
-# - this calls meiosis and already stores SP$pedigree and SP$trackRec
-# - so we would call C++ code on SP$ts as we do with SP$pedigree and SP$trackRec
-#
-# R6 class is pass by reference (change in the object is global),
-# but since we would be updating SP$ts$pointer I don't think this advantage matters at all,
-# namely the object SP$ts$pointer only points to real ts object in the session.
-#
-# S4 class is pass by value (change in the object is local and becomes global only if we reassign),
-# but since we would be updating SP$ts@pointer I don't think this advantage matters at all,
-# namely the object SP$ts@pointer only points to real ts object in the session.
-#
-# I hope I am getting the above right!?
-#
-# ts_s4@pointer <- ts_pointer
-# ts_s4@pointer
-# ts_r6$pointer <- ts_pointer
-# ts_r6$pointer
-
-# TODO: Do we want to expose tree sequence building C functions as R functions
-#       so that R users could easy record tree sequence!?
-#       This could easily become a missing creep!
-#       I think we can just relly on either tskit C API or Python API for this.
-#       I could be persuaded, but let's punt this down the road.
-#       An argument for this could be that some R users don't have C/C++ skills so they
-#       can be stuck on not being able to generate tree sequence in their packages/scripts,
-#       where calling Python many times might not be optimal.
+#' @name TreeSequence-read-alias
+#' @title Create a \code{\link{TreeSequence}} from a file.
+#' @description
+#'   Alias for \code{TreeSequence$new(file, options)}
+#'   See \code{\link{ts_load}()} for details and examples.
+#' @param file see \code{\link{ts_load}()}
+#' @param options see \code{\link{ts_load}()}
+TreeSequence$read <- function(file, options = 0L) {
+  TreeSequence$new(file = file, options = options)
+}
+# This one has to be outside of the R6 class definition to work as a generator

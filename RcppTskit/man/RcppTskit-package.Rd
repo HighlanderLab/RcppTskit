@@ -28,8 +28,8 @@ ts_file <- system.file("examples/test.trees", package = "RcppTskit")
 ts <- ts_load(ts_file)
 
 # Print summary of the tree sequence
-ts_num_individuals(ts)
-ts_print(ts)
+ts$num_individuals()
+ts
 
 # 2) Pass tree sequence between R and reticulate or standard Python
 
@@ -39,19 +39,19 @@ ts <- ts_load(ts_file)
 
 # If you have a tree sequence in R and you want to use tskit Python API,
 # you can write it to disk and load it into reticulate Python
-ts_py <- ts_r_to_py(ts)
+ts_py <- ts$r_to_py()
 # ... continue in reticulate Python ...
-ts_py$num_individuals # 160
+ts_py$num_individuals # 80
 ts2_py = ts_py$simplify(samples = c(0L, 1L, 2L, 3L))
 ts2_py$num_individuals # 2
 # ... and to bring it back to R ...
 ts2 <- ts_py_to_r(ts2_py)
-ts_num_individuals(ts2) # 2
+ts2$num_individuals() # 2
 
-# If you prefer standard (non-reticulate) Python, use this
+# If you prefer standard (non-reticulate) Python, use approach:
 ts_file <- tempfile()
 print(ts_file)
-ts_dump(ts, file = ts_file)
+ts$dump(file = ts_file)
 # ... continue in standard Python ...
 # import tskit
 # ts = tskit.load("insert_ts_file_path_here")
@@ -61,8 +61,8 @@ ts_dump(ts, file = ts_file)
 # ts2.dump("insert_ts_file_path_here")
 # ... and to bring it back to R ...
 ts2 <- ts_load(ts_file)
-ts_num_individuals(ts2) # 2
-file.remove(ts_file)
+ts$num_individuals() # 2 (if you have ran the above Python code)
+\dontshow{on.exit(file.remove(ts_file)) # clean up}
 
 # 3) Call tskit C API in C++ code in R session or script
 library(Rcpp)
@@ -70,12 +70,12 @@ library(Rcpp)
 codeString <- '
   #include <tskit.h>
   int ts_num_individuals(SEXP ts) {
-    int n;
-    Rcpp::XPtr<tsk_treeseq_t> xptr(ts);
-    n = (int) tsk_treeseq_get_num_individuals(xptr);
-    return n;
+    Rcpp::XPtr<tsk_treeseq_t> ts_xptr(ts);
+    return (int) tsk_treeseq_get_num_individuals(ts_xptr);
   }'
-ts_num_individuals2 <- Rcpp::cppFunction(code=codeString, depends="RcppTskit", plugins="RcppTskit")
+ts_num_individuals2 <- Rcpp::cppFunction(code=codeString,
+                                         depends="RcppTskit",
+                                         plugins="RcppTskit")
 # We must specify both the `depends` and `plugins` arguments!
 
 # Load a tree sequence
@@ -83,13 +83,15 @@ ts_file <- system.file("examples/test.trees", package="RcppTskit")
 ts <- ts_load(ts_file)
 
 # Apply the compiled function
-ts_num_individuals2(ts)
+ts_num_individuals2(ts$pointer)
 
 # An identical RcppTskit implementation
-ts_num_individuals(ts)
+ts$num_individuals()
+ts_num_individuals_ptr(ts$pointer)
 
 # 4) Call `tskit` C API in C++ code in another R package
-# TODO: add vignette issue link here
+# TODO: Show vignette here
+#       https://github.com/HighlanderLab/RcppTskit/issues/10
 }
 \seealso{
 Useful links:
