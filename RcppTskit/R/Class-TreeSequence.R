@@ -17,11 +17,11 @@ TreeSequence <- R6::R6Class(
     #' @param options see \code{\link{ts_load}()}
     #' @param pointer an external pointer to a tree sequence
     initialize = function(file, options = 0L, pointer = NULL) {
-      if (missing(file) & is.null(pointer)) {
+      if (missing(file) && is.null(pointer)) {
         stop("you must provide a file name or a pointer!")
       }
-      if (!missing(file) & !is.null(pointer)) {
-        stop("you must provide either a file name or a pointer!")
+      if (!missing(file) && !is.null(pointer)) {
+        stop("you must provide either a file name or a pointer, but not both!")
       }
       if (!missing(file)) {
         if (!is.character(file)) {

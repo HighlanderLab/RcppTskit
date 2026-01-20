@@ -5,7 +5,7 @@
 #include <tskit/tskit/core.h>
 
 // Redefinition of tsk_bug_assert to avoid aborting R sessions with tskit C API
-// (following R extensions manual recommendations).
+// (see R extensions manual).
 // While tsk_bug_assert is called only in C API (atm) we provide both C and C++
 // macros for completeness.
 // TODO: Redefine TSK_BUG_ASSERT_MESSAGE or create RcppTskit version if we will
@@ -33,7 +33,7 @@
 #endif
 
 // Redefinition of tsk_trace_error to avoid writing to stderr from tskit C API
-// (following R extensions manual recommendations).
+// (see R extensions manual).
 // While tsk_trace_error is called only in C API (atm) we provide both C and C++
 // macros for completeness.
 #undef tsk_trace_error
@@ -61,4 +61,19 @@ static inline int _RcppTskit_trace_error_c(int err, int line,
 #define tsk_trace_error(err) (err)
 #endif
 
+// Discard tskit debug output to avoid using stdout, as it is not captured by R.
+// (see R extensions manual).
+#if defined(_WIN32)
+#define RCPPTSKIT_NULL_DEVICE "NUL"
+#else
+#define RCPPTSKIT_NULL_DEVICE "/dev/null"
 #endif
+
+static inline FILE *rcpptskit_default_debug_stream(void) {
+  return fopen(RCPPTSKIT_NULL_DEVICE, "w");
+}
+
+#undef TSK_DEFAULT_DEBUG_STREAM
+#define TSK_DEFAULT_DEBUG_STREAM rcpptskit_default_debug_stream()
+
+#endif // RCPPTSKIT_TSKIT_CORE_H
