@@ -112,6 +112,13 @@
     # function should return (a list with additional includes, environment
     # variables, such as PKG_LIBS, and other compilation context).
     libdir <- system.file("libs", package = "RcppTskit")
+    if (!nzchar(libdir)) {
+      stop("Unable to locate the RcppTskit libs directory!")
+    }
+    libdirs <- libdir
+    if (.Platform$OS.type == "windows") {
+      libdirs <- c(libdirs, file.path(libdir, .Platform$r_arch))
+    }
     candidates <- c(
       "RcppTskit.so", # Unix/Linux and macOS
       "RcppTskit.dylib", # macOS (backup to RcppTskit.so)
@@ -119,10 +126,17 @@
       "RcppTskit.lib", # Windows (MSVC, backup)
       "RcppTskit.dll" # Windows (DLL, backup)
     )
-    libpaths <- file.path(libdir, candidates)
+    libpaths <- sapply(
+      libdirs,
+      function(dir) file.path(dir, candidates),
+      USE.NAMES = FALSE
+    )
     libfile <- libpaths[file.exists(libpaths)][1]
-    if (length(libfile) < 1) {
-      stop("Unable to locate the RcppTskit library file in ", libdir)
+    if (is.na(libfile) || !nzchar(libfile)) {
+      stop(
+        "Unable to locate the RcppTskit library file in: ",
+        paste(libdirs, collapse = ", ")
+      )
     }
     list(env = list(PKG_LIBS = shQuote(libfile)))
   })
