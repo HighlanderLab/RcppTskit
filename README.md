@@ -158,5 +158,5 @@ pre-commit run --all-files
 ### Continuous integration
 
 We use Github Actions to run continuous integration (CI) checks on each push and pull request. Specifically, we run:
-* [R CMD check](.github/workflows/R-CMD-check.yaml) on Linux, macOS, and Windows and
+* [R CMD check](.github/workflows/R-CMD-check.yaml) on multiple platforms and
 * [covr test coverage](.github/workflows/covr.yaml).
