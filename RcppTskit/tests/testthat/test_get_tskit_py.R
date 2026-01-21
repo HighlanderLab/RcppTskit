@@ -11,14 +11,16 @@ test_that("get_tskit_py() works", {
     regexp = "Object 'rubbish' exists in the global environment but is not a reticulate Python module"
   )
 
-  # To get_tskit_py() we need internet connection
-  skip_if_offline()
+  if (!covr::in_covr()) {
+    # To get_tskit_py() we need internet connection
+    skip_if_offline()
 
-  # The tests below take quite a bit of time since they pull in installation of
-  # Python modules, hence skipping on CRAN due to time limits on CRAN.
-  skip_on_cran()
+    # The tests below take quite a bit of time since they pull in installation of
+    # Python modules, hence skipping on CRAN due to time limits on CRAN.
+    skip_on_cran()
+  }
 
-  # Install (if not already) & import tskit on the first call
+  # Install (if not already installed) & import tskit on the first call
   if (exists("tskit", envir = .GlobalEnv)) {
     rm("tskit", envir = .GlobalEnv)
   }

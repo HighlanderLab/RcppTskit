@@ -1,8 +1,10 @@
 context("r_to_py() and py_to_r()")
 
 skip_if_no_tskit_py <- function() {
-  # To get_tskit_py() we need internet connection
-  skip_if_offline()
+  if (!covr::in_covr()) {
+    # To get_tskit_py() we need internet connection
+    skip_if_offline()
+  }
   if (!reticulate::py_module_available("tskit")) {
     skip("tskit reticulate Python module not available for testing!")
   }
@@ -48,6 +50,14 @@ test_that("ts_r_to_py() and ts_py_to_r() work", {
   expect_equal(length(ts_py$tables$sites$metadata), m$sites)
   expect_equal(length(ts_py$tables$mutations$metadata), m$mutations)
 
+  expect_error(
+    ts_r_to_py_ptr("not_an_externalptr_object"),
+    regexp = "ts must be an object of externalptr class!"
+  )
+  expect_error(
+    ts_r_to_py_ptr(ts_r$pointer, tskit_module = "not_a_module"),
+    regexp = "tskit_module must be a reticulate Python module object!"
+  )
   ts_py <- ts_r_to_py_ptr(ts_r$pointer)
 
   # Simple comparison of summaries and of the lengths of metadata

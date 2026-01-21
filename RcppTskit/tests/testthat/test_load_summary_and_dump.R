@@ -1,6 +1,6 @@
-context("ts_load(), ts_summary(), and ts_dump()")
+context("ts_load(), ts_summary*(), and ts_dump()")
 
-test_that("ts_load(), ts_summary(), and ts_dump(x) work", {
+test_that("ts_load(), ts_summary*(), and ts_dump(x) work", {
   # ---- ts_load() ----
 
   expect_error(ts_load_ptr())
@@ -148,6 +148,10 @@ test_that("ts_load(), ts_summary(), and ts_dump(x) work", {
   # ---- ts_print() ----
 
   # Simple comparison of summaries
+  expect_error(
+    ts_print_ptr("not an externalptr object"),
+    regexp = "ts must be an object of externalptr class!"
+  )
   p_ptr <- ts_print_ptr(ts_ptr)
   p <- ts$print()
   expect_equal(
@@ -234,6 +238,7 @@ test_that("ts_load(), ts_summary(), and ts_dump(x) work", {
   # ---- ts_dump() ----
 
   expect_error(ts$dump())
+  expect_error(ts$write())
   expect_error(ts$dump(file = 1))
   bad_path <- file.path(tempdir(), "no_such_dir", "out.trees")
   expect_error(ts$dump(ts, file = bad_path))

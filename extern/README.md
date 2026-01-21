@@ -40,7 +40,7 @@ cd extern/tskit
 # Inspect changes
 git diff <old SHA> <new SHA>
 
-cd ../..
+cd ../.. # Back to root of repository
 ```
 
 Inspect the contents:
