@@ -2,6 +2,8 @@
 
 ## Next TODOs
 
+* Hide pointer functions and organise docs!?
+
  Missing link(s) in Rd file 'TreeSequence.Rd':
      ‘ts_dump’ ‘ts_summary’
 
@@ -119,19 +121,82 @@ To ignore multiple lines use `# nocov start/stop`.
 
 In `Rcpp` code use `// # nocov ...`.
 
-## Air formatter
+## Air formatter of R code
 
 https://usethis.r-lib.org/reference/use_air.html
 ```
 usethis::use_air()
 ```
 
-## Jarl linter and fixer (buil on Air)
+Setup editor and `air.toml`.
+
+In comand line, run:
+
+```
+air format .
+air format --check .
+```
+
+## Jarl linter of R code
 
 https://jarl.etiennebacher.com
 
-* Add jarl.toml to ~/.config/jarl and to the package folder
-* TODO
+Setup editor and `jarl.toml`. Can also do `~/.config/jarl`.
+
+```
+jarl check .
+jarl check --fix .
+```
+
+## clang-format of C/C++ code
+
+```
+# All files (run from the RcppTskit directory)
+find src -type f \( -name '*.c' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' \) \
+  ! -path 'inst/include/tskit/*' \
+  ! -path 'src/tskit/*' \
+  ! -path 'src/RcppExports.cpp' \
+  -exec clang-format -i {} +
+
+# All files (run from the repo root)
+find . -type f \( -name '*.c' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' \) \
+  ! -path './extern/*' \
+  ! -path './RcppTskit/inst/include/tskit/*' \
+  ! -path './RcppTskit/src/tskit/*' \
+  ! -path './RcppTskit/src/RcppExports.cpp' \
+  -exec clang-format -i {} +
+
+# Single file
+clang-format -i --style=file src/RcppTskit_minimal.cpp
+
+# Only changes
+git diff --name-only main | grep -E '\.(c|cpp|h|hpp)$' | xargs clang-format -i
+```
+
+or
+
+```
+pre-commit run clang-format src/RcppTskit.cpp
+pre-commit run clang-format --all-files
+```
+
+## clang-tidy linter of C/C++ code
+
+```
+echo $(brew --prefix llvm)/bin/clang-tidy
+# /opt/homebrew/opt/llvm/bin/clang-tidy
+export CLANG_TIDY="$(brew --prefix llvm)/bin/clang-tidy"
+./tools/clang-tidy.py src/RcppTskit.cpp
+./RcppTskit/tools/clang-tidy.py RcppTskit/src/test_tsk_abort_stderr.cpp -- -system-headers '-header-filter=.*'   -extra-arg=-Wno-unknown-warning-option
+./tools/clang-tidy.py src/test_tsk_abort_stderr.cpp -- -system-headers '-header-filter=.*'   -extra-arg=-Wno-unknown-warning-option
+```
+
+or
+
+```
+pre-commit run clang-tidy src/RcppTskit.cpp
+pre-commit run clang-tidy --all-files
+```
 
 ## GitHub actions
 
@@ -144,7 +209,7 @@ usethis::use_github_action("check-standard")
 # Code testing coverage with covr
 usethis::use_github_action("test-coverage")
 
-# Air formatting
+# Air formatting --> moved to pre-commit
 usethis::use_github_action(url = "https://github.com/posit-dev/setup-air/blob/main/examples/format-suggest.yaml")
 usethis::use_github_action(url = "https://github.com/posit-dev/setup-air/blob/main/examples/format-check.yaml")
 ```

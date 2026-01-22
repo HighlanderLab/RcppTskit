@@ -92,8 +92,9 @@ git clone https://github.com/HighlanderLab/RcppTskit.git
 
 We use [pre-commit](https://pre-commit.com) hooks to ensure code quality. Specifically, we use:
 * [air](https://github.com/posit-dev/air) to format R code,
-* [jarl](https://github.com/etiennebacher/jarl) to lint R code, and
-* [clang-format](https://clang.llvm.org/docs/ClangFormat.html) to format C/C++ code.
+* [jarl](https://github.com/etiennebacher/jarl) to lint R code,
+* [clang-format](https://clang.llvm.org/docs/ClangFormat.html) to format C/C++ code, and
+* [clang-tidy](https://clang.llvm.org/extra/clang-tidy/) to lint C/C++ code.
 
 To install the hooks, run:
 
@@ -109,37 +110,37 @@ If you plan to update `tskit`, follow instructions in `extern/README.md`.
 
 Then open `RcppTskit` package directory in your favourite R IDE (Positron, RStudio, text-editor-of-your-choice, etc.) and implement your changes.
 
-You should routinely check the status of the package (in R):
+You should routinely check your changes (in R):
 
 ```
 # Note that the RcppTskit R package is in the RcppTskit sub-directory
 setwd("path/to/RcppTskit/RcppTskit")
 
-# Run checks of your changes, documentation, tests, etc.
+# Check
 devtools::check()
 
-# Install the package
+# Install
 devtools::install()
 
-# Run just tests
+# Test
 devtools::test()
 
-# Check code test coverage
+# Test coverage
 cov <- covr::package_coverage(clean = TRUE)
 covr::report(cov)
 ```
 
-Alternatively you can check from the command line:
+Alternatively check your changes from the command line:
 
 ```
 # Note that the RcppTskit package is in the RcppTskit sub-directory
 cd path/to/RcppTskit/RcppTskit
 
-# Run checks of your changes, documentation, tests, etc.
+# Check
 R CMD build RcppTskit
 R CMD check RcppTskit_*.tar.gz
 
-# Install the package
+# Install
 R CMD INSTALL RcppTskit_*.tar.gz
 ```
 

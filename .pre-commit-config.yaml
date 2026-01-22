@@ -17,11 +17,13 @@ repos:
       - id: check-yaml
       - id: check-added-large-files
       - id: check-merge-conflict
-  - repo: https://github.com/benjeffery/pre-commit-clang-format
-    rev: "1.0"
-    hooks:
-      - id: clang-format
-        verbose: true
+
+  # - repo: https://github.com/benjeffery/pre-commit-clang-format
+  #   rev: "1.0"
+  #   hooks:
+  #     - id: clang-format
+  #       verbose: true
+
   - repo: local
     hooks:
       - id: air-format
@@ -37,3 +39,15 @@ repos:
         language: system
         pass_filenames: false
         files: '\.(R|Rmd|rmd|qmd|Qmd)$'
+
+      - id: clang-format
+        name: clang-format
+        entry: clang-format -i --style=file
+        language: system
+        files: '\.(c|cc|cpp|cxx|h|hh|hpp|hxx)$'
+
+      - id: clang-tidy
+        name: clang-tidy for RcppTskit
+        entry: python RcppTskit/tools/clang-tidy.py
+        language: python
+        files: '\.(c|cc|cpp|cxx|h|hh|hpp|hxx)$'
