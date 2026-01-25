@@ -21,6 +21,8 @@ ts.num_sites  # 2376
 ts.num_mutations  # 2700
 ts.sequence_length  # 10000.0
 ts.time_units  # 'generations'
+ts.min_time  # 0.0
+ts.max_time  # 7.470281689748594
 
 ts.metadata  # b''
 type(ts.metadata)  # bytes

@@ -2,13 +2,77 @@
 % Please edit documentation in R/Class-TreeSequence.R
 \name{TreeSequence}
 \alias{TreeSequence}
-\title{Succinct Tree Sequence R6 Class}
+\title{Succinct tree sequence R6 Class (TreeSequence)}
 \description{
-An R6 class to hold an external pointer to a tskit tree sequence.
-As an R6 class, it's functions will look Pythonic and hence resemble the
+An R6 class holding an external pointer to a tree sequence
+object. As an R6 class, it's methods look Pythonic and hence resemble the
 tskit Python API. Since the class only holds the pointer, it is lightweight.
-The pointer does not provide direct view for users and currently there is
-only a limited number of methods available to summarise the tree sequence.
+Currently there is only a limited number of methods available to summarise
+the tree sequence.
+}
+\examples{
+
+## ------------------------------------------------
+## Method `TreeSequence$new`
+## ------------------------------------------------
+
+ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- TreeSequence$new(file = ts_file)
+is(ts)
+ts
+ts$num_nodes()
+# Also
+ts <- ts_load(ts_file)
+is(ts)
+
+## ------------------------------------------------
+## Method `TreeSequence$dump`
+## ------------------------------------------------
+
+ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+dump_file <- tempfile()
+ts$dump(dump_file)
+ts$write(dump_file) # alias
+
+## ------------------------------------------------
+## Method `TreeSequence$print`
+## ------------------------------------------------
+
+ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+ts$print()
+ts
+
+## ------------------------------------------------
+## Method `TreeSequence$r_to_py`
+## ------------------------------------------------
+
+ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts_r <- ts_load(ts_file)
+is(ts_r)
+ts_r$num_samples() # 160
+
+# Transfer the tree sequence to reticulate Python and use tskit Python API
+ts_py <- ts_r$r_to_py()
+is(ts_py)
+ts_py$num_samples # 160
+ts2_py <- ts_py$simplify(samples = c(0L, 1L, 2L, 3L))
+ts2_py$num_samples # 4
+
+## ------------------------------------------------
+## Method `TreeSequence$metadata_length`
+## ------------------------------------------------
+
+ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+ts$metadata_length()
+}
+\seealso{
+\code{\link{ts_load}}
+
+\code{\link{ts_py_to_r}}, \code{\link{ts_load}}, and
+  \code{\link[=TreeSequence]{TreeSequence$dump}}.
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -24,7 +88,7 @@ only a limited number of methods available to summarise the tree sequence.
 \item \href{#method-TreeSequence-dump}{\code{TreeSequence$dump()}}
 \item \href{#method-TreeSequence-write}{\code{TreeSequence$write()}}
 \item \href{#method-TreeSequence-print}{\code{TreeSequence$print()}}
-\item \href{#method-TreeSequence-summary}{\code{TreeSequence$summary()}}
+\item \href{#method-TreeSequence-r_to_py}{\code{TreeSequence$r_to_py()}}
 \item \href{#method-TreeSequence-num_provenances}{\code{TreeSequence$num_provenances()}}
 \item \href{#method-TreeSequence-num_populations}{\code{TreeSequence$num_populations()}}
 \item \href{#method-TreeSequence-num_migrations}{\code{TreeSequence$num_migrations()}}
@@ -38,7 +102,6 @@ only a limited number of methods available to summarise the tree sequence.
 \item \href{#method-TreeSequence-sequence_length}{\code{TreeSequence$sequence_length()}}
 \item \href{#method-TreeSequence-time_units}{\code{TreeSequence$time_units()}}
 \item \href{#method-TreeSequence-metadata_length}{\code{TreeSequence$metadata_length()}}
-\item \href{#method-TreeSequence-r_to_py}{\code{TreeSequence$r_to_py()}}
 \item \href{#method-TreeSequence-clone}{\code{TreeSequence$clone()}}
 }
 }
@@ -47,7 +110,7 @@ only a limited number of methods available to summarise the tree sequence.
 \if{latex}{\out{\hypertarget{method-TreeSequence-new}{}}}
 \subsection{Method \code{new()}}{
 Create a \code{\link{TreeSequence}} from a file or a pointer.
-  See \code{\link{ts_load}()} for details and examples.
+  See \code{\link{ts_load}} for details and examples.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$new(file, options = 0L, pointer = NULL)}\if{html}{\out{</div>}}
 }
@@ -55,21 +118,39 @@ Create a \code{\link{TreeSequence}} from a file or a pointer.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{file}}{see \code{\link{ts_load}()}}
+\item{\code{file}}{a string specifying the full path of the tree sequence file.}
 
-\item{\code{options}}{see \code{\link{ts_load}()}}
+\item{\code{options}}{integer bitwise options (see details at
+\url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_load}).}
 
-\item{\code{pointer}}{an external pointer to a tree sequence}
+\item{\code{pointer}}{an external pointer to a tree sequence ()}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+A \code{\link{TreeSequence}} object.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- TreeSequence$new(file = ts_file)
+is(ts)
+ts
+ts$num_nodes()
+# Also
+ts <- ts_load(ts_file)
+is(ts)
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TreeSequence-dump"></a>}}
 \if{latex}{\out{\hypertarget{method-TreeSequence-dump}{}}}
 \subsection{Method \code{dump()}}{
-Write a tree sequence to a file.
-  See \code{\link{ts_dump}()} for details and examples.
+Write a tree sequence to a file
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$dump(file, options = 0L)}\if{html}{\out{</div>}}
 }
@@ -77,20 +158,34 @@ Write a tree sequence to a file.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{file}}{see \code{\link{ts_dump}()}}
+\item{\code{file}}{a string specifying the full path of the tree sequence file.}
 
-\item{\code{options}}{see \code{\link{ts_dump}()}}
+\item{\code{options}}{integer bitwise options (see details at
+\url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_dump}).}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+No return value; called for side effects.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+dump_file <- tempfile()
+ts$dump(dump_file)
+ts$write(dump_file) # alias
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TreeSequence-write"></a>}}
 \if{latex}{\out{\hypertarget{method-TreeSequence-write}{}}}
 \subsection{Method \code{write()}}{
-Write a tree sequence to a file.
-  Alias for \code{TreeSequence$dump(file, options)}.
-  See \code{\link{ts_dump}()} for details and examples.
+Alias for \code{\link[=TreeSequence]{TreeSequence$dump}}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$write(file, options = 0L)}\if{html}{\out{</div>}}
 }
@@ -98,9 +193,9 @@ Write a tree sequence to a file.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{file}}{see \code{\link{ts_dump}()}}
+\item{\code{file}}{see}
 
-\item{\code{options}}{see \code{\link{ts_dump}()}}
+\item{\code{options}}{see}
 }
 \if{html}{\out{</div>}}
 }
@@ -110,20 +205,66 @@ Write a tree sequence to a file.
 \if{latex}{\out{\hypertarget{method-TreeSequence-print}{}}}
 \subsection{Method \code{print()}}{
 Print a summary of a tree sequence and its contents.
-  See \code{\link{ts_print}()} for details and examples.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$print()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+list with two data.frames; the first contains tree sequence
+  properties and their value; the second contains the numbers of rows in
+  tables and the length of their metadata.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+ts$print()
+ts
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TreeSequence-summary"></a>}}
-\if{latex}{\out{\hypertarget{method-TreeSequence-summary}{}}}
-\subsection{Method \code{summary()}}{
-Summary of properties and number of records in a tree sequence.
-  See \code{\link{ts_summary}()} for details and examples.
+\if{html}{\out{<a id="method-TreeSequence-r_to_py"></a>}}
+\if{latex}{\out{\hypertarget{method-TreeSequence-r_to_py}{}}}
+\subsection{Method \code{r_to_py()}}{
+This function saves a tree sequence from R to disk and
+  reads it into reticulate Python for use with \code{tskit} Python API.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TreeSequence$summary()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TreeSequence$r_to_py(tskit_module = get_tskit_py(), cleanup = TRUE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{tskit_module}}{reticulate Python module of \code{tskit}. By default,
+it calls \code{\link{get_tskit_py}} to obtain the module.}
+
+\item{\code{cleanup}}{logical delete the temporary file at the end of the function?}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Tree sequence in reticulate Python.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts_r <- ts_load(ts_file)
+is(ts_r)
+ts_r$num_samples() # 160
+
+# Transfer the tree sequence to reticulate Python and use tskit Python API
+ts_py <- ts_r$r_to_py()
+is(ts_py)
+ts_py$num_samples # 160
+ts2_py <- ts_py$simplify(samples = c(0L, 1L, 2L, 3L))
+ts2_py$num_samples # 4
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
@@ -132,7 +273,9 @@ Summary of properties and number of records in a tree sequence.
 \if{latex}{\out{\hypertarget{method-TreeSequence-num_provenances}{}}}
 \subsection{Method \code{num_provenances()}}{
 Get the number of provenances in a tree sequence.
-  See \code{\link{ts_summary}()} for details and examples.
+ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+ts_num_provenances(ts)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$num_provenances()}\if{html}{\out{</div>}}
 }
@@ -143,7 +286,9 @@ Get the number of provenances in a tree sequence.
 \if{latex}{\out{\hypertarget{method-TreeSequence-num_populations}{}}}
 \subsection{Method \code{num_populations()}}{
 Get the number of populations in a tree sequence.
-  See \code{\link{ts_summary}()} for details and examples.
+ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+ts_num_populations(ts)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$num_populations()}\if{html}{\out{</div>}}
 }
@@ -154,7 +299,9 @@ Get the number of populations in a tree sequence.
 \if{latex}{\out{\hypertarget{method-TreeSequence-num_migrations}{}}}
 \subsection{Method \code{num_migrations()}}{
 Get the number of migrations in a tree sequence.
-  See \code{\link{ts_summary}()} for details and examples.
+ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+ts_num_migrations(ts)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$num_migrations()}\if{html}{\out{</div>}}
 }
@@ -165,7 +312,9 @@ Get the number of migrations in a tree sequence.
 \if{latex}{\out{\hypertarget{method-TreeSequence-num_individuals}{}}}
 \subsection{Method \code{num_individuals()}}{
 Get the number of individuals in a tree sequence.
-  See \code{\link{ts_summary}()} for details and examples.
+ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+ts_num_individuals(ts)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$num_individuals()}\if{html}{\out{</div>}}
 }
@@ -176,7 +325,9 @@ Get the number of individuals in a tree sequence.
 \if{latex}{\out{\hypertarget{method-TreeSequence-num_samples}{}}}
 \subsection{Method \code{num_samples()}}{
 Get the number of samples (of nodes) in a tree sequence.
-  See \code{\link{ts_summary}()} for details and examples.
+ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+ts_num_samples(ts)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$num_samples()}\if{html}{\out{</div>}}
 }
@@ -187,7 +338,9 @@ Get the number of samples (of nodes) in a tree sequence.
 \if{latex}{\out{\hypertarget{method-TreeSequence-num_nodes}{}}}
 \subsection{Method \code{num_nodes()}}{
 Get the number of nodes in a tree sequence.
-  See \code{\link{ts_summary}()} for details and examples.
+ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+ts_num_nodes(ts)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$num_nodes()}\if{html}{\out{</div>}}
 }
@@ -198,7 +351,9 @@ Get the number of nodes in a tree sequence.
 \if{latex}{\out{\hypertarget{method-TreeSequence-num_edges}{}}}
 \subsection{Method \code{num_edges()}}{
 Get the number of edges in a tree sequence.
-  See \code{\link{ts_summary}()} for details and examples.
+ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+ts_num_edges(ts)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$num_edges()}\if{html}{\out{</div>}}
 }
@@ -209,7 +364,9 @@ Get the number of edges in a tree sequence.
 \if{latex}{\out{\hypertarget{method-TreeSequence-num_trees}{}}}
 \subsection{Method \code{num_trees()}}{
 Get the number of trees in a tree sequence.
-  See \code{\link{ts_summary}()} for details and examples.
+ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+ts_num_trees(ts)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$num_trees()}\if{html}{\out{</div>}}
 }
@@ -220,7 +377,9 @@ Get the number of trees in a tree sequence.
 \if{latex}{\out{\hypertarget{method-TreeSequence-num_sites}{}}}
 \subsection{Method \code{num_sites()}}{
 Get the number of sites in a tree sequence.
-  See \code{\link{ts_summary}()} for details and examples.
+ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+ts_num_sites(ts)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$num_sites()}\if{html}{\out{</div>}}
 }
@@ -231,7 +390,9 @@ Get the number of sites in a tree sequence.
 \if{latex}{\out{\hypertarget{method-TreeSequence-num_mutations}{}}}
 \subsection{Method \code{num_mutations()}}{
 Get the number of mutations in a tree sequence.
-  See \code{\link{ts_summary}()} for details and examples.
+ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+ts_num_mutations(ts)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$num_mutations()}\if{html}{\out{</div>}}
 }
@@ -242,7 +403,9 @@ Get the number of mutations in a tree sequence.
 \if{latex}{\out{\hypertarget{method-TreeSequence-sequence_length}{}}}
 \subsection{Method \code{sequence_length()}}{
 Get the sequence length.
-  See \code{\link{ts_summary}()} for details and examples.
+ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+ts_sequence_length(ts)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$sequence_length()}\if{html}{\out{</div>}}
 }
@@ -253,7 +416,9 @@ Get the sequence length.
 \if{latex}{\out{\hypertarget{method-TreeSequence-time_units}{}}}
 \subsection{Method \code{time_units()}}{
 Get the time units string.
-  See \code{\link{ts_summary}()} for details and examples.
+ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+ts_time_units(ts)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$time_units()}\if{html}{\out{</div>}}
 }
@@ -264,31 +429,23 @@ Get the time units string.
 \if{latex}{\out{\hypertarget{method-TreeSequence-metadata_length}{}}}
 \subsection{Method \code{metadata_length()}}{
 Get the length of metadata in a tree sequence and its tables.
-  See \code{\link{ts_metadata_length}()} for details and examples.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$metadata_length()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+A named list with the length of metadata.
 }
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TreeSequence-r_to_py"></a>}}
-\if{latex}{\out{\hypertarget{method-TreeSequence-r_to_py}{}}}
-\subsection{Method \code{r_to_py()}}{
-Transfer a tree sequence from R to reticulate Python.
-  See \code{\link{ts_r_to_py}()} for details and examples.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TreeSequence$r_to_py(tskit_module = get_tskit_py(), cleanup = TRUE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{tskit_module}}{see \code{\link{ts_r_to_py}()}}
-
-\item{\code{cleanup}}{see \code{\link{ts_r_to_py}()}}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+ts$metadata_length()
 }
 \if{html}{\out{</div>}}
+
 }
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TreeSequence-clone"></a>}}

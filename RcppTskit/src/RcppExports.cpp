@@ -186,6 +186,28 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// ts_min_time_ptr
+double ts_min_time_ptr(const SEXP ts);
+RcppExport SEXP _RcppTskit_ts_min_time_ptr(SEXP tsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const SEXP >::type ts(tsSEXP);
+    rcpp_result_gen = Rcpp::wrap(ts_min_time_ptr(ts));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ts_max_time_ptr
+double ts_max_time_ptr(const SEXP ts);
+RcppExport SEXP _RcppTskit_ts_max_time_ptr(SEXP tsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const SEXP >::type ts(tsSEXP);
+    rcpp_result_gen = Rcpp::wrap(ts_max_time_ptr(ts));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ts_summary_ptr
 Rcpp::List ts_summary_ptr(const SEXP ts);
 RcppExport SEXP _RcppTskit_ts_summary_ptr(SEXP tsSEXP) {
@@ -273,6 +295,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_RcppTskit_ts_num_mutations_ptr", (DL_FUNC) &_RcppTskit_ts_num_mutations_ptr, 1},
     {"_RcppTskit_ts_sequence_length_ptr", (DL_FUNC) &_RcppTskit_ts_sequence_length_ptr, 1},
     {"_RcppTskit_ts_time_units_ptr", (DL_FUNC) &_RcppTskit_ts_time_units_ptr, 1},
+    {"_RcppTskit_ts_min_time_ptr", (DL_FUNC) &_RcppTskit_ts_min_time_ptr, 1},
+    {"_RcppTskit_ts_max_time_ptr", (DL_FUNC) &_RcppTskit_ts_max_time_ptr, 1},
     {"_RcppTskit_ts_summary_ptr", (DL_FUNC) &_RcppTskit_ts_summary_ptr, 1},
     {"_RcppTskit_ts_metadata_length_ptr", (DL_FUNC) &_RcppTskit_ts_metadata_length_ptr, 1},
     {"_RcppTskit_ts_grow", (DL_FUNC) &_RcppTskit_ts_grow, 1},

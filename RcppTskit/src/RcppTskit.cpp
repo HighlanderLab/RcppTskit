@@ -46,34 +46,24 @@ Rcpp::IntegerVector tskit_version() {
                                      Rcpp::_["patch"] = TSK_VERSION_PATCH);
 }
 
-//' @name ts_load_ptr
-//' @title Load a tree sequence from a file
-//' @param file a string specifying the full path of the tree sequence file.
-//' @param options integer bitwise options (see details).
-//' @details This function calls tskit C API: \code{tsk_treeseq_load()}
-//'   \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_load}.
-//' @return \code{ts_load()} returns a \code{\link{TreeSequence}} object.
-//'  \code{ts_load_ptr()} returns external pointer to tree sequence as a
-//'  \code{tsk_treeseq_t} object.
-//' @examples
-//' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
-//'
-//' # TreeSequence class object
-//' ts <- ts_load(ts_file)
-//' is(ts)
-//' ts
-//' ts$num_nodes()
-//'
-//' # External pointer object
-//' ts_ptr <- ts_load_ptr(ts_file)
-//' is(ts_ptr)
-//' ts_ptr
-//' ts_num_nodes_ptr(ts_ptr)
-//'
-//' # Also
-//' ts <- TreeSequence$new(file = ts_file); is(ts)
-//' ts <- TreeSequence$new(pointer = ts_ptr); is(ts)
-//' @export
+// @title Load a tree sequence from a file
+// @param file a string specifying the full path of the tree sequence file.
+// @param options integer bitwise options (see details).
+// @details This function calls tskit C API: \code{tsk_treeseq_load()}
+//   \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_load}.
+// @return returns external pointer to tree sequence as a \code{tsk_treeseq_t}
+//   object
+// @seealso \code{\link{ts_load}} and
+//   \code{\link[=TreeSequence]{TreeSequence$new}} on how this function is used
+//   and presented to users.
+// @examples
+// ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+// ts_ptr <- RcppTskit:::ts_load_ptr(ts_file)
+// is(ts_ptr)
+// ts_ptr
+// RcppTskit:::ts_num_nodes_ptr(ts_ptr)
+// ts <- TreeSequence$new(pointer = ts_ptr)
+// is(ts)
 // [[Rcpp::export]]
 SEXP ts_load_ptr(const std::string file, const int options = 0) {
   // tsk_treeseq_t ts; // on stack, destroyed end of func, must free resources
@@ -91,28 +81,18 @@ SEXP ts_load_ptr(const std::string file, const int options = 0) {
   return ts_xptr;
 }
 
-//' @name ts_dump_ptr
-//' @title Write a tree sequence to a file
-//' @param ts tree sequence as a \code{\link{TreeSequence}} object or
-//'   an external pointer to tree sequence as a \code{tsk_treeseq_t} object.
-//' @param file a string specifying the full path of the tree sequence file
-//' @param options integer bitwise options (see details).
-//' @details This function calls the tskit C API: \code{tsk_treeseq_dump()}
-//'   \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_dump}.
-//' @return No return value; called for side effects.
-//' @examples
-//' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
-//'
-//' # TreeSequence class object
-//' ts <- ts_load(ts_file)
-//' dump_file <- tempfile()
-//' ts$dump(dump_file)
-//'
-//' # External pointer object
-//' ts_ptr <- ts$pointer
-//' ts_dump_ptr(ts_ptr, dump_file)
-//' \dontshow{on.exit(file.remove(dump_file)) # clean up}
-//' @export
+// @title Write a tree sequence to a file
+// @param ts an external pointer to tree sequence as a \code{tsk_treeseq_t}
+//   object.
+// @param file a string specifying the full path of the tree sequence file.
+// @param options integer bitwise options (see details at
+//   \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_dump}).
+// @return No return value; called for side effects.
+// @examples
+// ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+// ts_ptr <- RcppTskit:::ts_load_ptr(ts_file)
+// dump_file <- tempfile()
+// RcppTskit:::ts_dump_ptr(ts_ptr, dump_file)
 // [[Rcpp::export]]
 void ts_dump_ptr(const SEXP ts, const std::string file, const int options = 0) {
   RcppTskit_treeseq_xptr ts_xptr(ts);
@@ -123,97 +103,85 @@ void ts_dump_ptr(const SEXP ts, const std::string file, const int options = 0) {
   }
 }
 
-//' @describeIn ts_summary_ptr Get the number of provenances in a tree sequence
-//' @export
+// @describeIn ts_summary_ptr Get the number of provenances in a tree sequence
 // [[Rcpp::export]]
 int ts_num_provenances_ptr(const SEXP ts) {
   RcppTskit_treeseq_xptr ts_xptr(ts);
   return static_cast<int>(tsk_treeseq_get_num_provenances(ts_xptr));
 }
 
-//' @describeIn ts_summary_ptr Get the number of populations in a tree sequence
-//' @export
+// @describeIn ts_summary_ptr Get the number of populations in a tree sequence
 // [[Rcpp::export]]
 int ts_num_populations_ptr(const SEXP ts) {
   RcppTskit_treeseq_xptr ts_xptr(ts);
   return static_cast<int>(tsk_treeseq_get_num_populations(ts_xptr));
 }
 
-//' @describeIn ts_summary_ptr Get the number of migrations in a tree sequence
-//' @export
+// @describeIn ts_summary_ptr Get the number of migrations in a tree sequence
 // [[Rcpp::export]]
 int ts_num_migrations_ptr(const SEXP ts) {
   RcppTskit_treeseq_xptr ts_xptr(ts);
   return static_cast<int>(tsk_treeseq_get_num_migrations(ts_xptr));
 }
 
-//' @describeIn ts_summary_ptr Get the number of individuals in a tree sequence
-//' @export
+// @describeIn ts_summary_ptr Get the number of individuals in a tree sequence
 // [[Rcpp::export]]
 int ts_num_individuals_ptr(const SEXP ts) {
   RcppTskit_treeseq_xptr ts_xptr(ts);
   return static_cast<int>(tsk_treeseq_get_num_individuals(ts_xptr));
 }
 
-//' @describeIn ts_summary_ptr Get the number of samples (of nodes) in a tree
-//'   sequence
-//' @export
+// @describeIn ts_summary_ptr Get the number of samples (of nodes) in a tree
+//   sequence
 // [[Rcpp::export]]
 int ts_num_samples_ptr(const SEXP ts) {
   RcppTskit_treeseq_xptr ts_xptr(ts);
   return static_cast<int>(tsk_treeseq_get_num_samples(ts_xptr));
 }
 
-//' @describeIn ts_summary_ptr Get the number of nodes in a tree sequence
-//' @export
+// @describeIn ts_summary_ptr Get the number of nodes in a tree sequence
 // [[Rcpp::export]]
 int ts_num_nodes_ptr(const SEXP ts) {
   RcppTskit_treeseq_xptr ts_xptr(ts);
   return static_cast<int>(tsk_treeseq_get_num_nodes(ts_xptr));
 }
 
-//' @describeIn ts_summary_ptr Get the number of edges in a tree sequence
-//' @export
+// @describeIn ts_summary_ptr Get the number of edges in a tree sequence
 // [[Rcpp::export]]
 int ts_num_edges_ptr(const SEXP ts) {
   RcppTskit_treeseq_xptr ts_xptr(ts);
   return static_cast<int>(tsk_treeseq_get_num_edges(ts_xptr));
 }
 
-//' @describeIn ts_summary_ptr Get the number of trees in a tree sequence
-//' @export
+// @describeIn ts_summary_ptr Get the number of trees in a tree sequence
 // [[Rcpp::export]]
 int ts_num_trees_ptr(const SEXP ts) {
   RcppTskit_treeseq_xptr ts_xptr(ts);
   return static_cast<int>(tsk_treeseq_get_num_trees(ts_xptr));
 }
 
-//' @describeIn ts_summary_ptr Get the number of sites in a tree sequence
-//' @export
+// @describeIn ts_summary_ptr Get the number of sites in a tree sequence
 // [[Rcpp::export]]
 int ts_num_sites_ptr(const SEXP ts) {
   RcppTskit_treeseq_xptr ts_xptr(ts);
   return static_cast<int>(tsk_treeseq_get_num_sites(ts_xptr));
 }
 
-//' @describeIn ts_summary_ptr Get the number of mutations in a tree sequence
-//' @export
+// @describeIn ts_summary_ptr Get the number of mutations in a tree sequence
 // [[Rcpp::export]]
 int ts_num_mutations_ptr(const SEXP ts) {
   RcppTskit_treeseq_xptr ts_xptr(ts);
   return static_cast<int>(tsk_treeseq_get_num_mutations(ts_xptr));
 }
 
-//' @describeIn ts_summary_ptr Get the sequence length
-//' @export
+// @describeIn ts_summary_ptr Get the sequence length
 // [[Rcpp::export]]
 double ts_sequence_length_ptr(const SEXP ts) {
   RcppTskit_treeseq_xptr ts_xptr(ts);
   return tsk_treeseq_get_sequence_length(ts_xptr);
 }
 
-//' @describeIn ts_summary_ptr Get the time units string
-//' @export
+// @describeIn ts_summary_ptr Get the time units string
 // [[Rcpp::export]]
 Rcpp::String ts_time_units_ptr(const SEXP ts) {
   RcppTskit_treeseq_xptr ts_xptr(ts);
@@ -226,77 +194,76 @@ Rcpp::String ts_time_units_ptr(const SEXP ts) {
   return Rcpp::String(time_units);
 }
 
-//' @name ts_summary_ptr
-//' @title Summary of properties and number of records in a tree sequence
-//' @param ts tree sequence as a \code{\link{TreeSequence}} object or
-//'   an external pointer to tree sequence as a \code{tsk_treeseq_t} object.
-//' @details These functions return the summary of properties and number of
-//'   records in a tree sequence, by calling tskit C API:
-//'   \code{tsk_treeseq_get_num_provenances()}
-//'\url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_provenances},
-//'   \code{tsk_treeseq_get_num_populations()}
-//'\url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_populations},
-//'   \code{tsk_treeseq_get_num_migrations()}
-//'\url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_migrations},
-//'   \code{tsk_treeseq_get_num_individuals()}
-//'\url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_individuals},
-//'   \code{tsk_treeseq_get_num_samples()}
-//'\url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_samples},
-//'   \code{tsk_treeseq_get_num_nodes()}
-//'\url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_nodes},
-//'   \code{tsk_treeseq_get_num_edges()}
-//'\url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_edges},
-//'   \code{tsk_treeseq_get_num_trees()}
-//'\url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_trees},
-//'   \code{tsk_treeseq_get_num_sites()}
-//'\url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_sites},
-//'   \code{tsk_treeseq_get_num_mutations()}
-//'\url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_mutations},
-//'   \code{tsk_treeseq_get_sequence_length()}
-//'\url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_sequence_length},
-//'   and
-//'   \code{tsk_treeseq_get_time_units()}
-//'\url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_time_units}.
-//' @return \code{ts_summary()} and \code{ts_summary_ptr()} return
-//'   a named list with the number/value for all items,
-//'   while other functions \code{ts_num_x()} and \code{ts_num_x_ptr()} etc.
-//'   return the number/value of each item.
-//' @examples
-//' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
-//'
-//' # TreeSequence class object
-//' ts <- ts_load(ts_file)
-//' ts$print()
-//' ts$summary()
-//' ts$num_provenances()
-//' ts$num_populations()
-//' ts$num_migrations()
-//' ts$num_individuals()
-//' ts$num_samples()
-//' ts$num_nodes()
-//' ts$num_edges()
-//' ts$num_trees()
-//' ts$num_sites()
-//' ts$num_mutations()
-//' ts$sequence_length()
-//' ts$time_units()
-//'
-//' # External pointer object
-//' ts_ptr <- ts$pointer
-//' ts_summary_ptr(ts_ptr)
-//' ts_num_provenances_ptr(ts_ptr)
-//' ts_num_populations_ptr(ts_ptr)
-//' ts_num_migrations_ptr(ts_ptr)
-//' ts_num_individuals_ptr(ts_ptr)
-//' ts_num_samples_ptr(ts_ptr)
-//' ts_num_nodes_ptr(ts_ptr)
-//' ts_num_edges_ptr(ts_ptr)
-//' ts_num_trees_ptr(ts_ptr)
-//' ts_num_sites_ptr(ts_ptr)
-//' ts_num_mutations_ptr(ts_ptr)
-//' ts_sequence_length_ptr(ts_ptr)
-//' ts_time_units_ptr(ts_ptr)
-//' @export
+// @describeIn ts_summary_ptr Get the min time in node table and mutation table
+// [[Rcpp::export]]
+double ts_min_time_ptr(const SEXP ts) {
+  RcppTskit_treeseq_xptr ts_xptr(ts);
+  return tsk_treeseq_get_min_time(ts_xptr);
+}
+
+// @describeIn ts_summary_ptr Get the max time in node table and mutation table
+// [[Rcpp::export]]
+double ts_max_time_ptr(const SEXP ts) {
+  RcppTskit_treeseq_xptr ts_xptr(ts);
+  return tsk_treeseq_get_max_time(ts_xptr);
+}
+
+// @name ts_summary_ptr
+// @title Summary of properties and number of records in a tree sequence
+// @param ts an external pointer to tree sequence as a \code{tsk_treeseq_t}
+// object.
+// @details These functions return the summary of properties and number of
+//   records in a tree sequence, by calling tskit C API:
+//   \code{tsk_treeseq_get_num_provenances()}
+// \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_provenances},
+//   \code{tsk_treeseq_get_num_populations()}
+// \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_populations},
+//   \code{tsk_treeseq_get_num_migrations()}
+// \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_migrations},
+//   \code{tsk_treeseq_get_num_individuals()}
+// \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_individuals},
+//   \code{tsk_treeseq_get_num_samples()}
+// \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_samples},
+//   \code{tsk_treeseq_get_num_nodes()}
+// \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_nodes},
+//   \code{tsk_treeseq_get_num_edges()}
+// \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_edges},
+//   \code{tsk_treeseq_get_num_trees()}
+// \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_trees},
+//   \code{tsk_treeseq_get_num_sites()}
+// \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_sites},
+//   \code{tsk_treeseq_get_num_mutations()}
+// \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_num_mutations},
+//   \code{tsk_treeseq_get_sequence_length()}
+// \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_sequence_length},
+//   \code{tsk_treeseq_get_time_units()}
+// \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_time_units},
+//   \code{tsk_treeseq_get_min_time()}
+// \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_min_time},
+//   and
+//   \code{tsk_treeseq_get_max_time()}
+// \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_max_time},
+// @return A named list with the number/value for all items,
+//   while other functions \code{ts_num_x()} and \code{ts_num_x_ptr()} etc.
+//   return the number/value of each item.
+// @examples
+// ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+// ts_ptr <- RcppTskit:::ts_load_ptr(ts_file)
+// RcppTskit:::ts_summary_ptr(ts_ptr)
+// RcppTskit:::ts_num_provenances_ptr(ts_ptr)
+// RcppTskit:::ts_num_populations_ptr(ts_ptr)
+// RcppTskit:::ts_num_migrations_ptr(ts_ptr)
+// RcppTskit:::ts_num_individuals_ptr(ts_ptr)
+// RcppTskit:::ts_num_samples_ptr(ts_ptr)
+// RcppTskit:::ts_num_nodes_ptr(ts_ptr)
+// RcppTskit:::ts_num_edges_ptr(ts_ptr)
+// RcppTskit:::ts_num_trees_ptr(ts_ptr)
+// RcppTskit:::ts_num_sites_ptr(ts_ptr)
+// RcppTskit:::ts_num_mutations_ptr(ts_ptr)
+// RcppTskit:::ts_sequence_length_ptr(ts_ptr)
+// RcppTskit:::ts_time_units_ptr(ts_ptr)
+// RcppTskit:::ts_min_time_ptr(ts_ptr)
+// RcppTskit:::ts_max_time_ptr(ts_ptr)
 // [[Rcpp::export]]
 Rcpp::List ts_summary_ptr(const SEXP ts) {
   RcppTskit_treeseq_xptr ts_xptr(ts);
@@ -312,32 +279,26 @@ Rcpp::List ts_summary_ptr(const SEXP ts) {
       Rcpp::_["num_sites"] = tsk_treeseq_get_num_sites(ts_xptr),
       Rcpp::_["num_mutations"] = tsk_treeseq_get_num_mutations(ts_xptr),
       Rcpp::_["sequence_length"] = tsk_treeseq_get_sequence_length(ts_xptr),
-      Rcpp::_["time_units"] = ts_time_units_ptr(ts));
+      Rcpp::_["time_units"] = ts_time_units_ptr(ts),
+      Rcpp::_["min_time"] = ts_min_time_ptr(ts),
+      Rcpp::_["max_time"] = ts_max_time_ptr(ts));
 }
 
-//' @name ts_metadata_length
-//' @title Get the length of metadata in a tree sequence and its tables
-//' @param ts tree sequence as a \code{\link{TreeSequence}} object or
-//'   an external pointer to tree sequence as a \code{tsk_treeseq_t} object.
-//' @details This function returns the length of metadata stored on the tree
-//'   sequence and in each table by calling tskit C API:
-//'   \code{tsk_treeseq_get_metadata_length()}
-//'\url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_metadata_length}
-//'   on tree sequence and
-//'   \code{ts->tables->x->metadata_length} on each table \code{x}, e.g.,
-//'\url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_population_table_t.metadata_length}.
-//' @return A named list with the length of metadata.
-//' @examples
-//' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
-//'
-//' # TreeSequence class object
-//' ts <- ts_load(ts_file)
-//' ts$metadata_length()
-//'
-//' # External pointer object
-//' ts_ptr <- ts$pointer
-//' ts_metadata_length_ptr(ts_ptr)
-//' @export
+// @title Get the length of metadata in a tree sequence and its tables
+// @param ts tree sequence as a \code{\link{TreeSequence}} object or
+//   an external pointer to tree sequence as a \code{tsk_treeseq_t} object.
+// @details This function returns the length of metadata stored on the tree
+//   sequence and in each table by calling tskit C API:
+//   \code{tsk_treeseq_get_metadata_length()}
+// \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_get_metadata_length}
+//   on tree sequence and
+//   \code{ts->tables->x->metadata_length} on each table \code{x}, e.g.,
+// \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_population_table_t.metadata_length}.
+// @return A named list with the length of metadata.
+// @examples
+// ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+// ts_ptr <- RcppTskit:::ts_load_ptr(ts_file)
+// RcppTskit:::ts_metadata_length_ptr(ts_ptr)
 // [[Rcpp::export]]
 Rcpp::List ts_metadata_length_ptr(const SEXP ts) {
   RcppTskit_treeseq_xptr ts_xptr(ts);
@@ -366,8 +327,8 @@ Rcpp::List ts_metadata_length_ptr(const SEXP ts) {
 // so would have to work with schema and codes ... but see
 // https://github.com/HighlanderLab/RcppTskit/issues/36
 // ts_file <- system.file("examples/test.trees", package = "RcppTskit")
-// ts_ptr <- ts_load(ts_file)
-// ts_metadata_ptr(ts_ptr)
+// ts_ptr <- RcppTskit:::ts_load_ptr(ts_file)
+// RcppTskit:::ts_metadata_ptr(ts_ptr)
 // slendr::ts_metadata(slim_ts)
 Rcpp::String ts_metadata_ptr(const SEXP ts) {
   RcppTskit_treeseq_xptr ts_xptr(ts);

@@ -1,34 +1,15 @@
-# Notes on R package development
+# Notes on RcppTskit package development
 
 ## Next TODOs
 
-* Hide pointer functions and organise docs!?
+* TODO: Add R package badges (build status, CRAN version, etc.) to README.md #1
+      https://github.com/HighlanderLab/RcppTskit/issues/1
 
- Missing link(s) in Rd file 'TreeSequence.Rd':
-     ‘ts_dump’ ‘ts_summary’
+* This PR nicely shows how slendr is dealing with ts objects
+  (it saves various ts information as attributes)
+  https://github.com/bodkan/slendr/pull/191/changes#diff-f46eb0da2f9267022ecc6e09316598fde6bdcd2f980963906dc041b5096f344f
 
-   Missing link(s) in Rd file 'ts_print.Rd':
-     ‘ts_summary’
-
-   Missing link(s) in Rd file 'ts_py_to_r.Rd':
-     ‘ts_dump’
-
-   Missing link(s) in Rd file 'ts_r_to_py.Rd':
-     ‘ts_dump’
-
-   See section 'Cross-references' in the 'Writing R Extensions' manual.
-
-   Found the following Rd file(s) with Rd \link{} targets missing package
-   anchors:
-     TreeSequence.Rd: ts_dump, ts_summary
-     ts_print.Rd: ts_summary
-     ts_py_to_r.Rd: ts_dump
-     ts_r_to_py.Rd: ts_dump
-   Please provide package anchors for all Rd \link{} targets not in the
-   package itself and the base packages.
-
-
-* TODO building tree sequence
+* TODO Tskit examples of building tree sequence in C
 extern/tskit/c/tests/testlib.c has lots of examples of constructing a tree sequence using C
 extern/tskit/c/tests/test_minimal_cpp.cpp has some C++ example too
 extern/tskit/c/examples/haploid_wright_fisher.c
@@ -83,6 +64,31 @@ test_missing_required_columns(void)
     free(ts);
 }
 
+## NEWS template
+
+```
+## [Unreleased] - YYYY-MM-DD
+
+Routinely log changes in the package ...
+
+## [MAJOR.MINOR.PATCH] - YYYY-MM-DD
+
+MAJOR version when you make incompatible API changes
+MINOR version when you add functionality in a backward compatible manner
+PATCH version when you make backward compatible bug fixes
+
+### Added (new features)
+
+- Describe 1 ...
+- Describe 2 ...
+
+### Changed (for )changes in existing functionality)
+### Deprecated (soon-to-be removed features)
+### Removed (now removed features)
+### Fixed (bug fixes)
+### Security (vulnerabilities)
+```
+
 ## Setup
 
 ```
@@ -90,6 +96,8 @@ install.packages(c("usethis", "devtools"))
 ```
 
 ## Code testing coverage with covr
+
+https://covr.r-lib.org
 
 ```
 install.packages("covr")
@@ -128,6 +136,8 @@ https://usethis.r-lib.org/reference/use_air.html
 usethis::use_air()
 ```
 
+https://posit-dev.github.io/air
+
 Setup editor and `air.toml`.
 
 In comand line, run:
@@ -149,6 +159,8 @@ jarl check --fix .
 ```
 
 ## clang-format of C/C++ code
+
+https://clang.llvm.org/docs/ClangFormat.html
 
 ```
 # All files (run from the RcppTskit directory)
@@ -181,6 +193,8 @@ pre-commit run clang-format --all-files
 ```
 
 ## clang-tidy linter of C/C++ code
+
+https://clang.llvm.org/extra/clang-tidy/
 
 ```
 echo $(brew --prefix llvm)/bin/clang-tidy

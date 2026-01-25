@@ -15,9 +15,12 @@ test_that("TreeSequence$new() works", {
     TreeSequence$new(file = "bla", options = "y"),
     regexp = "options must be numeric/integer!"
   )
+  expect_no_error(
+    TreeSequence$new(file = ts_file, options = 0)
+  )
+  expect_no_error(TreeSequence$new(ts_file))
   expect_error(
     TreeSequence$new(pointer = 1L),
     regexp = "pointer must be an object of externalptr class!"
   )
-  ts <- TreeSequence$new(ts_file)
 })

@@ -37,18 +37,17 @@ ts
 ts_file <- system.file("examples/test.trees", package = "RcppTskit")
 ts <- ts_load(ts_file)
 
-# If you have a tree sequence in R and you want to use tskit Python API,
-# you can write it to disk and load it into reticulate Python
+# If you have a tree sequence in R and want to use tskit Python API, use
 ts_py <- ts$r_to_py()
 # ... continue in reticulate Python ...
 ts_py$num_individuals # 80
 ts2_py = ts_py$simplify(samples = c(0L, 1L, 2L, 3L))
 ts2_py$num_individuals # 2
-# ... and to bring it back to R ...
+# ... and to bring it back to R use ...
 ts2 <- ts_py_to_r(ts2_py)
 ts2$num_individuals() # 2
 
-# If you prefer standard (non-reticulate) Python, use approach:
+# If you prefer standard (non-reticulate) Python, use
 ts_file <- tempfile()
 print(ts_file)
 ts$dump(file = ts_file)
@@ -59,10 +58,9 @@ ts$dump(file = ts_file)
 # ts2 = ts.simplify(samples = [0, 1, 2, 3])
 # ts2.num_individuals # 2
 # ts2.dump("insert_ts_file_path_here")
-# ... and to bring it back to R ...
+# ... and to bring it back to R use ...
 ts2 <- ts_load(ts_file)
 ts$num_individuals() # 2 (if you have ran the above Python code)
-\dontshow{on.exit(file.remove(ts_file)) # clean up}
 
 # 3) Call tskit C API in C++ code in R session or script
 library(Rcpp)
@@ -87,7 +85,6 @@ ts_num_individuals2(ts$pointer)
 
 # An identical RcppTskit implementation
 ts$num_individuals()
-ts_num_individuals_ptr(ts$pointer)
 
 # 4) Call `tskit` C API in C++ code in another R package
 # TODO: Show vignette here

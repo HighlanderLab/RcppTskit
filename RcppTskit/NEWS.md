@@ -1,5 +1,20 @@
 # RcppTskit news
 
-## [0.0.1] - 2025-12-25
+All notable changes to RcppTskit are documented in this file.
+The file format is based on [Keep a Changelog](https://keepachangelog.com),
+and releases adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-* Proof of concept with tskit C API version 1.3.0
+## [0.1.0] - 2026-01-26
+
+This is the first release.
+
+### Added (new features)
+
+- Initial version of RcppTskit using the tskit C API (version 1.3.0).
+- TreeSequence R6 class so R code looks Pythonic.
+- `ts_load()` or `TreeSequence$new()` to load a tree sequence from file into R.
+- Methods to summarise a tree sequence and its contents `ts$print()`, `ts$num_nodes()`, etc.
+- Method to save a tree sequence to a file `ts$dump()`.
+- Method to push tree sequence between R and reticulate Python (TODO).
+- Most methods have underlying C++ function that work with a pointer to tree sequence object,
+  for example, `RcppTskit:::ts_load_ptr()`.

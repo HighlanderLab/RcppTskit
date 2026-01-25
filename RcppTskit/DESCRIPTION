@@ -1,8 +1,8 @@
 Package: RcppTskit
 Type: Package
 Title: R access to the tskit C API
-Version: 0.0.1
-Date: 2026-01-07
+Version: 0.1.0
+Date: 2026-01-2607
 Authors@R:
   person(given = "Gregor", family = "Gorjanc",
          email = "gregor.gorjanc@gmail.com",
@@ -21,6 +21,7 @@ Description: Tskit enables performant storage, manipulation, and analysis
   and the `reticulate` approach.
 URL: https://github.com/highlanderlab/RcppTskit
 License: MIT + file LICENSE
+Depends: R (>= 4.0.0)
 Imports: methods, R6, Rcpp (>= 1.1.0), reticulate
 LinkingTo: Rcpp
 Suggests: covr, spelling, testthat

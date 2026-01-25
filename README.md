@@ -18,19 +18,22 @@ See more details on the state of the tree sequence ecosystem and aims for
 `RcppTskit` in [RcppTskit/inst/STATE_and_AIMS.md](RcppTskit/inst/STATE_and_AIMS.md),
 including examples on how to use it on its own or to develop new R packages.
 
-TODO: Think how to best point to use cases. Probably best to point to vignette!?
+TODO: Think how to best point to use cases. Probably best to point to vignette and pkgdown!?
       https://github.com/HighlanderLab/RcppTskit/issues/10
 
 ## Status
 
 <!-- badges: start -->
-  [![R-CMD-check](https://github.com/HighlanderLab/RcppTskit/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/HighlanderLab/RcppTskit/actions/workflows/R-CMD-check.yaml)
 
-  [![Codecov test coverage](https://codecov.io/gh/HighlanderLab/RcppTskit/graph/badge.svg)](https://app.codecov.io/gh/HighlanderLab/RcppTskit)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental) <!-- Row 1, Col 1 --> [![Development](https://img.shields.io/badge/development-active-blue.svg)](https://img.shields.io/badge/development-active-blue.svg) <!-- Row 1, Col 2 --> [![Licence](https://img.shields.io/badge/licence-MIT-blue.svg)](https://opensource.org/licenses/MIT) <!-- Row 1, Col 3 -->
+
+<!-- line break 1 -->
+[![CRAN version](https://www.r-pkg.org/badges/version/RcppTskit)](https://CRAN.R-project.org/package=RcppTskit) <!-- Row 2, Col 1 --> ![GitHub version (main)](https://img.shields.io/github/r-package/v/HighlanderLab/RcppTskit/main?filename=RcppTskit%2FDESCRIPTION&label=Github) <!-- Row 2, Col 2 --> [![Downloads - total](https://cranlogs.r-pkg.org/badges/grand-total/RcppTskit)](https://cranlogs.r-pkg.org/badges/grand-total/RcppTskit) <!-- Row 2, Col 3 -->
+
+<!-- line break 2 -->
+[![CRAN R CMD check](https://cranchecks.info/badges/summary/RcppTskit)](https://cran.r-project.org/web/checks/check_results_RcppTskit.html) <!-- Row 3, Col 1 --> ![GitHub R CMD check](https://img.shields.io/github/actions/workflow/status/HighlanderLab/RcppTskit/R-CMD-check.yaml?label=GitHub%20R%20CMD%20check) <!-- Row 3, Col 2 --> [![Codecov test coverage](https://codecov.io/gh/HighlanderLab/RcppTskit/graph/badge.svg)](https://app.codecov.io/gh/HighlanderLab/RcppTskit) <!-- Row 3, Col 3 -->
+
 <!-- badges: end -->
-
-TODO: Add R package badges (build status, CRAN version, etc.) to README.md #1
-      https://github.com/HighlanderLab/RcppTskit/issues/1
 
 ## Contents
 
