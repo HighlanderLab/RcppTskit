@@ -9,17 +9,14 @@ Tskit provides Python, C, and Rust APIs. The Python API can be called from R
 via the `reticulate` R package to seamlessly load and analyse a tree sequence,
 as described at https://tskit.dev/tutorials/RcppTskit.html.
 `RcppTskit` provides R access to the `tskit` C API for use cases where the
-`reticulate` approach is not optimal. For example, for high-performance and
-low-level work with tree sequences. Currently, `RcppTskit` provides a very limited
+`reticulate` option is not optimal. For example, for high-performance and
+low-level work with tree sequences. Currently, `RcppTskit` provides a limited
 number of R functions due to the availability of extensive Python API and
-the `reticulate` approach.
+the `reticulate` option.
 
-See more details on the state of the tree sequence ecosystem and aims for
-`RcppTskit` in [RcppTskit/inst/STATE_and_AIMS.md](RcppTskit/inst/STATE_and_AIMS.md),
+See more details on the state of the tree sequence ecosystem and aims of
+`RcppTskit` in [RcppTskit/vignettes/RcppTskit_intro.qmd](RcppTskit/vignettes/RcppTskit_intro.qmd),
 including examples on how to use it on its own or to develop new R packages.
-
-TODO: Think how to best point to use cases. Probably best to point to vignette and pkgdown!?
-      https://github.com/HighlanderLab/RcppTskit/issues/10
 
 ## Status
 
@@ -31,7 +28,7 @@ TODO: Think how to best point to use cases. Probably best to point to vignette a
 [![CRAN version](https://www.r-pkg.org/badges/version/RcppTskit)](https://CRAN.R-project.org/package=RcppTskit) <!-- Row 2, Col 1 --> ![GitHub version (main)](https://img.shields.io/github/r-package/v/HighlanderLab/RcppTskit/main?filename=RcppTskit%2FDESCRIPTION&label=Github) <!-- Row 2, Col 2 --> [![Downloads - total](https://cranlogs.r-pkg.org/badges/grand-total/RcppTskit)](https://cranlogs.r-pkg.org/badges/grand-total/RcppTskit) <!-- Row 2, Col 3 -->
 
 <!-- line break 2 -->
-[![CRAN R CMD check](https://cranchecks.info/badges/summary/RcppTskit)](https://cran.r-project.org/web/checks/check_results_RcppTskit.html) <!-- Row 3, Col 1 --> ![GitHub R CMD check](https://img.shields.io/github/actions/workflow/status/HighlanderLab/RcppTskit/R-CMD-check.yaml?label=GitHub%20R%20CMD%20check) <!-- Row 3, Col 2 --> [![Codecov test coverage](https://codecov.io/gh/HighlanderLab/RcppTskit/graph/badge.svg)](https://app.codecov.io/gh/HighlanderLab/RcppTskit) <!-- Row 3, Col 3 -->
+[![CRAN R CMD check](https://cranchecks.info/badges/summary/RcppTskit)](https://cran.r-project.org/web/checks/check_results_RcppTskit.html) <!-- Row 3, Col 1 --> [![GitHub R CMD check](https://img.shields.io/github/actions/workflow/status/HighlanderLab/RcppTskit/R-CMD-check.yaml?label=GitHub%20R%20CMD%20check)](https://github.com/HighlanderLab/RcppTskit/actions/workflows/R-CMD-check.yaml) <!-- Row 3, Col 2 --> [![Codecov test coverage](https://codecov.io/gh/HighlanderLab/RcppTskit/graph/badge.svg)](https://app.codecov.io/gh/HighlanderLab/RcppTskit) <!-- Row 3, Col 3 -->
 
 <!-- badges: end -->
 
