@@ -34,7 +34,11 @@ including examples on how to use it on its own or to develop new R packages.
 
 ## Contents
 
-  * `extern` - Git submodule for `tskit` and instructions on obtaining the latest version and copying the `tskit` C code into `RcppTskit` directory. `extern` is saved outside of the `RcppTskit` directory because `R CMD CHECK` complains otherwise.
+  * `extern` - Git submodule for `tskit` and instructions on
+    obtaining the latest version and copying the `tskit` C code into
+    `RcppTskit` directory.
+    `extern` is saved outside of the `RcppTskit` directory
+    because `R CMD CHECK` complains otherwise.
 
   * `RcppTskit` - R package `RcppTskit`.
 
@@ -64,18 +68,16 @@ https://mac.r-project.org/tools for macOS tools.
 ```
 # install.packages("remotes") # If you don't have it already
 
-# Release (TODO)
+# Release
 # TODO: Tag a release #15
 #       https://github.com/HighlanderLab/RcppTskit/issues/15
 # remotes::install_github("HighlanderLab/RcppTskit/RcppTskit")
 
 # Main branch
-remotes::install_github("HighlanderLab/RcppTskit/RcppTskit")
+remotes::install_github("HighlanderLab/RcppTskit/RcppTskit@main")
 
 # Development branch
-# TODO: Create a devel branch #16
-#       https://github.com/HighlanderLab/RcppTskit/issues/16
-# remotes::install_github("HighlanderLab/RcppTskit/RcppTskit@devel")
+remotes::install_github("HighlanderLab/RcppTskit/RcppTskit@devel")
 ```
 
 ## Development
@@ -90,7 +92,8 @@ git clone https://github.com/HighlanderLab/RcppTskit.git
 
 ### Pre-commit install
 
-We use [pre-commit](https://pre-commit.com) hooks to ensure code quality. Specifically, we use:
+We use [pre-commit](https://pre-commit.com) hooks to ensure code quality.
+Specifically, we use:
 * [air](https://github.com/posit-dev/air) to format R code,
 * [jarl](https://github.com/etiennebacher/jarl) to lint R code,
 * [clang-format](https://clang.llvm.org/docs/ClangFormat.html) to format C/C++ code, and
@@ -108,7 +111,8 @@ If you plan to update `tskit`, follow instructions in `extern/README.md`.
 
 ### RcppTskit
 
-Then open `RcppTskit` package directory in your favourite R IDE (Positron, RStudio, text-editor-of-your-choice, etc.) and implement your changes.
+Then open `RcppTskit` package directory in your favourite R IDE
+(Positron, RStudio, text-editor-of-your-choice, etc.) and implement your changes.
 
 You should routinely check your changes (in R):
 
@@ -158,6 +162,8 @@ pre-commit run --all-files
 
 ### Continuous integration
 
-We use Github Actions to run continuous integration (CI) checks on each push and pull request. Specifically, we run:
+We use Github Actions to run continuous integration (CI) checks
+on each push and pull request.
+Specifically, we run:
 * [R CMD check](.github/workflows/R-CMD-check.yaml) on multiple platforms and
 * [covr test coverage](.github/workflows/covr.yaml).

@@ -166,9 +166,25 @@ that can write C++ code.
 First install `RcppTskit` from CRAN and load it.
 
 ```{r}
+#| label: pre-setup
+#| include: false
+# Had issues on Windows (reporting that RcppTskit is not installed, which is odd).
+# This tries to get library path "back".
+lib_env <- Sys.getenv("R_LIBS")
+if (nzchar(lib_env)) {
+  .libPaths(unique(c(strsplit(lib_env, .Platform$path.sep)[[1]], .libPaths())))
+}
+```
+
+```{r}
 #| label: setup
 # install.packages("RcppTskit")
-library(RcppTskit)
+
+test <- require(RcppTskit)
+if (!test) {
+  message("RcppTskit not available; skipping vignette execution.")
+  knitr::opts_chunk$set(eval = FALSE)
+}
 ```
 
 ### 1) Load a tree sequence into R and summarise it
