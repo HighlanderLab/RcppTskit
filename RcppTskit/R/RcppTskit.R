@@ -232,16 +232,18 @@ ts_r_to_py_ptr <- function(ts, tskit_module = get_tskit_py(), cleanup = TRUE) {
 #
 # # Use the tskit Python API to work with a tree sequence (via reticulate)
 # tskit <- get_tskit_py()
-# ts_py <- tskit$load(ts_file)
-# is(ts_py)
-# ts_py$num_samples # 160
-# ts2_py <- ts_py$simplify(samples = c(0L, 1L, 2L, 3L))
-# ts2_py$num_samples # 4
+# if (check_tskit_py(tskit)) {
+#   ts_py <- tskit$load(ts_file)
+#   is(ts_py)
+#   ts_py$num_samples # 160
+#   ts2_py <- ts_py$simplify(samples = c(0L, 1L, 2L, 3L))
+#   ts2_py$num_samples # 4
 #
-# # Transfer the tree sequence to R and use RcppTskit
-# ts2_ptr_r <- RcppTskit:::ts_py_to_r_ptr(ts2_py)
-# is(ts2_ptr_r)
-# RcppTskit:::ts_num_samples_ptr(ts2_ptr_r) # 4
+#   # Transfer the tree sequence to R and use RcppTskit
+#   ts2_ptr_r <- RcppTskit:::ts_py_to_r_ptr(ts2_py)
+#   is(ts2_ptr_r)
+#   RcppTskit:::ts_num_samples_ptr(ts2_ptr_r) # 4
+# }
 ts_py_to_r_ptr <- function(ts, cleanup = TRUE) {
   if (!reticulate::is_py_object(ts)) {
     stop("ts must be a reticulate Python object!")

@@ -92,10 +92,11 @@ By contributing to this project, you agree to abide by its terms.
 
 ### Clone
 
-First clone the repository:
+First clone the repository and step into the directory:
 
 ```
 git clone https://github.com/HighlanderLab/RcppTskit.git
+cd RcppTskit
 ```
 
 ### Pre-commit install
