@@ -17,3 +17,4 @@
 ^tests/testthat/_snaps$
 ^vignettes/\.quarto$
 ^vignettes/*_files$
+^\.\.$

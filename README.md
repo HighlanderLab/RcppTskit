@@ -15,8 +15,9 @@ number of R functions due to the availability of extensive Python API and
 the `reticulate` option.
 
 See more details on the state of the tree sequence ecosystem and aims of
-`RcppTskit` in [RcppTskit/vignettes/RcppTskit_intro.qmd](RcppTskit/vignettes/RcppTskit_intro.qmd),
-including examples on how to use it on its own or to develop new R packages.
+`RcppTskit` in [RcppTskit/vignettes/RcppTskit_intro.qmd](RcppTskit/vignettes/RcppTskit_intro.qmd).
+The vignette also shows examples on how to use `RcppTskit` on its own or
+to develop new R packages.
 
 ## Status
 
@@ -81,6 +82,12 @@ remotes::install_github("HighlanderLab/RcppTskit/RcppTskit@devel")
 ```
 
 ## Development
+
+### Code of Conduct
+
+Please note that the `RcppTskit` project is released with a
+[Contributor Code of Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html).
+By contributing to this project, you agree to abide by its terms.
 
 ### Clone
 
