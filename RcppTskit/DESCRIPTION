@@ -31,8 +31,8 @@ Depends:
 Imports:
     methods,
     R6,
-    Rcpp (>= 0.12.10),
-    reticulate (>= 1.41.0)
+    Rcpp (>= 1.0.8),
+    reticulate (>= 1.43.0)
 Suggests:
     covr,
     knitr,
