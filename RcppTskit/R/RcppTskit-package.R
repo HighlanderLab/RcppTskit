@@ -1,20 +1,19 @@
 # Contains the package description and .onLoad() function
 
 #' @description
-#' `Tskit` enables performant storage, manipulation, and analysis of
+#' `Tskit` enables efficient storage, manipulation, and analysis of
 #' ancestral recombination graphs (ARGs) using succinct tree sequence encoding.
 #' The tree sequence encoding of an ARG is described in Wong et al. (2024)
 #' <doi:10.1093/genetics/iyae100>.
 #' See also https://tskit.dev for project news, documentation, and tutorials.
 #' `Tskit` provides Python, C, and Rust application programming interfaces (APIs).
-#' The Python API can be called from R via the `reticulate` R package to
-#' seamlessly load and analyse a tree sequence as described at
+#' The Python API can be called from R via the `reticulate` package to
+#' load and analyse tree sequences as described at
 #' https://tskit.dev/tutorials/tskitr.html.
-#' `RcppTskit` provides R access to the `tskit` C API for use cases where the
-#' `reticulate` option is not optimal. For example, for high-performance
-#' and low-level work with tree sequences. Currently, `RcppTskit` provides a
-#' limited number of R functions due to the availability of extensive Python API
-#' and the `reticulate` option.
+#' `RcppTskit` provides R access to the `tskit` C API for cases where the
+#' `reticulate` option is not optimal; for example; high-performance or low-level
+#' work with tree sequences. Currently, `RcppTskit` provides a limited set of
+#' R functions because the Python API and `reticulate` already covers most needs.
 #' @keywords internal
 #'
 #' @useDynLib RcppTskit, .registration = TRUE
@@ -27,16 +26,16 @@
 #' vignette(package="RcppTskit")
 "_PACKAGE"
 
-#' Providing an inline plugin so we can call tskit C API with functions like
-#' cppFunction() or sourceCpp(). See package files on how this is used (search
-#' for cppFunction).
+#' Provide an inline plugin so we can call the tskit C API with functions like
+#' cppFunction() or sourceCpp(). See the package files for how this is used
+#' (search for cppFunction).
 #
-#' Studying RcppArmadillo, I don't see it uses Rcpp::registerPlugin() anywhere,
-#' but an LLM suggested that this is because Armadillo is header-only library
-#' so `depends = "RcppArmadillo"` adds include paths to headers, while there is
-#' no library that we should link to. RcppTskit is different because we must link
-#' against the compiled RcppTskit library file. The `plugins` (or `PKG_LIBS`)
-#' is required for linking flags in addition to `depends` for include headers.
+#' In RcppArmadillo, I do not see any use of Rcpp::registerPlugin(). This is
+#' likely because Armadillo is header-only, so `depends = "RcppArmadillo"` adds
+#' include paths but there is no library to link against. RcppTskit is different
+#' because we must link against the compiled RcppTskit library file. The plugin
+#' (or `PKG_LIBS`) provides linker flags in addition to `depends` for include
+#' headers.
 #' @noRd
 .onLoad <- function(libname, pkgname) {
   # nocov start

@@ -3,49 +3,48 @@
 \name{get_tskit_py}
 \alias{get_tskit_py}
 \alias{check_tskit_py}
-\title{Get the reticulate Python tskit module}
+\title{Get the reticulate \code{tskit} Python module}
 \usage{
 get_tskit_py(object_name = "tskit", force = FALSE)
 
 check_tskit_py(object, stop = FALSE)
 }
 \arguments{
-\item{object_name}{character name of the object holding \code{tskit} reticulate
-Python module. If this object exists in the global R environment and is a
-reticulate Python object, then it is returned. Otherwise, the function
-attempts to install and import tskit before returning it.}
+\item{object_name}{character name of the object holding the reticulate
+\code{tskit} module. If this object exists in the global R environment and
+is a reticulate Python module, it is returned. Otherwise, the function
+attempts to install and import \code{tskit} before returning it.}
 
-\item{force}{logical force installation and/or import before returning the
+\item{force}{logical; force installation and/or import before returning the
 reticulate Python module.}
 
-\item{object}{reticulate Python module object, hopefully.}
+\item{object}{reticulate Python module.}
 
-\item{stop}{logical for throwing an error in \code{check_tskit_py}.}
+\item{stop}{logical; whether to throw an error in \code{check_tskit_py}.}
 }
 \value{
-\code{get_tskit_py} returns \code{tskit} a reticulate Python module
-  if successful or otherwise throws an error (when \code{object_name} exists
+\code{get_tskit_py} returns the reticulate Python module \code{tskit}
+  if successful. Otherwise it throws an error (when \code{object_name} exists
   but is not a reticulate Python module) or returns \code{simpleError}
   (when installation or import failed). \code{check_tskit_py} returns
   \code{TRUE} if \code{object} is a reticulate Python module or \code{FALSE}
   otherwise.
 }
 \description{
-This function imports the reticulate Python \code{tskit} module
-  and if it is not yet installed, then it attempts to install it first.
+This function imports the reticulate Python \code{tskit} module.
+  If it is not yet installed, it attempts to install it first.
 }
 \details{
 This function is meant for users running \code{tskit <- get_tskit_py()}
-  or similar code, but also by other functions in this package that need the
+  or similar code, and for other functions in this package that need the
   \code{tskit} reticulate Python module. The point of \code{get_tskit_py} is
-  to avoid importing the module repeatedly, if it has been imported already
-  in which case we use that imported module. Since this process can be
-  finicky (it depends on the availability of reticulate Python, module already
-  installed, internet access, etc.)
+  to avoid importing the module repeatedly; if it has been imported already,
+  we reuse that instance. This process can be sensitive to the reticulate
+  Python setup, module availability, and internet access.
 }
 \section{Functions}{
 \itemize{
-\item \code{check_tskit_py()}: Test if \code{get_tskit_py} returned a reticulate Python module object
+\item \code{check_tskit_py()}: Test whether \code{get_tskit_py} returned a reticulate Python module object
 
 }}
 \examples{

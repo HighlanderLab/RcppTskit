@@ -1,9 +1,8 @@
-#' @title Succinct tree sequence R6 Class (TreeSequence)
+#' @title Succinct tree sequence R6 class (TreeSequence)
 #' @description An R6 class holding an external pointer to a tree sequence
-#' object. As an R6 class, it's methods look Pythonic and hence resemble the
+#' object. As an R6 class, its methods look Pythonic and therefore resemble the
 #' tskit Python API. Since the class only holds the pointer, it is lightweight.
-#' Currently there is only a limited number of methods available to summarise
-#' the tree sequence.
+#' Currently there is a limited set of methods for summarising the tree sequence.
 #' @export
 TreeSequence <- R6Class(
   classname = "TreeSequence",
@@ -16,7 +15,7 @@ TreeSequence <- R6Class(
     #' @param file a string specifying the full path of the tree sequence file.
     #' @param options integer bitwise options (see details at
     #'   \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_load}).
-    #' @param pointer an external pointer to a tree sequence ()
+    #' @param pointer an external pointer (\code{externalptr}) to a tree sequence.
     #' @return A \code{\link{TreeSequence}} object.
     #' @seealso \code{\link{ts_load}}
     #' @examples
@@ -55,7 +54,7 @@ TreeSequence <- R6Class(
       invisible(self)
     },
 
-    #' @description Write a tree sequence to a file
+    #' @description Write a tree sequence to a file.
     #' @param file a string specifying the full path of the tree sequence file.
     #' @param options integer bitwise options (see details at
     #'   \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_dump}).
@@ -79,8 +78,8 @@ TreeSequence <- R6Class(
 
     #' @description Print a summary of a tree sequence and its contents.
     #' @return list with two data.frames; the first contains tree sequence
-    #'   properties and their value; the second contains the numbers of rows in
-    #'   tables and the length of their metadata.
+    #'   properties and their values; the second contains the number of rows in
+    #'   each table and the length of their metadata.
     #' @examples
     #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts <- ts_load(ts_file)
@@ -92,10 +91,10 @@ TreeSequence <- R6Class(
     },
 
     #' @description This function saves a tree sequence from R to disk and
-    #'   reads it into reticulate Python for use with \code{tskit} Python API.
+    #'   loads it into reticulate Python for use with the \code{tskit} Python API.
     #' @param tskit_module reticulate Python module of \code{tskit}. By default,
     #'   it calls \code{\link{get_tskit_py}} to obtain the module.
-    #' @param cleanup logical delete the temporary file at the end of the function?
+    #' @param cleanup logical; delete the temporary file at the end of the function?
     #' @return Tree sequence in reticulate Python.
     #' @seealso \code{\link{ts_py_to_r}}, \code{\link{ts_load}}, and
     #'   \code{\link[=TreeSequence]{TreeSequence$dump}}.

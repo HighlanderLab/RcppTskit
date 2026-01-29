@@ -9,7 +9,7 @@ ts_py_to_r(ts, cleanup = TRUE)
 \arguments{
 \item{ts}{tree sequence in reticulate Python.}
 
-\item{cleanup}{logical delete the temporary file at the end of the function?}
+\item{cleanup}{logical; delete the temporary file at the end of the function?}
 }
 \value{
 A \code{\link{TreeSequence}} object.

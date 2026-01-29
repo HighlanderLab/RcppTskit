@@ -2,13 +2,12 @@
 % Please edit documentation in R/Class-TreeSequence.R
 \name{TreeSequence}
 \alias{TreeSequence}
-\title{Succinct tree sequence R6 Class (TreeSequence)}
+\title{Succinct tree sequence R6 class (TreeSequence)}
 \description{
 An R6 class holding an external pointer to a tree sequence
-object. As an R6 class, it's methods look Pythonic and hence resemble the
+object. As an R6 class, its methods look Pythonic and therefore resemble the
 tskit Python API. Since the class only holds the pointer, it is lightweight.
-Currently there is only a limited number of methods available to summarise
-the tree sequence.
+Currently there is a limited set of methods for summarising the tree sequence.
 }
 \examples{
 
@@ -240,7 +239,7 @@ Create a \code{\link{TreeSequence}} from a file or a pointer.
 \item{\code{options}}{integer bitwise options (see details at
 \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_load}).}
 
-\item{\code{pointer}}{an external pointer to a tree sequence ()}
+\item{\code{pointer}}{an external pointer (\code{externalptr}) to a tree sequence.}
 }
 \if{html}{\out{</div>}}
 }
@@ -267,7 +266,7 @@ is(ts)
 \if{html}{\out{<a id="method-TreeSequence-dump"></a>}}
 \if{latex}{\out{\hypertarget{method-TreeSequence-dump}{}}}
 \subsection{Method \code{dump()}}{
-Write a tree sequence to a file
+Write a tree sequence to a file.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$dump(file, options = 0L)}\if{html}{\out{</div>}}
 }
@@ -328,8 +327,8 @@ Print a summary of a tree sequence and its contents.
 
 \subsection{Returns}{
 list with two data.frames; the first contains tree sequence
-  properties and their value; the second contains the numbers of rows in
-  tables and the length of their metadata.
+  properties and their values; the second contains the number of rows in
+  each table and the length of their metadata.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -348,7 +347,7 @@ ts
 \if{latex}{\out{\hypertarget{method-TreeSequence-r_to_py}{}}}
 \subsection{Method \code{r_to_py()}}{
 This function saves a tree sequence from R to disk and
-  reads it into reticulate Python for use with \code{tskit} Python API.
+  loads it into reticulate Python for use with the \code{tskit} Python API.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$r_to_py(tskit_module = get_tskit_py(), cleanup = TRUE)}\if{html}{\out{</div>}}
 }
@@ -359,7 +358,7 @@ This function saves a tree sequence from R to disk and
 \item{\code{tskit_module}}{reticulate Python module of \code{tskit}. By default,
 it calls \code{\link{get_tskit_py}} to obtain the module.}
 
-\item{\code{cleanup}}{logical delete the temporary file at the end of the function?}
+\item{\code{cleanup}}{logical; delete the temporary file at the end of the function?}
 }
 \if{html}{\out{</div>}}
 }
