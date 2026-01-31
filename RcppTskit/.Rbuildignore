@@ -11,6 +11,8 @@
 ^\.github$
 ^codecov\.yaml$
 ^cran-comments\.md$
+^cran-comments\.html$
+^cran-comments_files$
 ^inst/examples/create_test\.trees\.R$
 ^inst/examples/create_test\.trees\.py$
 ^inst/examples/explore_reticulate\.R$

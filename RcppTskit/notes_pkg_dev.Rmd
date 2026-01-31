@@ -5,8 +5,6 @@
 # TODO: Create a minimal package to demonstrate how to link against RcppTskit and call tskit C API
         https://github.com/HighlanderLab/RcppTskit/issues/48
 
-
-
 TODO: Add citation for tskit to DESCRIPTION file #46
       https://github.com/HighlanderLab/RcppTskit/issues/46
 
@@ -14,13 +12,6 @@ TODO: Add citation for tskit to DESCRIPTION file #46
 # TODO: Tag a release #15
 #       https://github.com/HighlanderLab/RcppTskit/issues/15
 # remotes::install_github("HighlanderLab/RcppTskit/RcppTskit")
-
-# Main branch
-remotes::install_github("HighlanderLab/RcppTskit/RcppTskit")
-
-# TODO: Create a devel branch #16
-#       https://github.com/HighlanderLab/RcppTskit/issues/16
-# remotes::install_github("HighlanderLab/RcppTskit/RcppTskit@devel")
 
 # TODO: Publish on CRAN #14
 #       https://github.com/HighlanderLab/RcppTskit/issues/14
@@ -150,10 +141,7 @@ PATCH version when you make backward compatible bug fixes
 ```
 use_upkeep_issue(year = NULL) # https://usethis.r-lib.org/reference/use_upkeep_issue.html
 use_release_issue(version = NULL) # https://usethis.r-lib.org/reference/use_release_issue.html
-use_cran_comments() # https://usethis.r-lib.org/reference/use_cran_comments.html
-use_github_release(publish = TRUE) # https://usethis.r-lib.org/reference/use_github_release.html
-devtools::release(pkg = ".", check = TRUE)
-# pkg The package to use, can be a file path to the package or a package object. See as.package() for more information
+# just follow tasks in there;)
 ```
 
 ## Setup
