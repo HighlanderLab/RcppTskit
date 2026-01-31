@@ -57,7 +57,7 @@ G <- ts$genotype_matrix()
 str(G)
 # int [1:100, 1:220] 0 0 2 2 0 2 1 0 0 1 ...
 reticulate::py_id(G)
-# Error: ! Expected a python object, received a integer
+# Error: ! Expected a Python object, received a integer
 # --> a simple object (like a NumPy array) is converted to an R object
 #     https://rstudio.github.io/reticulate/#type-conversions
 #     https://rstudio.github.io/reticulate/articles/arrays.html
