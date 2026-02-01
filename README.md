@@ -26,17 +26,23 @@ to develop new R packages.
 
 <!-- badges: start -->
 
-<!-- line 1 -->
-General: [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental) <!-- Row 1, Col 1 --> [![Development](https://img.shields.io/badge/development-active-blue.svg)](https://img.shields.io/badge/development-active-blue.svg) <!-- Row 1, Col 2 --> [![Licence](https://img.shields.io/badge/licence-MIT-blue.svg)](https://opensource.org/licenses/MIT) <!-- Row 1, Col 3 -->
+<!-- Row 1 -->
+General: [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental) <!-- Col-1-End -->
+[![Development](https://img.shields.io/badge/development-active-blue.svg)](https://img.shields.io/badge/development-active-blue.svg) <!-- Col-2-End -->
+[![Licence](https://img.shields.io/badge/licence-MIT-blue.svg)](https://opensource.org/licenses/MIT) <!-- Col-3-End -->
 
-<!-- line 2 -->
-Release: [![CRAN version](https://www.r-pkg.org/badges/version/RcppTskit)](https://CRAN.R-project.org/package=RcppTskit) <!-- Row 2, Col 1 --> [![Downloads - total](https://cranlogs.r-pkg.org/badges/grand-total/RcppTskit)](https://cranlogs.r-pkg.org/badges/grand-total/RcppTskit) <!-- Row 2, Col 2 --> ![GitHub version (main)](https://img.shields.io/github/r-package/v/HighlanderLab/RcppTskit/main?filename=RcppTskit%2FDESCRIPTION&label=Github) <!-- Row 2, Col 3 -->
+<!-- Row 2 -->
+Release: [![CRAN version](https://www.r-pkg.org/badges/version/RcppTskit)](https://CRAN.R-project.org/package=RcppTskit) <!-- Col-1-End -->
+[![Downloads - total](https://cranlogs.r-pkg.org/badges/grand-total/RcppTskit)](https://cranlogs.r-pkg.org/badges/grand-total/RcppTskit) <!-- Col-2-End -->
+![GitHub version (main)](https://img.shields.io/github/r-package/v/HighlanderLab/RcppTskit/main?filename=RcppTskit%2FDESCRIPTION&label=Github) <!-- Col-3-End -->
 
-<!-- line 3 -->
-R CMD checks: [![CRAN](https://cranchecks.info/badges/summary/RcppTskit?label=CRAN)](https://cran.r-project.org/web/checks/check_results_RcppTskit.html) <!-- Row 3, Col 1 --> [![R universe](https://highlanderlab.r-universe.dev/RcppTskit/badges/checks?label=R-universe)](https://highlanderlab.r-universe.dev/RcppTskit) <!-- Row 3, Col 2 --> [![GitHub](https://img.shields.io/github/actions/workflow/status/HighlanderLab/RcppTskit/R-CMD-check.yaml?label=GitHub)](https://github.com/HighlanderLab/RcppTskit/actions/workflows/R-CMD-check.yaml)
+<!-- Row 3 -->
+R CMD checks: [![CRAN](https://cranchecks.info/badges/summary/RcppTskit?label=CRAN)](https://cran.r-project.org/web/checks/check_results_RcppTskit.html) <!-- Col-1-End -->
+[![R universe](https://highlanderlab.r-universe.dev/RcppTskit/badges/checks?label=R-universe)](https://highlanderlab.r-universe.dev/RcppTskit) <!-- Col-2-End -->
+[![GitHub](https://img.shields.io/github/actions/workflow/status/HighlanderLab/RcppTskit/R-CMD-check.yaml?label=GitHub)](https://github.com/HighlanderLab/RcppTskit/actions/workflows/R-CMD-check.yaml) <!-- Col-3-End -->
 
-<!-- line 4 -->
-Code quality: [![Codecov test coverage](https://codecov.io/gh/HighlanderLab/RcppTskit/graph/badge.svg)](https://app.codecov.io/gh/HighlanderLab/RcppTskit) <!-- Row 4, Col 1 -->
+<!-- Row 4 -->
+Code quality: [![Codecov test coverage](https://codecov.io/gh/HighlanderLab/RcppTskit/graph/badge.svg)](https://app.codecov.io/gh/HighlanderLab/RcppTskit) <!-- Col-1-End -->
 
 <!-- badges: end -->
 
