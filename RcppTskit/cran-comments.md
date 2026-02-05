@@ -9,8 +9,11 @@
   `devtools::check(remote = TRUE, manual = TRUE)`. Both pass.
 
 * I have also used R CMD check GitHub action on MacOS, Windows, and
-  Ubunutu (olderelease, release, and devel, and ); all pass as you can
+  Ubunutu (oldrelease, release, and devel); and all pass as you can
   see at https://github.com/HighlanderLab/RcppTskit/actions/runs/21542139159.
+
+* I have also used R universe build systems and get pass on all 13 combinations
+  as you can see at https://highlanderlab.r-universe.dev/RcppTskit. 
 
 * `urlchecker::url_check()` also passes.
 
