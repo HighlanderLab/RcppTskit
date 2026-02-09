@@ -128,7 +128,7 @@ PATCH version when you make backward compatible bug fixes
 - Describe 1 ...
 - Describe 2 ...
 
-### Changed (for )changes in existing functionality)
+### Changed (for changes in existing functionality)
 ### Deprecated (soon-to-be removed features)
 ### Removed (now removed features)
 ### Fixed (bug fixes)

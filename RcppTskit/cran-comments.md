@@ -2,23 +2,21 @@
 
 0 errors | 0 warnings | 1 note
 
-* This is a new release.
+* This is a new release (v0.2.0).
 
-* I have tested on my local MacOS laptop using:
+* It passes checks on my local MacOS laptop using:
   `devtools::check()` and
-  `devtools::check(remote = TRUE, manual = TRUE)`. Both pass.
+  `devtools::check(remote = TRUE, manual = TRUE)`.
 
-* I have also used R CMD check GitHub action on MacOS, Windows, and
-  Ubunutu (oldrelease, release, and devel); and all pass as you can
-  see at https://github.com/HighlanderLab/RcppTskit/actions/runs/21542139159.
+* It passes checks on GitHub actions on MacOS, Windows, and Linux:
+  https://github.com/HighlanderLab/RcppTskit/actions/workflows/R-CMD-check.yaml.
 
-* I have also used R universe build systems and get pass on all 13 combinations
-  as you can see at https://highlanderlab.r-universe.dev/RcppTskit. 
+* It passes checks on R universe on all 13 combinations:
+  https://highlanderlab.r-universe.dev/RcppTskit#checktable.
 
-* `urlchecker::url_check()` also passes.
+* It passes on CRAN win-builder too.
 
-* On https://win-builder.r-project.org/UmBp28nqBAkU/00check.log
-  I get this warning:
+* On my previous CRAN submission (v0.1.0), I got this warning:
 
   ```
   * checking whether package 'RcppTskit' can be installed ... WARNING
@@ -26,7 +24,9 @@
     ../inst/include/tskit/tskit/core.h:171:21: warning: C++ designated initializers only available with '-std=c++20' or '-std=gnu++20' [-Wc++20-extensions]
   ```
 
-  Discussion with upstream devs of tskit indicates that this is due
-  to how the build tools have been built for this platform since
-  we could not replicate the warning on any of our platforms even when
-  tweaking the flags - see https://github.com/tskit-dev/tskit/issues/3375.
+  I have now addressed it by setting CXX_STD = CXX20 in Makevars.in.
+  Note that discussion with upstream devs of tskit indicates that this warning
+  seems to arise from how the build tools have been built for CRAN windows,
+  since we could not replicate the warning on any of platforms even when
+  tweaking the flags, including Windows. See the above checks and
+  https://github.com/tskit-dev/tskit/issues/3375.

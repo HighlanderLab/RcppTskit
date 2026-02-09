@@ -4,9 +4,7 @@ All notable changes to RcppTskit are documented in this file.
 The file format is based on [Keep a Changelog](https://keepachangelog.com),
 and releases adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.2.0] - 2026-MM-DD
-
-This will be 0.2.0 release.
+## [0.2.0] - 2026-02-09
 
 ### Added (new features)
 
@@ -18,20 +16,24 @@ This will be 0.2.0 release.
 - Added TableCollection and reticulate Python round-trip helpers:
   `TableCollection$r_to_py()` and `tc_py_to_r()`.
 
-- Changed the R API to follow Python-style flags for loading:
+- Changed the R API to follow tskit Python API for loading:
   `ts_load()`, `tc_load()`, `TreeSequence$new()`, and `TableCollection$new()`
   now use `skip_tables` and `skip_reference_sequence` logical arguments instead
   of an integer `options` bitmask.
 
 - Removed user-facing `options` from `TreeSequence$dump()`,
   `TreeSequence$dump_tables()`, `TableCollection$dump()`, and
-  `TableCollection$tree_sequence()` in line with the Python API.
-  These methods now call the C++ layer with
-  fixed options matching the Python API.
+  `TableCollection$tree_sequence()` to match R API with the tskit Python API,
+  while C++ API has the bitwise `options` like the tskit C API.
 
-- The bitwise options passed to the C++ functions are now rigorously validated.
+- The bitwise options passed to C++ are now validated.
 
-- Renamed unexported functions in this way `RcppTskit:::ts_load_ptr()` to
+### Changed
+
+- We now specify C++20 standard to go around the CRAN Windows issue,
+  see #63 for further details.
+
+- Renamed unexported functions from `RcppTskit:::ts_load_ptr()` to
   `RcppTskit:::ts_ptr_load()`.
 
 ## [0.1.0] - 2026-01-26
