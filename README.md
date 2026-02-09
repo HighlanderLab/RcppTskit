@@ -60,7 +60,7 @@ Code quality: [![Codecov test coverage](https://codecov.io/gh/HighlanderLab/Rcpp
 
   * See `extern/LICENSE` for `tskit`.
 
-  * See `RcppTskit/DESCRIPTION` and `RcppTskit/LICENSE` for `RcppTskit`.
+  * See `RcppTskit/LICENSE*` for `RcppTskit`.
 
 ## Installation
 
