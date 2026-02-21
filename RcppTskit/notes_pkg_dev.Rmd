@@ -274,6 +274,8 @@ hence the copy.
 
 Zero copy in R ideas based on ALTREP:
 
+https://github.com/r-lib/sparsevctrs uses ALTREP
+
 -------------------------------------------------------------------------------
 
 A simpler? one than a more complex one below:
