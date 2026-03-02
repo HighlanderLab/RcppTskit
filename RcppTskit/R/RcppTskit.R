@@ -179,6 +179,8 @@ ts_read <- ts_load
 #' @return A \code{\link{TableCollection}} object.
 #' @details See the corresponding Python function at
 #'   \url{https://github.com/tskit-dev/tskit/blob/dc394d72d121c99c6dcad88f7a4873880924dd72/python/tskit/tables.py#L3463}.
+#'   TODO: Update URL to TableCollection.load() method #104
+#'         https://github.com/HighlanderLab/RcppTskit/issues/104
 #' @seealso \code{\link[=TableCollection]{TableCollection$new}}
 #' @examples
 #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")

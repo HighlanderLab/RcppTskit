@@ -549,7 +549,7 @@ test_that("ts/tc_load(), ts/tc_summary*(), and ts/tc_dump(x) work", {
       file = tempfile(fileext = ".trees"),
       options = 1L
     ),
-    regexp = "does not support non-zero options"
+    regexp = "rtsk_treeseq_dump only supports options "
   )
 
   # Write ts to disk, read it back, and check that nums are still the same
@@ -608,7 +608,7 @@ test_that("ts/tc_load(), ts/tc_summary*(), and ts/tc_dump(x) work", {
       file = tempfile(fileext = ".trees"),
       options = 1L
     ),
-    regexp = "does not support non-zero options"
+    regexp = "rtsk_table_collection_dump only supports options "
   )
 
   # Write ts to disk, read it back, and check that nums are still the same

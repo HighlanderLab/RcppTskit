@@ -31,48 +31,48 @@ BEGIN_RCPP
 END_RCPP
 }
 // rtsk_treeseq_load
-SEXP rtsk_treeseq_load(const std::string filename, const int options);
+SEXP rtsk_treeseq_load(const std::string& filename, const int options);
 RcppExport SEXP _RcppTskit_rtsk_treeseq_load(SEXP filenameSEXP, SEXP optionsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::string >::type filename(filenameSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type filename(filenameSEXP);
     Rcpp::traits::input_parameter< const int >::type options(optionsSEXP);
     rcpp_result_gen = Rcpp::wrap(rtsk_treeseq_load(filename, options));
     return rcpp_result_gen;
 END_RCPP
 }
 // rtsk_table_collection_load
-SEXP rtsk_table_collection_load(const std::string filename, const int options);
+SEXP rtsk_table_collection_load(const std::string& filename, const int options);
 RcppExport SEXP _RcppTskit_rtsk_table_collection_load(SEXP filenameSEXP, SEXP optionsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::string >::type filename(filenameSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type filename(filenameSEXP);
     Rcpp::traits::input_parameter< const int >::type options(optionsSEXP);
     rcpp_result_gen = Rcpp::wrap(rtsk_table_collection_load(filename, options));
     return rcpp_result_gen;
 END_RCPP
 }
 // rtsk_treeseq_dump
-void rtsk_treeseq_dump(const SEXP ts, const std::string filename, const int options);
+void rtsk_treeseq_dump(const SEXP ts, const std::string& filename, const int options);
 RcppExport SEXP _RcppTskit_rtsk_treeseq_dump(SEXP tsSEXP, SEXP filenameSEXP, SEXP optionsSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const SEXP >::type ts(tsSEXP);
-    Rcpp::traits::input_parameter< const std::string >::type filename(filenameSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type filename(filenameSEXP);
     Rcpp::traits::input_parameter< const int >::type options(optionsSEXP);
     rtsk_treeseq_dump(ts, filename, options);
     return R_NilValue;
 END_RCPP
 }
 // rtsk_table_collection_dump
-void rtsk_table_collection_dump(const SEXP tc, const std::string filename, const int options);
+void rtsk_table_collection_dump(const SEXP tc, const std::string& filename, const int options);
 RcppExport SEXP _RcppTskit_rtsk_table_collection_dump(SEXP tcSEXP, SEXP filenameSEXP, SEXP optionsSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const SEXP >::type tc(tcSEXP);
-    Rcpp::traits::input_parameter< const std::string >::type filename(filenameSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type filename(filenameSEXP);
     Rcpp::traits::input_parameter< const int >::type options(optionsSEXP);
     rtsk_table_collection_dump(tc, filename, options);
     return R_NilValue;
