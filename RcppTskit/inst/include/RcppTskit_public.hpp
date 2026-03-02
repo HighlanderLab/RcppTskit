@@ -11,10 +11,11 @@ Rcpp::IntegerVector kastore_version();
 Rcpp::IntegerVector tskit_version();
 
 // sync default options with .cpp!
-SEXP rtsk_treeseq_load(std::string filename, int options = 0);
-SEXP rtsk_table_collection_load(std::string filename, int options = 0);
-void rtsk_treeseq_dump(SEXP ts, std::string filename, int options = 0);
-void rtsk_table_collection_dump(SEXP tc, std::string filename, int options = 0);
+SEXP rtsk_treeseq_load(std::string &filename, int options = 0);
+SEXP rtsk_table_collection_load(std::string &filename, int options = 0);
+void rtsk_treeseq_dump(SEXP ts, std::string &filename, int options = 0);
+void rtsk_table_collection_dump(SEXP tc, std::string &filename,
+                                int options = 0);
 SEXP rtsk_treeseq_copy_tables(SEXP ts, int options = 0);
 SEXP rtsk_treeseq_init(SEXP tc, int options = 0);
 

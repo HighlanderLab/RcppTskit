@@ -8,12 +8,12 @@
 namespace {
 // namespace to keep the contents local to this file
 
-constexpr tsk_flags_t kLoadSupportedOptions =
+constexpr tsk_flags_t kLoadSupportedFlags =
     TSK_LOAD_SKIP_TABLES | TSK_LOAD_SKIP_REFERENCE_SEQUENCE;
 
-constexpr tsk_flags_t kCopyTablesSupportedOptions = TSK_COPY_FILE_UUID;
+constexpr tsk_flags_t kCopyTablesSupportedFlags = TSK_COPY_FILE_UUID;
 
-constexpr tsk_flags_t kTreeseqInitSupportedOptions =
+constexpr tsk_flags_t kTreeseqInitSupportedFlags =
     TSK_TS_INIT_BUILD_INDEXES | TSK_TS_INIT_COMPUTE_MUTATION_PARENTS;
 
 // INTERNAL
@@ -26,8 +26,11 @@ constexpr tsk_flags_t kTreeseqInitSupportedOptions =
 //   objects, so we can't work with \code{TSK_NO_INIT}
 //   \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.TSK_NO_INIT}.
 tsk_flags_t validate_load_options(const int options, const char *caller) {
-  const tsk_flags_t load_options = static_cast<tsk_flags_t>(options);
-  const tsk_flags_t unsupported = load_options & ~kLoadSupportedOptions;
+  if (options < 0) {
+    Rcpp::stop("%s does not support negative options", caller);
+  }
+  const tsk_flags_t flags = static_cast<tsk_flags_t>(options);
+  const tsk_flags_t unsupported = flags & ~kLoadSupportedFlags;
   // ~ flips the bits in kLoadSupportedOptions
   if (unsupported != 0) {
     Rcpp::stop(
@@ -35,7 +38,7 @@ tsk_flags_t validate_load_options(const int options, const char *caller) {
         "TSK_LOAD_SKIP_REFERENCE_SEQUENCE (1 << 1); unsupported bits: 0x%X",
         caller, static_cast<unsigned int>(unsupported));
   }
-  return load_options;
+  return flags;
 }
 
 // INTERNAL
@@ -51,19 +54,20 @@ tsk_flags_t validate_load_options(const int options, const char *caller) {
 //   \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.TSK_NO_INIT}.
 tsk_flags_t validate_copy_tables_options(const int options,
                                          const char *caller) {
-  const tsk_flags_t copy_options = static_cast<tsk_flags_t>(options);
-  if (copy_options & TSK_NO_INIT) {
-    Rcpp::stop("%s does not support TSK_NO_INIT because the destination table "
-               "collection is newly allocated in this wrapper",
-               caller);
+  if (options < 0) {
+    Rcpp::stop("%s does not support negative options", caller);
   }
-  const tsk_flags_t unsupported = copy_options & ~kCopyTablesSupportedOptions;
+  const tsk_flags_t flags = static_cast<tsk_flags_t>(options);
+  if (flags & TSK_NO_INIT) {
+    Rcpp::stop("%s does not support TSK_NO_INIT", caller);
+  }
+  const tsk_flags_t unsupported = flags & ~kCopyTablesSupportedFlags;
   if (unsupported != 0) {
     Rcpp::stop("%s only supports copy option TSK_COPY_FILE_UUID (1 << 0); "
                "unsupported bits: 0x%X",
                caller, static_cast<unsigned int>(unsupported));
   }
-  return copy_options;
+  return flags;
 }
 
 // INTERNAL
@@ -81,15 +85,14 @@ tsk_flags_t validate_copy_tables_options(const int options,
 //   \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.TSK_TAKE_OWNERSHIP}.
 tsk_flags_t validate_treeseq_init_options(const int options,
                                           const char *caller) {
-  const tsk_flags_t init_options = static_cast<tsk_flags_t>(options);
-  if (init_options & TSK_TAKE_OWNERSHIP) {
-    Rcpp::stop(
-        "%s does not support TSK_TAKE_OWNERSHIP because ownership "
-        "is managed by R external pointers and this wrapper manages table "
-        "collections with C++ new()/delete",
-        caller);
+  if (options < 0) {
+    Rcpp::stop("%s does not support negative options", caller);
   }
-  const tsk_flags_t unsupported = init_options & ~kTreeseqInitSupportedOptions;
+  const tsk_flags_t flags = static_cast<tsk_flags_t>(options);
+  if (flags & TSK_TAKE_OWNERSHIP) {
+    Rcpp::stop("%s does not support TSK_TAKE_OWNERSHIP", caller);
+  }
+  const tsk_flags_t unsupported = flags & ~kTreeseqInitSupportedFlags;
   if (unsupported != 0) {
     Rcpp::stop(
         "%s only supports init options TSK_TS_INIT_BUILD_INDEXES (1 << 0) "
@@ -97,26 +100,34 @@ tsk_flags_t validate_treeseq_init_options(const int options,
         "bits: 0x%X",
         caller, static_cast<unsigned int>(unsupported));
   }
-  return init_options;
+  return flags;
 }
 
 // INTERNAL
-// @title Validate tree sequence/table collection dump options
-// @param options passed to dump functions
+// @title Validate tskit flags
+// @param options passed to tskit functions
 // @param caller function name
-// @details See
+// @details See for example
 //   \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_treeseq_dump}
 //   and
-//   \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_table_collection_dump}.
-//   \code{tskit} currently does not use dump options and expects \code{0}.
-tsk_flags_t validate_dump_options(const int options, const char *caller) {
-  const tsk_flags_t dump_options = static_cast<tsk_flags_t>(options);
-  if (dump_options != 0) {
-    Rcpp::stop("%s does not support non-zero options; tsk dump APIs currently "
-               "require options = 0",
-               caller);
+//   \url{https://tskit.dev/tskit/docs/stable/c-api.html#c.tsk_table_collection_dump},
+//   which currently expects \code{0}.
+tsk_flags_t validate_options(const int options, const tsk_flags_t supported,
+                             const char *caller) {
+  if (options < 0) {
+    Rcpp::stop("%s does not support negative options", caller);
   }
-  return dump_options;
+  const tsk_flags_t flags = static_cast<tsk_flags_t>(options);
+  const tsk_flags_t unsupported = flags & ~supported;
+  if (unsupported != 0) {
+    Rcpp::stop("%s only supports options 0x%X; unsupported bits: 0x%X", caller,
+               static_cast<unsigned int>(supported),
+               static_cast<unsigned int>(unsupported));
+  }
+  if (flags != 0) {
+    Rcpp::stop("%s does not support non-zero options", caller);
+  }
+  return flags;
 }
 
 } // namespace
@@ -174,13 +185,12 @@ Rcpp::IntegerVector tskit_version() {
 // ts <- TreeSequence$new(xptr = ts_xptr)
 // is(ts)
 // [[Rcpp::export]]
-SEXP rtsk_treeseq_load(const std::string filename, const int options = 0) {
-  const tsk_flags_t load_options =
-      validate_load_options(options, "rtsk_treeseq_load");
+SEXP rtsk_treeseq_load(const std::string &filename, const int options = 0) {
+  const tsk_flags_t flags = validate_load_options(options, "rtsk_treeseq_load");
   // tsk_treeseq_t ts; // on stack, destroyed end of func, must free resources
   tsk_treeseq_t *ts_ptr = new tsk_treeseq_t(); // on heap, persists function
   // See also https://tskit.dev/tskit/docs/stable/c-api.html#api-structure
-  int ret = tsk_treeseq_load(ts_ptr, filename.c_str(), load_options);
+  int ret = tsk_treeseq_load(ts_ptr, filename.c_str(), flags);
   if (ret != 0) {
     tsk_treeseq_free(ts_ptr);
     delete ts_ptr;
@@ -214,12 +224,12 @@ SEXP rtsk_treeseq_load(const std::string filename, const int options = 0) {
 // tc <- TableCollection$new(xptr = tc_xptr)
 // is(tc)
 // [[Rcpp::export]]
-SEXP rtsk_table_collection_load(const std::string filename,
+SEXP rtsk_table_collection_load(const std::string &filename,
                                 const int options = 0) {
-  const tsk_flags_t load_options =
+  const tsk_flags_t flags =
       validate_load_options(options, "rtsk_table_collection_load");
   tsk_table_collection_t *tc_ptr = new tsk_table_collection_t();
-  int ret = tsk_table_collection_load(tc_ptr, filename.c_str(), load_options);
+  int ret = tsk_table_collection_load(tc_ptr, filename.c_str(), flags);
   if (ret != 0) {
     tsk_table_collection_free(tc_ptr);
     delete tc_ptr;
@@ -248,12 +258,11 @@ SEXP rtsk_table_collection_load(const std::string filename,
 // RcppTskit:::rtsk_treeseq_dump(ts_xptr, dump_file)
 // file.remove(dump_file)
 // [[Rcpp::export]]
-void rtsk_treeseq_dump(const SEXP ts, const std::string filename,
+void rtsk_treeseq_dump(const SEXP ts, const std::string &filename,
                        const int options = 0) {
-  const tsk_flags_t dump_options =
-      validate_dump_options(options, "rtsk_treeseq_dump");
+  const tsk_flags_t flags = validate_options(options, 0, "rtsk_treeseq_dump");
   rtsk_treeseq_t ts_xptr(ts);
-  int ret = tsk_treeseq_dump(ts_xptr, filename.c_str(), dump_options);
+  int ret = tsk_treeseq_dump(ts_xptr, filename.c_str(), flags);
   if (ret != 0) {
     Rcpp::stop(tsk_strerror(ret));
   }
@@ -276,12 +285,12 @@ void rtsk_treeseq_dump(const SEXP ts, const std::string filename,
 // RcppTskit:::rtsk_table_collection_dump(tc_xptr, dump_file)
 // file.remove(dump_file)
 // [[Rcpp::export]]
-void rtsk_table_collection_dump(const SEXP tc, const std::string filename,
+void rtsk_table_collection_dump(const SEXP tc, const std::string &filename,
                                 const int options = 0) {
-  const tsk_flags_t dump_options =
-      validate_dump_options(options, "rtsk_table_collection_dump");
+  const tsk_flags_t flags =
+      validate_options(options, 0, "rtsk_table_collection_dump");
   rtsk_table_collection_t tc_xptr(tc);
-  int ret = tsk_table_collection_dump(tc_xptr, filename.c_str(), dump_options);
+  int ret = tsk_table_collection_dump(tc_xptr, filename.c_str(), flags);
   if (ret != 0) {
     Rcpp::stop(tsk_strerror(ret));
   }
@@ -312,11 +321,11 @@ void rtsk_table_collection_dump(const SEXP tc, const std::string filename,
 // RcppTskit:::rtsk_table_collection_print(tc_xptr)
 // [[Rcpp::export]]
 SEXP rtsk_treeseq_copy_tables(const SEXP ts, const int options = 0) {
-  const tsk_flags_t copy_options =
+  const tsk_flags_t flags =
       validate_copy_tables_options(options, "rtsk_treeseq_copy_tables");
   rtsk_treeseq_t ts_xptr(ts);
   tsk_table_collection_t *tc_ptr = new tsk_table_collection_t();
-  int ret = tsk_treeseq_copy_tables(ts_xptr, tc_ptr, copy_options);
+  int ret = tsk_treeseq_copy_tables(ts_xptr, tc_ptr, flags);
   if (ret != 0) {
     tsk_table_collection_free(tc_ptr);
     delete tc_ptr;
@@ -360,11 +369,11 @@ SEXP rtsk_treeseq_copy_tables(const SEXP ts, const int options = 0) {
 // RcppTskit:::rtsk_treeseq_print(ts_xptr)
 // [[Rcpp::export]]
 SEXP rtsk_treeseq_init(const SEXP tc, const int options = 0) {
-  const tsk_flags_t init_options =
+  const tsk_flags_t flags =
       validate_treeseq_init_options(options, "rtsk_treeseq_init");
   rtsk_table_collection_t tc_xptr(tc);
   tsk_treeseq_t *ts_ptr = new tsk_treeseq_t();
-  int ret = tsk_treeseq_init(ts_ptr, tc_xptr, init_options);
+  int ret = tsk_treeseq_init(ts_ptr, tc_xptr, flags);
   if (ret != 0) {
     tsk_treeseq_free(ts_ptr);
     delete ts_ptr;
@@ -814,8 +823,10 @@ Rcpp::String rtsk_table_collection_get_file_uuid(const SEXP tc) {
 // @describeIn rtsk_table_collection_summary Is the table collection indexed
 // [[Rcpp::export]]
 bool rtsk_table_collection_has_index(const SEXP tc, const int options = 0) {
+  const tsk_flags_t flags =
+      validate_options(options, 0, "rtsk_table_collection_has_index");
   rtsk_table_collection_t tc_xptr(tc);
-  return tsk_table_collection_has_index(tc_xptr, options);
+  return tsk_table_collection_has_index(tc_xptr, flags);
 }
 
 // PUBLIC, wrapper for tsk_table_collection_build_index
@@ -837,8 +848,10 @@ bool rtsk_table_collection_has_index(const SEXP tc, const int options = 0) {
 // RcppTskit:::rtsk_table_collection_has_index(tc_xptr)
 // [[Rcpp::export]]
 void rtsk_table_collection_build_index(const SEXP tc, const int options = 0) {
+  const tsk_flags_t flags =
+      validate_options(options, 0, "rtsk_table_collection_build_index");
   rtsk_table_collection_t tc_xptr(tc);
-  int ret = tsk_table_collection_build_index(tc_xptr, options);
+  int ret = tsk_table_collection_build_index(tc_xptr, flags);
   if (ret != 0) {
     Rcpp::stop(tsk_strerror(ret));
   }
@@ -861,10 +874,12 @@ void rtsk_table_collection_build_index(const SEXP tc, const int options = 0) {
 // RcppTskit:::rtsk_table_collection_has_index(tc_xptr)
 // [[Rcpp::export]]
 void rtsk_table_collection_drop_index(const SEXP tc, const int options = 0) {
+  const tsk_flags_t flags =
+      validate_options(options, 0, "rtsk_table_collection_drop_index");
   rtsk_table_collection_t tc_xptr(tc);
-  int ret = tsk_table_collection_drop_index(tc_xptr, options);
+  int ret = tsk_table_collection_drop_index(tc_xptr, flags);
   // tsk_table_collection_drop_index() currently documents always returning 0;
-  // so we test for possible future failures, but we cannot unit-tested.
+  // so we test for possible future failures, but we cannot unit-test this path.
   // # nocov start
   if (ret != 0) {
     Rcpp::stop(tsk_strerror(ret));
