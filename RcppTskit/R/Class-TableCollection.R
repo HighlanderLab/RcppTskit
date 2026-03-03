@@ -1,8 +1,9 @@
 #' @title Table collection R6 class (TableCollection)
-#' @description An R6 class holding an external pointer to a table collection
-#' object. As an R6 class, its methods look Pythonic and therefore resemble the
-#' tskit Python API. Since the class only holds the pointer, it is lightweight.
-#' Currently there is a limited set of R methods for working the tree sequence.
+#' @description An \code{R6} class holding an external pointer to
+#' a table collection object. As an \code{R6} class, method-calling looks Pythonic
+#' and hence resembles the \code{tskit Python} API. Since the class only
+#' holds the pointer, it is lightweight. Currently there is a limited set of
+#' \code{R} methods for working with the table collection object.
 #' @export
 TableCollection <- R6Class(
   classname = "TableCollection",
@@ -16,7 +17,7 @@ TableCollection <- R6Class(
     #' @param skip_reference_sequence logical; if \code{TRUE}, skip loading
     #'   reference genome sequence information.
     #' @param xptr an external pointer (\code{externalptr}) to a table collection.
-    #' @details See the corresponding Python function at
+    #' @details See the \code{tskit Python} equivalent at
     #'   \url{https://github.com/tskit-dev/tskit/blob/dc394d72d121c99c6dcad88f7a4873880924dd72/python/tskit/tables.py#L3463}.
     #'   TODO: Update URL to TableCollection.load() method #104
     #'         https://github.com/HighlanderLab/RcppTskit/issues/104
@@ -65,7 +66,7 @@ TableCollection <- R6Class(
 
     #' @description Write a table collection to a file.
     #' @param file a string specifying the full path of the tree sequence file.
-    #' @details See the corresponding Python function at
+    #' @details See the \code{tskit Python} equivalent at
     #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TableCollection.dump}.
     #' @return No return value; called for side effects.
     #' @examples
@@ -86,7 +87,7 @@ TableCollection <- R6Class(
     },
 
     #' @description Create a \code{\link{TreeSequence}} from this table collection.
-    #' @details See the corresponding Python function at
+    #' @details See the \code{tskit Python} equivalent at
     #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TableCollection.tree_sequence}.
     #' @return A \code{\link{TreeSequence}} object.
     #' @examples
@@ -102,7 +103,88 @@ TableCollection <- R6Class(
       TreeSequence$new(xptr = ts_xptr)
     },
 
+    #' @description Get the number of provenances in a table collection.
+    #' @return A signed 64 bit integer \code{bit64::integer64}.
+    #' @examples
+    #' tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+    #' tc <- tc_load(tc_file)
+    #' tc$num_provenances()
+    num_provenances = function() {
+      rtsk_table_collection_get_num_provenances(self$xptr)
+    },
+
+    #' @description Get the number of populations in a table collection.
+    #' @return A signed 64 bit integer \code{bit64::integer64}.
+    #' @examples
+    #' tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+    #' tc <- tc_load(tc_file)
+    #' tc$num_populations()
+    num_populations = function() {
+      rtsk_table_collection_get_num_populations(self$xptr)
+    },
+
+    #' @description Get the number of migrations in a table collection.
+    #' @return A signed 64 bit integer \code{bit64::integer64}.
+    #' @examples
+    #' tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+    #' tc <- tc_load(tc_file)
+    #' tc$num_migrations()
+    num_migrations = function() {
+      rtsk_table_collection_get_num_migrations(self$xptr)
+    },
+
+    #' @description Get the number of individuals in a table collection.
+    #' @return A signed 64 bit integer \code{bit64::integer64}.
+    #' @examples
+    #' tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+    #' tc <- tc_load(tc_file)
+    #' tc$num_individuals()
+    num_individuals = function() {
+      rtsk_table_collection_get_num_individuals(self$xptr)
+    },
+
+    #' @description Get the number of nodes in a table collection.
+    #' @return A signed 64 bit integer \code{bit64::integer64}.
+    #' @examples
+    #' tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+    #' tc <- tc_load(tc_file)
+    #' tc$num_nodes()
+    num_nodes = function() {
+      rtsk_table_collection_get_num_nodes(self$xptr)
+    },
+
+    #' @description Get the number of edges in a table collection.
+    #' @return A signed 64 bit integer \code{bit64::integer64}.
+    #' @examples
+    #' tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+    #' tc <- tc_load(tc_file)
+    #' tc$num_edges()
+    num_edges = function() {
+      rtsk_table_collection_get_num_edges(self$xptr)
+    },
+
+    #' @description Get the number of sites in a table collection.
+    #' @return A signed 64 bit integer \code{bit64::integer64}.
+    #' @examples
+    #' tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+    #' tc <- tc_load(tc_file)
+    #' tc$num_sites()
+    num_sites = function() {
+      rtsk_table_collection_get_num_sites(self$xptr)
+    },
+
+    #' @description Get the number of mutations in a table collection.
+    #' @return A signed 64 bit integer \code{bit64::integer64}.
+    #' @examples
+    #' tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+    #' tc <- tc_load(tc_file)
+    #' tc$num_mutations()
+    num_mutations = function() {
+      rtsk_table_collection_get_num_mutations(self$xptr)
+    },
+
     #' @description Get the sequence length.
+    #' @return A numeric.
     #' @examples
     #' tc_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' tc <- tc_load(tc_file)
@@ -112,6 +194,7 @@ TableCollection <- R6Class(
     },
 
     #' @description Get the time units string.
+    #' @return A character.
     #' @examples
     #' tc_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' tc <- tc_load(tc_file)
@@ -121,6 +204,7 @@ TableCollection <- R6Class(
     },
 
     #' @description Get whether the table collection has edge indexes.
+    #' @return A logical.
     #' @examples
     #' tc_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' tc <- tc_load(tc_file)
@@ -130,7 +214,7 @@ TableCollection <- R6Class(
     },
 
     #' @description Build edge indexes for this table collection.
-    #' @details See the corresponding Python function at
+    #' @details See the \code{tskit Python} equivalent at
     #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TableCollection.build_index}.
     #' @return No return value; called for side effects.
     #' @examples
@@ -146,7 +230,7 @@ TableCollection <- R6Class(
     },
 
     #' @description Drop edge indexes for this table collection.
-    #' @details See the corresponding Python function at
+    #' @details See the \code{tskit Python} equivalent at
     #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TableCollection.drop_index}.
     #' @return No return value; called for side effects.
     #' @examples
@@ -160,6 +244,7 @@ TableCollection <- R6Class(
     },
 
     #' @description Get whether the table collection has a reference genome sequence.
+    #' @return A logical.
     #' @examples
     #' tc_file1 <- system.file("examples/test.trees", package = "RcppTskit")
     #' tc_file2 <- system.file("examples/test_with_ref_seq.trees", package = "RcppTskit")
@@ -171,9 +256,10 @@ TableCollection <- R6Class(
       rtsk_table_collection_has_reference_sequence(self$xptr)
     },
 
-    #' @description Get the file UUID string.
-    #' @details Returns the UUID of the file the table collection was loaded from.
-    #'   If unavailable, returns \code{NA_character_}.
+    #' @description Get the UUID string of the file the table collection was
+    #'   loaded from.
+    #' @return A character; \code{NA_character_} when file is information is
+    #'   unavailable.
     #' @examples
     #' tc_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' tc <- tc_load(tc_file)
@@ -182,14 +268,15 @@ TableCollection <- R6Class(
       rtsk_table_collection_get_file_uuid(self$xptr)
     },
 
-    #' @description This function saves a table collection from R to disk and
-    #'   loads it into reticulate Python for use with the \code{tskit} Python API.
-    #' @param tskit_module reticulate Python module of \code{tskit}. By default,
-    #'   it calls \code{\link{get_tskit_py}} to obtain the module.
+    #' @description This function saves a table collection from \code{R} to disk
+    #'   and loads it into reticulate \code{Python} for use with the
+    #'   \code{tskit Python} API.
+    #' @param tskit_module reticulate \code{Python} module of \code{tskit}.
+    #'   By default, it calls \code{\link{get_tskit_py}} to obtain the module.
     #' @param cleanup logical; delete the temporary file at the end of the function?
     #' @details See \url{https://tskit.dev/tutorials/tables_and_editing.html#tables-and-editing}
     #'   on what you can do with the tables.
-    #' @return Table collection in reticulate Python.
+    #' @return \code{TableCollection} object in reticulate \code{Python}.
     #' @seealso \code{\link{tc_py_to_r}}, \code{\link{tc_load}}, and
     #'   \code{\link[=TableCollection]{TableCollection$dump}}.
     #' @examples
@@ -222,7 +309,9 @@ TableCollection <- R6Class(
     #' @description Print a summary of a table collection and its contents.
     #' @return A list with two data.frames; the first contains table collection
     #'   properties and their values; the second contains the number of rows in
-    #'   each table and the length of their metadata.
+    #'   each table and the length of their metadata. All columns are characters
+    #'   since output types differ across the entries. Use individual getters
+    #'   to obtain raw values before they are converted to character.
     #' @examples
     #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' tc <- tc_load(file = ts_file)

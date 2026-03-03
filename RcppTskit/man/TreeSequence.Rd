@@ -4,10 +4,11 @@
 \alias{TreeSequence}
 \title{Succinct tree sequence R6 class (TreeSequence)}
 \description{
-An R6 class holding an external pointer to a tree sequence
-object. As an R6 class, its methods look Pythonic and therefore resemble the
-tskit Python API. Since the class only holds the pointer, it is lightweight.
-Currently there is a limited set of R methods for working with the tree sequence.
+An \code{R6} class holding an external pointer to
+a tree sequence object. As an \code{R6} class, method-calling looks Pythonic
+and hence resembles the \code{tskit Python} API. Since the class only
+holds the pointer, it is lightweight. Currently there is a limited set of
+\code{R} methods for working with the tree sequence.
 }
 \examples{
 
@@ -312,7 +313,7 @@ reference genome sequence information.}
 \if{html}{\out{</div>}}
 }
 \subsection{Details}{
-See the corresponding Python function at
+See the \code{tskit Python} equivalent at
   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.load}.
 }
 
@@ -352,7 +353,7 @@ Write a tree sequence to a file.
 \if{html}{\out{</div>}}
 }
 \subsection{Details}{
-See the corresponding Python function at
+See the \code{tskit Python} equivalent at
   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.dump}.
 }
 
@@ -400,7 +401,7 @@ Copy the tables into a \code{\link{TableCollection}}.
 }
 
 \subsection{Details}{
-See the corresponding Python function at
+See the \code{tskit Python} equivalent at
   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.dump_tables}.
 }
 
@@ -431,7 +432,9 @@ Print a summary of a tree sequence and its contents.
 \subsection{Returns}{
 A list with two data.frames; the first contains tree sequence
   properties and their values; the second contains the number of rows in
-  each table and the length of their metadata.
+  each table and the length of their metadata. All columns are characters
+  since output types differ across the entries. Use individual getters
+  to obtain raw values before they are converted to character.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -449,8 +452,9 @@ ts
 \if{html}{\out{<a id="method-TreeSequence-r_to_py"></a>}}
 \if{latex}{\out{\hypertarget{method-TreeSequence-r_to_py}{}}}
 \subsection{Method \code{r_to_py()}}{
-This function saves a tree sequence from R to disk and
-  loads it into reticulate Python for use with the \code{tskit} Python API.
+This function saves a tree sequence from \code{R} to disk
+  and loads it into reticulate \code{Python} for use with the
+  \code{tskit Python} API.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$r_to_py(tskit_module = get_tskit_py(), cleanup = TRUE)}\if{html}{\out{</div>}}
 }
@@ -458,15 +462,15 @@ This function saves a tree sequence from R to disk and
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{tskit_module}}{reticulate Python module of \code{tskit}. By default,
-it calls \code{\link{get_tskit_py}} to obtain the module.}
+\item{\code{tskit_module}}{reticulate \code{Python} module of \code{tskit}.
+By default, it calls \code{\link{get_tskit_py}} to obtain the module.}
 
 \item{\code{cleanup}}{logical; delete the temporary file at the end of the function?}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Tree sequence in reticulate Python.
+\code{TreeSequence} object in reticulate \code{Python}.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -504,6 +508,14 @@ Get the number of provenances in a tree sequence.
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$num_provenances()}\if{html}{\out{</div>}}
 }
 
+\subsection{Details}{
+See the \code{tskit Python} equivalent at
+  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_provenances}.
+}
+
+\subsection{Returns}{
+A signed 64 bit integer \code{bit64::integer64}.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
@@ -524,6 +536,14 @@ Get the number of populations in a tree sequence.
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$num_populations()}\if{html}{\out{</div>}}
 }
 
+\subsection{Details}{
+See the \code{tskit Python} equivalent at
+  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_populations}.
+}
+
+\subsection{Returns}{
+A signed 64 bit integer \code{bit64::integer64}.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
@@ -544,6 +564,14 @@ Get the number of migrations in a tree sequence.
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$num_migrations()}\if{html}{\out{</div>}}
 }
 
+\subsection{Details}{
+See the \code{tskit Python} equivalent at
+  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_migrations}.
+}
+
+\subsection{Returns}{
+A signed 64 bit integer \code{bit64::integer64}.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
@@ -564,6 +592,14 @@ Get the number of individuals in a tree sequence.
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$num_individuals()}\if{html}{\out{</div>}}
 }
 
+\subsection{Details}{
+See the \code{tskit Python} equivalent at
+  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_individuals}.
+}
+
+\subsection{Returns}{
+A signed 64 bit integer \code{bit64::integer64}.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
@@ -584,6 +620,14 @@ Get the number of samples (of nodes) in a tree sequence.
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$num_samples()}\if{html}{\out{</div>}}
 }
 
+\subsection{Details}{
+See the \code{tskit Python} equivalent at
+  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_samples}.
+}
+
+\subsection{Returns}{
+A signed 64 bit integer \code{bit64::integer64}.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
@@ -604,6 +648,14 @@ Get the number of nodes in a tree sequence.
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$num_nodes()}\if{html}{\out{</div>}}
 }
 
+\subsection{Details}{
+See the \code{tskit Python} equivalent at
+  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_nodes}.
+}
+
+\subsection{Returns}{
+A signed 64 bit integer \code{bit64::integer64}.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
@@ -624,6 +676,14 @@ Get the number of edges in a tree sequence.
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$num_edges()}\if{html}{\out{</div>}}
 }
 
+\subsection{Details}{
+See the \code{tskit Python} equivalent at
+  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_nodes}.
+}
+
+\subsection{Returns}{
+A signed 64 bit integer \code{bit64::integer64}.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
@@ -644,6 +704,14 @@ Get the number of trees in a tree sequence.
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$num_trees()}\if{html}{\out{</div>}}
 }
 
+\subsection{Details}{
+See the \code{tskit Python} equivalent at
+  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_trees}.
+}
+
+\subsection{Returns}{
+A signed 64 bit integer \code{bit64::integer64}.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
@@ -664,6 +732,14 @@ Get the number of sites in a tree sequence.
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$num_sites()}\if{html}{\out{</div>}}
 }
 
+\subsection{Details}{
+See the \code{tskit Python} equivalent at
+  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_sites}.
+}
+
+\subsection{Returns}{
+A signed 64 bit integer \code{bit64::integer64}.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
@@ -684,6 +760,14 @@ Get the number of mutations in a tree sequence.
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$num_mutations()}\if{html}{\out{</div>}}
 }
 
+\subsection{Details}{
+See the \code{tskit Python} equivalent at
+  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_mutations}.
+}
+
+\subsection{Returns}{
+A signed 64 bit integer \code{bit64::integer64}.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
@@ -704,6 +788,14 @@ Get the sequence length.
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$sequence_length()}\if{html}{\out{</div>}}
 }
 
+\subsection{Details}{
+See the \code{tskit Python} equivalent at
+  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.sequence_length}.
+}
+
+\subsection{Returns}{
+A numeric.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
@@ -727,8 +819,15 @@ Get the discrete genome status.
 \subsection{Details}{
 Returns \code{TRUE} if all genomic coordinates in the tree
   sequence are discrete integer values.
+
+
+See the \code{tskit Python} equivalent at
+  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.discrete_genome}.
 }
 
+\subsection{Returns}{
+A logical.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{ts_file1 <- system.file("examples/test.trees", package = "RcppTskit")
@@ -752,6 +851,14 @@ Get whether the tree sequence has a reference genome sequence.
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$has_reference_sequence()}\if{html}{\out{</div>}}
 }
 
+\subsection{Details}{
+See the \code{tskit Python} equivalent at
+  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.has_reference_sequence}.
+}
+
+\subsection{Returns}{
+A logical.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{ts_file1 <- system.file("examples/test.trees", package = "RcppTskit")
@@ -775,6 +882,14 @@ Get the time units string.
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$time_units()}\if{html}{\out{</div>}}
 }
 
+\subsection{Details}{
+See the \code{tskit Python} equivalent at
+  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.time_units}.
+}
+
+\subsection{Returns}{
+A character.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
@@ -798,8 +913,15 @@ Get the discrete time status.
 \subsection{Details}{
 Returns \code{TRUE} if all time values in the tree sequence are
   discrete integer values.
+
+
+See the \code{tskit Python} equivalent at
+  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.discrete_time}.
 }
 
+\subsection{Returns}{
+A logical.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{ts_file1 <- system.file("examples/test.trees", package = "RcppTskit")
@@ -823,6 +945,14 @@ Get the min time in node table and mutation table.
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$min_time()}\if{html}{\out{</div>}}
 }
 
+\subsection{Details}{
+See the \code{tskit Python} equivalent at
+  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.min_time}.
+}
+
+\subsection{Returns}{
+A numeric.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
@@ -843,6 +973,14 @@ Get the max time in node table and mutation table.
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$max_time()}\if{html}{\out{</div>}}
 }
 
+\subsection{Details}{
+See the \code{tskit Python} equivalent at
+  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.max_time}.
+}
+
+\subsection{Returns}{
+A numeric.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
@@ -864,7 +1002,8 @@ Get the length of metadata in a tree sequence and its tables.
 }
 
 \subsection{Returns}{
-A named list with the length of metadata.
+A named list with the length of metadata, each as a signed 64 bit
+  integer \code{bit64::integer64}.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -881,16 +1020,16 @@ ts$metadata_length()
 \if{html}{\out{<a id="method-TreeSequence-file_uuid"></a>}}
 \if{latex}{\out{\hypertarget{method-TreeSequence-file_uuid}{}}}
 \subsection{Method \code{file_uuid()}}{
-Get the file UUID string.
+Get the UUID string of the file the tree sequence was
+  loaded from.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TreeSequence$file_uuid()}\if{html}{\out{</div>}}
 }
 
-\subsection{Details}{
-Returns the UUID of the file the tree sequence was loaded from.
-  If unavailable, returns \code{NA_character_}.
+\subsection{Returns}{
+A character; \code{NA_character_} when file is information is
+  unavailable.
 }
-
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")

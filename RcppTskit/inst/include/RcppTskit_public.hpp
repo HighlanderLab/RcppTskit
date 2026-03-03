@@ -40,6 +40,14 @@ Rcpp::String rtsk_treeseq_get_file_uuid(SEXP ts);
 Rcpp::List rtsk_treeseq_summary(SEXP ts);
 Rcpp::List rtsk_treeseq_metadata_length(SEXP ts);
 
+SEXP rtsk_table_collection_get_num_provenances(SEXP tc);
+SEXP rtsk_table_collection_get_num_populations(SEXP tc);
+SEXP rtsk_table_collection_get_num_migrations(SEXP tc);
+SEXP rtsk_table_collection_get_num_individuals(SEXP tc);
+SEXP rtsk_table_collection_get_num_nodes(SEXP tc);
+SEXP rtsk_table_collection_get_num_edges(SEXP tc);
+SEXP rtsk_table_collection_get_num_sites(SEXP tc);
+SEXP rtsk_table_collection_get_num_mutations(SEXP tc);
 double rtsk_table_collection_get_sequence_length(SEXP tc);
 bool rtsk_table_collection_has_reference_sequence(SEXP tc);
 Rcpp::String rtsk_table_collection_get_time_units(SEXP tc);

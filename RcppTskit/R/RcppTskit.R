@@ -140,7 +140,7 @@ load_args_to_options <- function(
 #' @param skip_tables logical; if \code{TRUE}, load only non-table information.
 #' @param skip_reference_sequence logical; if \code{TRUE}, skip loading
 #'   reference genome sequence information.
-#' @details See the corresponding Python function at
+#' @details See the \code{tskit Python} equivalent at
 #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.load}.
 #' @return A \code{\link{TreeSequence}} object.
 #' @seealso \code{\link[=TreeSequence]{TreeSequence$new}}
@@ -177,7 +177,7 @@ ts_read <- ts_load
 #' @param skip_reference_sequence logical; if \code{TRUE}, skip loading
 #'   reference genome sequence information.
 #' @return A \code{\link{TableCollection}} object.
-#' @details See the corresponding Python function at
+#' @details See the \code{tskit Python} equivalent at
 #'   \url{https://github.com/tskit-dev/tskit/blob/dc394d72d121c99c6dcad88f7a4873880924dd72/python/tskit/tables.py#L3463}.
 #'   TODO: Update URL to TableCollection.load() method #104
 #'         https://github.com/HighlanderLab/RcppTskit/issues/104

@@ -4,10 +4,11 @@
 \alias{TableCollection}
 \title{Table collection R6 class (TableCollection)}
 \description{
-An R6 class holding an external pointer to a table collection
-object. As an R6 class, its methods look Pythonic and therefore resemble the
-tskit Python API. Since the class only holds the pointer, it is lightweight.
-Currently there is a limited set of R methods for working the tree sequence.
+An \code{R6} class holding an external pointer to
+a table collection object. As an \code{R6} class, method-calling looks Pythonic
+and hence resembles the \code{tskit Python} API. Since the class only
+holds the pointer, it is lightweight. Currently there is a limited set of
+\code{R} methods for working with the table collection object.
 }
 \examples{
 
@@ -39,6 +40,70 @@ ts_file <- system.file("examples/test.trees", package = "RcppTskit")
 tc <- TableCollection$new(file = ts_file)
 ts <- tc$tree_sequence()
 is(ts)
+
+## ------------------------------------------------
+## Method `TableCollection$num_provenances`
+## ------------------------------------------------
+
+tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+tc <- tc_load(tc_file)
+tc$num_provenances()
+
+## ------------------------------------------------
+## Method `TableCollection$num_populations`
+## ------------------------------------------------
+
+tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+tc <- tc_load(tc_file)
+tc$num_populations()
+
+## ------------------------------------------------
+## Method `TableCollection$num_migrations`
+## ------------------------------------------------
+
+tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+tc <- tc_load(tc_file)
+tc$num_migrations()
+
+## ------------------------------------------------
+## Method `TableCollection$num_individuals`
+## ------------------------------------------------
+
+tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+tc <- tc_load(tc_file)
+tc$num_individuals()
+
+## ------------------------------------------------
+## Method `TableCollection$num_nodes`
+## ------------------------------------------------
+
+tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+tc <- tc_load(tc_file)
+tc$num_nodes()
+
+## ------------------------------------------------
+## Method `TableCollection$num_edges`
+## ------------------------------------------------
+
+tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+tc <- tc_load(tc_file)
+tc$num_edges()
+
+## ------------------------------------------------
+## Method `TableCollection$num_sites`
+## ------------------------------------------------
+
+tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+tc <- tc_load(tc_file)
+tc$num_sites()
+
+## ------------------------------------------------
+## Method `TableCollection$num_mutations`
+## ------------------------------------------------
+
+tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+tc <- tc_load(tc_file)
+tc$num_mutations()
 
 ## ------------------------------------------------
 ## Method `TableCollection$sequence_length`
@@ -155,6 +220,14 @@ tc
 \item \href{#method-TableCollection-dump}{\code{TableCollection$dump()}}
 \item \href{#method-TableCollection-write}{\code{TableCollection$write()}}
 \item \href{#method-TableCollection-tree_sequence}{\code{TableCollection$tree_sequence()}}
+\item \href{#method-TableCollection-num_provenances}{\code{TableCollection$num_provenances()}}
+\item \href{#method-TableCollection-num_populations}{\code{TableCollection$num_populations()}}
+\item \href{#method-TableCollection-num_migrations}{\code{TableCollection$num_migrations()}}
+\item \href{#method-TableCollection-num_individuals}{\code{TableCollection$num_individuals()}}
+\item \href{#method-TableCollection-num_nodes}{\code{TableCollection$num_nodes()}}
+\item \href{#method-TableCollection-num_edges}{\code{TableCollection$num_edges()}}
+\item \href{#method-TableCollection-num_sites}{\code{TableCollection$num_sites()}}
+\item \href{#method-TableCollection-num_mutations}{\code{TableCollection$num_mutations()}}
 \item \href{#method-TableCollection-sequence_length}{\code{TableCollection$sequence_length()}}
 \item \href{#method-TableCollection-time_units}{\code{TableCollection$time_units()}}
 \item \href{#method-TableCollection-has_index}{\code{TableCollection$has_index()}}
@@ -196,8 +269,10 @@ reference genome sequence information.}
 \if{html}{\out{</div>}}
 }
 \subsection{Details}{
-See the corresponding Python function at
+See the \code{tskit Python} equivalent at
   \url{https://github.com/tskit-dev/tskit/blob/dc394d72d121c99c6dcad88f7a4873880924dd72/python/tskit/tables.py#L3463}.
+  TODO: Update URL to TableCollection.load() method #104
+        https://github.com/HighlanderLab/RcppTskit/issues/104
 }
 
 \subsection{Returns}{
@@ -232,7 +307,7 @@ Write a table collection to a file.
 \if{html}{\out{</div>}}
 }
 \subsection{Details}{
-See the corresponding Python function at
+See the \code{tskit Python} equivalent at
   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TableCollection.dump}.
 }
 
@@ -280,7 +355,7 @@ Create a \code{\link{TreeSequence}} from this table collection.
 }
 
 \subsection{Details}{
-See the corresponding Python function at
+See the \code{tskit Python} equivalent at
   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TableCollection.tree_sequence}.
 }
 
@@ -300,6 +375,190 @@ is(ts)
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TableCollection-num_provenances"></a>}}
+\if{latex}{\out{\hypertarget{method-TableCollection-num_provenances}{}}}
+\subsection{Method \code{num_provenances()}}{
+Get the number of provenances in a table collection.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TableCollection$num_provenances()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A signed 64 bit integer \code{bit64::integer64}.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+tc <- tc_load(tc_file)
+tc$num_provenances()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TableCollection-num_populations"></a>}}
+\if{latex}{\out{\hypertarget{method-TableCollection-num_populations}{}}}
+\subsection{Method \code{num_populations()}}{
+Get the number of populations in a table collection.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TableCollection$num_populations()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A signed 64 bit integer \code{bit64::integer64}.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+tc <- tc_load(tc_file)
+tc$num_populations()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TableCollection-num_migrations"></a>}}
+\if{latex}{\out{\hypertarget{method-TableCollection-num_migrations}{}}}
+\subsection{Method \code{num_migrations()}}{
+Get the number of migrations in a table collection.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TableCollection$num_migrations()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A signed 64 bit integer \code{bit64::integer64}.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+tc <- tc_load(tc_file)
+tc$num_migrations()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TableCollection-num_individuals"></a>}}
+\if{latex}{\out{\hypertarget{method-TableCollection-num_individuals}{}}}
+\subsection{Method \code{num_individuals()}}{
+Get the number of individuals in a table collection.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TableCollection$num_individuals()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A signed 64 bit integer \code{bit64::integer64}.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+tc <- tc_load(tc_file)
+tc$num_individuals()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TableCollection-num_nodes"></a>}}
+\if{latex}{\out{\hypertarget{method-TableCollection-num_nodes}{}}}
+\subsection{Method \code{num_nodes()}}{
+Get the number of nodes in a table collection.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TableCollection$num_nodes()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A signed 64 bit integer \code{bit64::integer64}.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+tc <- tc_load(tc_file)
+tc$num_nodes()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TableCollection-num_edges"></a>}}
+\if{latex}{\out{\hypertarget{method-TableCollection-num_edges}{}}}
+\subsection{Method \code{num_edges()}}{
+Get the number of edges in a table collection.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TableCollection$num_edges()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A signed 64 bit integer \code{bit64::integer64}.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+tc <- tc_load(tc_file)
+tc$num_edges()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TableCollection-num_sites"></a>}}
+\if{latex}{\out{\hypertarget{method-TableCollection-num_sites}{}}}
+\subsection{Method \code{num_sites()}}{
+Get the number of sites in a table collection.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TableCollection$num_sites()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A signed 64 bit integer \code{bit64::integer64}.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+tc <- tc_load(tc_file)
+tc$num_sites()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TableCollection-num_mutations"></a>}}
+\if{latex}{\out{\hypertarget{method-TableCollection-num_mutations}{}}}
+\subsection{Method \code{num_mutations()}}{
+Get the number of mutations in a table collection.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TableCollection$num_mutations()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A signed 64 bit integer \code{bit64::integer64}.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{tc_file <- system.file("examples/test.trees", package = "RcppTskit")
+tc <- tc_load(tc_file)
+tc$num_mutations()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TableCollection-sequence_length"></a>}}
 \if{latex}{\out{\hypertarget{method-TableCollection-sequence_length}{}}}
 \subsection{Method \code{sequence_length()}}{
@@ -308,6 +567,9 @@ Get the sequence length.
 \if{html}{\out{<div class="r">}}\preformatted{TableCollection$sequence_length()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+A numeric.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{tc_file <- system.file("examples/test.trees", package = "RcppTskit")
@@ -328,6 +590,9 @@ Get the time units string.
 \if{html}{\out{<div class="r">}}\preformatted{TableCollection$time_units()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+A character.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{tc_file <- system.file("examples/test.trees", package = "RcppTskit")
@@ -348,6 +613,9 @@ Get whether the table collection has edge indexes.
 \if{html}{\out{<div class="r">}}\preformatted{TableCollection$has_index()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+A logical.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{tc_file <- system.file("examples/test.trees", package = "RcppTskit")
@@ -369,7 +637,7 @@ Build edge indexes for this table collection.
 }
 
 \subsection{Details}{
-See the corresponding Python function at
+See the \code{tskit Python} equivalent at
   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TableCollection.build_index}.
 }
 
@@ -401,7 +669,7 @@ Drop edge indexes for this table collection.
 }
 
 \subsection{Details}{
-See the corresponding Python function at
+See the \code{tskit Python} equivalent at
   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TableCollection.drop_index}.
 }
 
@@ -430,6 +698,9 @@ Get whether the table collection has a reference genome sequence.
 \if{html}{\out{<div class="r">}}\preformatted{TableCollection$has_reference_sequence()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+A logical.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{tc_file1 <- system.file("examples/test.trees", package = "RcppTskit")
@@ -448,16 +719,16 @@ tc2$has_reference_sequence()
 \if{html}{\out{<a id="method-TableCollection-file_uuid"></a>}}
 \if{latex}{\out{\hypertarget{method-TableCollection-file_uuid}{}}}
 \subsection{Method \code{file_uuid()}}{
-Get the file UUID string.
+Get the UUID string of the file the table collection was
+  loaded from.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TableCollection$file_uuid()}\if{html}{\out{</div>}}
 }
 
-\subsection{Details}{
-Returns the UUID of the file the table collection was loaded from.
-  If unavailable, returns \code{NA_character_}.
+\subsection{Returns}{
+A character; \code{NA_character_} when file is information is
+  unavailable.
 }
-
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{tc_file <- system.file("examples/test.trees", package = "RcppTskit")
@@ -473,8 +744,9 @@ tc$file_uuid()
 \if{html}{\out{<a id="method-TableCollection-r_to_py"></a>}}
 \if{latex}{\out{\hypertarget{method-TableCollection-r_to_py}{}}}
 \subsection{Method \code{r_to_py()}}{
-This function saves a table collection from R to disk and
-  loads it into reticulate Python for use with the \code{tskit} Python API.
+This function saves a table collection from \code{R} to disk
+  and loads it into reticulate \code{Python} for use with the
+  \code{tskit Python} API.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TableCollection$r_to_py(tskit_module = get_tskit_py(), cleanup = TRUE)}\if{html}{\out{</div>}}
 }
@@ -482,8 +754,8 @@ This function saves a table collection from R to disk and
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{tskit_module}}{reticulate Python module of \code{tskit}. By default,
-it calls \code{\link{get_tskit_py}} to obtain the module.}
+\item{\code{tskit_module}}{reticulate \code{Python} module of \code{tskit}.
+By default, it calls \code{\link{get_tskit_py}} to obtain the module.}
 
 \item{\code{cleanup}}{logical; delete the temporary file at the end of the function?}
 }
@@ -495,7 +767,7 @@ See \url{https://tskit.dev/tutorials/tables_and_editing.html#tables-and-editing}
 }
 
 \subsection{Returns}{
-Table collection in reticulate Python.
+\code{TableCollection} object in reticulate \code{Python}.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -535,7 +807,9 @@ Print a summary of a table collection and its contents.
 \subsection{Returns}{
 A list with two data.frames; the first contains table collection
   properties and their values; the second contains the number of rows in
-  each table and the length of their metadata.
+  each table and the length of their metadata. All columns are characters
+  since output types differ across the entries. Use individual getters
+  to obtain raw values before they are converted to character.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}

@@ -346,6 +346,94 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rtsk_table_collection_get_num_provenances
+SEXP rtsk_table_collection_get_num_provenances(const SEXP tc);
+RcppExport SEXP _RcppTskit_rtsk_table_collection_get_num_provenances(SEXP tcSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const SEXP >::type tc(tcSEXP);
+    rcpp_result_gen = Rcpp::wrap(rtsk_table_collection_get_num_provenances(tc));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rtsk_table_collection_get_num_populations
+SEXP rtsk_table_collection_get_num_populations(const SEXP tc);
+RcppExport SEXP _RcppTskit_rtsk_table_collection_get_num_populations(SEXP tcSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const SEXP >::type tc(tcSEXP);
+    rcpp_result_gen = Rcpp::wrap(rtsk_table_collection_get_num_populations(tc));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rtsk_table_collection_get_num_migrations
+SEXP rtsk_table_collection_get_num_migrations(const SEXP tc);
+RcppExport SEXP _RcppTskit_rtsk_table_collection_get_num_migrations(SEXP tcSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const SEXP >::type tc(tcSEXP);
+    rcpp_result_gen = Rcpp::wrap(rtsk_table_collection_get_num_migrations(tc));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rtsk_table_collection_get_num_individuals
+SEXP rtsk_table_collection_get_num_individuals(const SEXP tc);
+RcppExport SEXP _RcppTskit_rtsk_table_collection_get_num_individuals(SEXP tcSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const SEXP >::type tc(tcSEXP);
+    rcpp_result_gen = Rcpp::wrap(rtsk_table_collection_get_num_individuals(tc));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rtsk_table_collection_get_num_nodes
+SEXP rtsk_table_collection_get_num_nodes(const SEXP tc);
+RcppExport SEXP _RcppTskit_rtsk_table_collection_get_num_nodes(SEXP tcSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const SEXP >::type tc(tcSEXP);
+    rcpp_result_gen = Rcpp::wrap(rtsk_table_collection_get_num_nodes(tc));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rtsk_table_collection_get_num_edges
+SEXP rtsk_table_collection_get_num_edges(const SEXP tc);
+RcppExport SEXP _RcppTskit_rtsk_table_collection_get_num_edges(SEXP tcSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const SEXP >::type tc(tcSEXP);
+    rcpp_result_gen = Rcpp::wrap(rtsk_table_collection_get_num_edges(tc));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rtsk_table_collection_get_num_sites
+SEXP rtsk_table_collection_get_num_sites(const SEXP tc);
+RcppExport SEXP _RcppTskit_rtsk_table_collection_get_num_sites(SEXP tcSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const SEXP >::type tc(tcSEXP);
+    rcpp_result_gen = Rcpp::wrap(rtsk_table_collection_get_num_sites(tc));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rtsk_table_collection_get_num_mutations
+SEXP rtsk_table_collection_get_num_mutations(const SEXP tc);
+RcppExport SEXP _RcppTskit_rtsk_table_collection_get_num_mutations(SEXP tcSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const SEXP >::type tc(tcSEXP);
+    rcpp_result_gen = Rcpp::wrap(rtsk_table_collection_get_num_mutations(tc));
+    return rcpp_result_gen;
+END_RCPP
+}
 // rtsk_table_collection_get_sequence_length
 double rtsk_table_collection_get_sequence_length(const SEXP tc);
 RcppExport SEXP _RcppTskit_rtsk_table_collection_get_sequence_length(SEXP tcSEXP) {
@@ -556,6 +644,14 @@ static const R_CallMethodDef CallEntries[] = {
     {"_RcppTskit_rtsk_treeseq_get_file_uuid", (DL_FUNC) &_RcppTskit_rtsk_treeseq_get_file_uuid, 1},
     {"_RcppTskit_rtsk_treeseq_summary", (DL_FUNC) &_RcppTskit_rtsk_treeseq_summary, 1},
     {"_RcppTskit_rtsk_treeseq_metadata_length", (DL_FUNC) &_RcppTskit_rtsk_treeseq_metadata_length, 1},
+    {"_RcppTskit_rtsk_table_collection_get_num_provenances", (DL_FUNC) &_RcppTskit_rtsk_table_collection_get_num_provenances, 1},
+    {"_RcppTskit_rtsk_table_collection_get_num_populations", (DL_FUNC) &_RcppTskit_rtsk_table_collection_get_num_populations, 1},
+    {"_RcppTskit_rtsk_table_collection_get_num_migrations", (DL_FUNC) &_RcppTskit_rtsk_table_collection_get_num_migrations, 1},
+    {"_RcppTskit_rtsk_table_collection_get_num_individuals", (DL_FUNC) &_RcppTskit_rtsk_table_collection_get_num_individuals, 1},
+    {"_RcppTskit_rtsk_table_collection_get_num_nodes", (DL_FUNC) &_RcppTskit_rtsk_table_collection_get_num_nodes, 1},
+    {"_RcppTskit_rtsk_table_collection_get_num_edges", (DL_FUNC) &_RcppTskit_rtsk_table_collection_get_num_edges, 1},
+    {"_RcppTskit_rtsk_table_collection_get_num_sites", (DL_FUNC) &_RcppTskit_rtsk_table_collection_get_num_sites, 1},
+    {"_RcppTskit_rtsk_table_collection_get_num_mutations", (DL_FUNC) &_RcppTskit_rtsk_table_collection_get_num_mutations, 1},
     {"_RcppTskit_rtsk_table_collection_get_sequence_length", (DL_FUNC) &_RcppTskit_rtsk_table_collection_get_sequence_length, 1},
     {"_RcppTskit_rtsk_table_collection_has_reference_sequence", (DL_FUNC) &_RcppTskit_rtsk_table_collection_has_reference_sequence, 1},
     {"_RcppTskit_rtsk_table_collection_get_time_units", (DL_FUNC) &_RcppTskit_rtsk_table_collection_get_time_units, 1},

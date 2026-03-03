@@ -135,6 +135,38 @@ rtsk_treeseq_metadata_length <- function(ts) {
     .Call(`_RcppTskit_rtsk_treeseq_metadata_length`, ts)
 }
 
+rtsk_table_collection_get_num_provenances <- function(tc) {
+    .Call(`_RcppTskit_rtsk_table_collection_get_num_provenances`, tc)
+}
+
+rtsk_table_collection_get_num_populations <- function(tc) {
+    .Call(`_RcppTskit_rtsk_table_collection_get_num_populations`, tc)
+}
+
+rtsk_table_collection_get_num_migrations <- function(tc) {
+    .Call(`_RcppTskit_rtsk_table_collection_get_num_migrations`, tc)
+}
+
+rtsk_table_collection_get_num_individuals <- function(tc) {
+    .Call(`_RcppTskit_rtsk_table_collection_get_num_individuals`, tc)
+}
+
+rtsk_table_collection_get_num_nodes <- function(tc) {
+    .Call(`_RcppTskit_rtsk_table_collection_get_num_nodes`, tc)
+}
+
+rtsk_table_collection_get_num_edges <- function(tc) {
+    .Call(`_RcppTskit_rtsk_table_collection_get_num_edges`, tc)
+}
+
+rtsk_table_collection_get_num_sites <- function(tc) {
+    .Call(`_RcppTskit_rtsk_table_collection_get_num_sites`, tc)
+}
+
+rtsk_table_collection_get_num_mutations <- function(tc) {
+    .Call(`_RcppTskit_rtsk_table_collection_get_num_mutations`, tc)
+}
+
 rtsk_table_collection_get_sequence_length <- function(tc) {
     .Call(`_RcppTskit_rtsk_table_collection_get_sequence_length`, tc)
 }

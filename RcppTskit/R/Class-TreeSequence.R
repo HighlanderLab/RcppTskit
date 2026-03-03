@@ -1,8 +1,9 @@
 #' @title Succinct tree sequence R6 class (TreeSequence)
-#' @description An R6 class holding an external pointer to a tree sequence
-#' object. As an R6 class, its methods look Pythonic and therefore resemble the
-#' tskit Python API. Since the class only holds the pointer, it is lightweight.
-#' Currently there is a limited set of R methods for working with the tree sequence.
+#' @description An \code{R6} class holding an external pointer to
+#' a tree sequence object. As an \code{R6} class, method-calling looks Pythonic
+#' and hence resembles the \code{tskit Python} API. Since the class only
+#' holds the pointer, it is lightweight. Currently there is a limited set of
+#' \code{R} methods for working with the tree sequence.
 #' @export
 TreeSequence <- R6Class(
   classname = "TreeSequence",
@@ -17,7 +18,7 @@ TreeSequence <- R6Class(
     #' @param skip_reference_sequence logical; if \code{TRUE}, skip loading
     #'   reference genome sequence information.
     #' @param xptr an external pointer (\code{externalptr}) to a tree sequence.
-    #' @details See the corresponding Python function at
+    #' @details See the \code{tskit Python} equivalent at
     #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.load}.
     #' @return A \code{\link{TreeSequence}} object.
     #' @seealso \code{\link{ts_load}}
@@ -66,7 +67,7 @@ TreeSequence <- R6Class(
 
     #' @description Write a tree sequence to a file.
     #' @param file a string specifying the full path of the tree sequence file.
-    #' @details See the corresponding Python function at
+    #' @details See the \code{tskit Python} equivalent at
     #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.dump}.
     #' @return No return value; called for side effects.
     #' @examples
@@ -87,7 +88,7 @@ TreeSequence <- R6Class(
     },
 
     #' @description Copy the tables into a \code{\link{TableCollection}}.
-    #' @details See the corresponding Python function at
+    #' @details See the \code{tskit Python} equivalent at
     #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.dump_tables}.
     #' @return A \code{\link{TableCollection}} object.
     #' @examples
@@ -103,7 +104,9 @@ TreeSequence <- R6Class(
     #' @description Print a summary of a tree sequence and its contents.
     #' @return A list with two data.frames; the first contains tree sequence
     #'   properties and their values; the second contains the number of rows in
-    #'   each table and the length of their metadata.
+    #'   each table and the length of their metadata. All columns are characters
+    #'   since output types differ across the entries. Use individual getters
+    #'   to obtain raw values before they are converted to character.
     #' @examples
     #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts <- ts_load(ts_file)
@@ -121,12 +124,13 @@ TreeSequence <- R6Class(
       invisible(ret)
     },
 
-    #' @description This function saves a tree sequence from R to disk and
-    #'   loads it into reticulate Python for use with the \code{tskit} Python API.
-    #' @param tskit_module reticulate Python module of \code{tskit}. By default,
-    #'   it calls \code{\link{get_tskit_py}} to obtain the module.
+    #' @description This function saves a tree sequence from \code{R} to disk
+    #'   and loads it into reticulate \code{Python} for use with the
+    #'   \code{tskit Python} API.
+    #' @param tskit_module reticulate \code{Python} module of \code{tskit}.
+    #'   By default, it calls \code{\link{get_tskit_py}} to obtain the module.
     #' @param cleanup logical; delete the temporary file at the end of the function?
-    #' @return Tree sequence in reticulate Python.
+    #' @return \code{TreeSequence} object in reticulate \code{Python}.
     #' @seealso \code{\link{ts_py_to_r}}, \code{\link{ts_load}}, and
     #'   \code{\link[=TreeSequence]{TreeSequence$dump}}.
     #' @examples
@@ -158,6 +162,9 @@ TreeSequence <- R6Class(
     },
 
     #' @description Get the number of provenances in a tree sequence.
+    #' @return A signed 64 bit integer \code{bit64::integer64}.
+    #' @details See the \code{tskit Python} equivalent at
+    #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_provenances}.
     #' @examples
     #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts <- ts_load(ts_file)
@@ -167,6 +174,9 @@ TreeSequence <- R6Class(
     },
 
     #' @description Get the number of populations in a tree sequence.
+    #' @return A signed 64 bit integer \code{bit64::integer64}.
+    #' @details See the \code{tskit Python} equivalent at
+    #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_populations}.
     #' @examples
     #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts <- ts_load(ts_file)
@@ -176,6 +186,9 @@ TreeSequence <- R6Class(
     },
 
     #' @description Get the number of migrations in a tree sequence.
+    #' @return A signed 64 bit integer \code{bit64::integer64}.
+    #' @details See the \code{tskit Python} equivalent at
+    #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_migrations}.
     #' @examples
     #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts <- ts_load(ts_file)
@@ -185,6 +198,9 @@ TreeSequence <- R6Class(
     },
 
     #' @description Get the number of individuals in a tree sequence.
+    #' @return A signed 64 bit integer \code{bit64::integer64}.
+    #' @details See the \code{tskit Python} equivalent at
+    #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_individuals}.
     #' @examples
     #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts <- ts_load(ts_file)
@@ -194,6 +210,9 @@ TreeSequence <- R6Class(
     },
 
     #' @description Get the number of samples (of nodes) in a tree sequence.
+    #' @return A signed 64 bit integer \code{bit64::integer64}.
+    #' @details See the \code{tskit Python} equivalent at
+    #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_samples}.
     #' @examples
     #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts <- ts_load(ts_file)
@@ -203,6 +222,9 @@ TreeSequence <- R6Class(
     },
 
     #' @description Get the number of nodes in a tree sequence.
+    #' @return A signed 64 bit integer \code{bit64::integer64}.
+    #' @details See the \code{tskit Python} equivalent at
+    #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_nodes}.
     #' @examples
     #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts <- ts_load(ts_file)
@@ -212,6 +234,9 @@ TreeSequence <- R6Class(
     },
 
     #' @description Get the number of edges in a tree sequence.
+    #' @return A signed 64 bit integer \code{bit64::integer64}.
+    #' @details See the \code{tskit Python} equivalent at
+    #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_nodes}.
     #' @examples
     #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts <- ts_load(ts_file)
@@ -221,6 +246,9 @@ TreeSequence <- R6Class(
     },
 
     #' @description Get the number of trees in a tree sequence.
+    #' @return A signed 64 bit integer \code{bit64::integer64}.
+    #' @details See the \code{tskit Python} equivalent at
+    #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_trees}.
     #' @examples
     #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts <- ts_load(ts_file)
@@ -230,6 +258,9 @@ TreeSequence <- R6Class(
     },
 
     #' @description Get the number of sites in a tree sequence.
+    #' @return A signed 64 bit integer \code{bit64::integer64}.
+    #' @details See the \code{tskit Python} equivalent at
+    #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_sites}.
     #' @examples
     #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts <- ts_load(ts_file)
@@ -239,6 +270,9 @@ TreeSequence <- R6Class(
     },
 
     #' @description Get the number of mutations in a tree sequence.
+    #' @return A signed 64 bit integer \code{bit64::integer64}.
+    #' @details See the \code{tskit Python} equivalent at
+    #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_mutations}.
     #' @examples
     #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts <- ts_load(ts_file)
@@ -248,6 +282,9 @@ TreeSequence <- R6Class(
     },
 
     #' @description Get the sequence length.
+    #' @return A numeric.
+    #' @details See the \code{tskit Python} equivalent at
+    #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.sequence_length}.
     #' @examples
     #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts <- ts_load(ts_file)
@@ -259,6 +296,9 @@ TreeSequence <- R6Class(
     #' @description Get the discrete genome status.
     #' @details Returns \code{TRUE} if all genomic coordinates in the tree
     #'   sequence are discrete integer values.
+    #' @details See the \code{tskit Python} equivalent at
+    #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.discrete_genome}.
+    #' @return A logical.
     #' @examples
     #' ts_file1 <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts_file2 <- system.file("examples/test_non_discrete_genome.trees", package = "RcppTskit")
@@ -271,6 +311,9 @@ TreeSequence <- R6Class(
     },
 
     #' @description Get whether the tree sequence has a reference genome sequence.
+    #' @return A logical.
+    #' @details See the \code{tskit Python} equivalent at
+    #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.has_reference_sequence}.
     #' @examples
     #' ts_file1 <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts_file2 <- system.file("examples/test_with_ref_seq.trees", package = "RcppTskit")
@@ -283,6 +326,9 @@ TreeSequence <- R6Class(
     },
 
     #' @description Get the time units string.
+    #' @return A character.
+    #' @details See the \code{tskit Python} equivalent at
+    #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.time_units}.
     #' @examples
     #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts <- ts_load(ts_file)
@@ -294,6 +340,9 @@ TreeSequence <- R6Class(
     #' @description Get the discrete time status.
     #' @details Returns \code{TRUE} if all time values in the tree sequence are
     #'   discrete integer values.
+    #' @details See the \code{tskit Python} equivalent at
+    #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.discrete_time}.
+    #' @return A logical.
     #' @examples
     #' ts_file1 <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts_file2 <- system.file("examples/test_discrete_time.trees", package = "RcppTskit")
@@ -306,6 +355,9 @@ TreeSequence <- R6Class(
     },
 
     #' @description Get the min time in node table and mutation table.
+    #' @details See the \code{tskit Python} equivalent at
+    #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.min_time}.
+    #' @return A numeric.
     #' @examples
     #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts <- ts_load(ts_file)
@@ -315,6 +367,9 @@ TreeSequence <- R6Class(
     },
 
     #' @description Get the max time in node table and mutation table.
+    #' @details See the \code{tskit Python} equivalent at
+    #'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.max_time}.
+    #' @return A numeric.
     #' @examples
     #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts <- ts_load(ts_file)
@@ -323,8 +378,10 @@ TreeSequence <- R6Class(
       rtsk_treeseq_get_max_time(self$xptr)
     },
 
+    # No Python equivalent in the docs as of 2026-03-03
     #' @description Get the length of metadata in a tree sequence and its tables.
-    #' @return A named list with the length of metadata.
+    #' @return A named list with the length of metadata, each as a signed 64 bit
+    #'   integer \code{bit64::integer64}.
     #' @examples
     #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts <- ts_load(ts_file)
@@ -333,9 +390,11 @@ TreeSequence <- R6Class(
       rtsk_treeseq_metadata_length(self$xptr)
     },
 
-    #' @description Get the file UUID string.
-    #' @details Returns the UUID of the file the tree sequence was loaded from.
-    #'   If unavailable, returns \code{NA_character_}.
+    # No Python equivalent in the docs as of 2026-03-03
+    #' @description Get the UUID string of the file the tree sequence was
+    #'   loaded from.
+    #' @return A character; \code{NA_character_} when file is information is
+    #'   unavailable.
     #' @examples
     #' ts_file <- system.file("examples/test.trees", package = "RcppTskit")
     #' ts <- ts_load(ts_file)
