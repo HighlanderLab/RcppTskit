@@ -27,16 +27,18 @@ and releases adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
   `inst/include/RcppTskit_public.hpp`, included by `inst/include/RcppTskit.hpp`.
 - Added `TableCollection$build_index()` to build indexes and
   `TableCollection$drop_index()` to drop indexes.
+- Added ``TableCollection$num_*()` getters for the number of rows in the tables.
 - TODO
 
 ### Changed
 
 - Renamed low-level C++ and R API names such that we map onto `tskit C` API,
-  for example, `ts_ptr_load()` to `rtsk_treeseq_load()`.
+  for example, `RcppTskit` functions are named `rtsk_treeseq_load()`,
+  while `tskit C` name is `tsk_treeseq_load()`.
   This is an internal breaking change, but in a good direction now that the
   package is still young and in experimental mode.
-- Renamed `TreeSequence` and `TableCollection` external-pointer field and
-  constructor argument from `pointer` to `xptr`.
+- Renamed `TreeSequence` and `TableCollection` external-pointer field from
+  `pointer` to `xptr`.
 - Ensured `TableCollection$tree_sequence()` matches `tskit Python` API:
   it now builds indexes on the `TableCollection`, if indexes are not present.
 - We now use `bit64::integer64` (signed 64 bit integer) instead of `int` aiming
