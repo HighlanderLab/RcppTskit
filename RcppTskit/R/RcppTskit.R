@@ -28,7 +28,6 @@
 #'   tskit <- get_tskit_py()
 #'   is(tskit)
 #'   if (check_tskit_py(tskit)) {
-#'     tskit$ALLELES_01
 #'   }
 #' }
 #' @export
