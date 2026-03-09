@@ -1,0 +1,400 @@
+# `RcppTskit` development
+
+## Code of Conduct
+
+Please note that the `RcppTskit` project is released with a
+[Contributor Code of Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html).
+By contributing to this project,
+you agree to abide by its terms.
+
+## Introduction
+
+This document describes a practical workflow for contributing to `RcppTskit`.
+It assumes that you are comfortable working in a terminal and
+with terminal-based tools.
+The examples use macOS,
+but Linux workflows should be very similar, and
+Windows users can usually follow the same steps from WSL.
+
+## Setup
+
+Complete this section once per clone.
+Everything before `RcppTskit changes, checks, and contributing` is setup.
+
+### Fork and clone `RcppTskit` (with `gh`)
+
+The simplest approach is to use `gh`
+(assuming you have it installed or you can install it now):
+
+```sh
+# Authenticate
+gh auth login
+
+# Three actions in one command:
+# 1) fork RcppTskit to your GitHub organisation,
+# 2) clone the forked repository to your computer, and
+# 3) set upstream and origin remote repositories
+gh repo fork HighlanderLab/RcppTskit --clone --remote=true
+
+# Explore the settings and contents
+cd RcppTskit
+git remote -v
+ls -1
+```
+
+### Fork and clone `RcppTskit` (with `git`)
+
+If you prefer not to use `gh`,
+open <https://github.com/HighlanderLab/RcppTskit.git> in your browser,
+fork the repository with the `Fork` button,
+and then clone the repository:
+
+```sh
+git clone https://github.com/HighlanderLab/RcppTskit.git
+cd RcppTskit
+```
+
+Then set the remote repositories such that `upstream` points to
+`HighlanderLab/RcppTskit.git` and `origin` points to your fork:
+
+```sh
+git remote rename origin upstream
+git remote add origin git@github.com:<your-github-username>/RcppTskit.git
+git fetch upstream
+git fetch origin
+git remote -v
+ls -1
+```
+
+### Git remote repositories
+
+From `git remote -v` you should see output like this:
+
+```text
+upstream git@github.com:HighlanderLab/RcppTskit.git (fetch)
+upstream git@github.com:HighlanderLab/RcppTskit.git (push)
+origin   git@github.com:<your-github-username>/RcppTskit.git (fetch)
+origin   git@github.com:<your-github-username>/RcppTskit.git (push)
+```
+
+From `ls -1` you should see output like this:
+
+```text
+CODE_OF_CONDUCT.md
+extern
+RcppTskit
+README.md
+README_DEVEL.md
+```
+
+### `pre-commit` and code quality tools
+
+We use [pre-commit](https://pre-commit.com) hooks
+to run formatting and linting checks before commits and pushes.
+The current hook set includes:
+
+* [air](https://github.com/posit-dev/air) to format `R` code
+* [jarl](https://github.com/etiennebacher/jarl) to lint `R` code
+* [clang-format](https://clang.llvm.org/docs/ClangFormat.html) to format `C/C++` code
+* [clang-tidy](https://clang.llvm.org/extra/clang-tidy/) to lint `C/C++` code
+
+Install these tools with your preferred package manager before contributing.
+One macOS setup looks like this:
+
+```sh
+# Install pre-commit
+brew install pre-commit
+
+# Install air
+brew install air
+
+# Install jarl
+# Follow the installation instructions on the jarl project page
+
+# Install clang-format
+brew install clang-format
+
+# Install clang-tidy (part of llvm)
+brew install llvm
+
+# Add llvm tools, including clang-tidy, to PATH
+echo 'export PATH="/opt/homebrew/opt/llvm/bin:$PATH"' >> ~/.zshrc
+```
+
+Restart your terminal so the updated `PATH` is available.
+
+Then install the hooks:
+
+```sh
+pre-commit install --install-hooks
+pre-commit install --hook-type pre-push
+```
+
+This completes the setup section.
+
+## `RcppTskit` changes, checks, and contributing
+
+Once you have forked, cloned, and configured the remotes,
+you are ready to contribute.
+
+### Open an issue
+
+Before starting substantial work,
+open an issue at
+<https://github.com/HighlanderLab/RcppTskit/issues>.
+Include a clear title and enough detail for others to understand your goal. Make a note of the issue number, for example `#123`.
+
+### Create a branch from `upstream/main`
+
+Before implementing changes, create a branch from the latest upstream branch.
+In most cases this should be `upstream/main`.
+Use `upstream/devel` only if the work is explicitly meant to target `devel`.
+
+```sh
+# Update local knowledge of both remotes
+git fetch origin --prune
+git fetch upstream --prune
+
+# Create and switch to a new branch from upstream/main
+# Replace bugfix-123 with something meaningful for your work
+git switch -c bugfix-123 upstream/main
+
+# Confirm where HEAD points
+git log
+```
+
+From `git log` you should see that `HEAD` points to your new branch
+and that the branch starts from `upstream/main`.
+
+```
+commit ... (HEAD -> bugfix, upstream/main, upstream/HEAD, main)
+Author: ...
+Date: ...
+```
+
+If you expect a long-running change or
+want to keep multiple branches isolated,
+consider using a separate `git worktree`.
+
+### Implement changes
+
+Open the `RcppTskit/` package directory in your preferred editor,
+review the relevant code, and implement the change.
+
+Add or update tests for every behavior change.
+If the change is user-visible,
+also update `RcppTskit/NEWS.md`.
+
+Do not edit autogenerated files (`man` folder and `RcppExports.*`).
+These will be regenerated as part of the `R CMD check`.
+
+### Testing changes
+
+We use the `testthat` framework.
+Relevant tests are in `RcppTskit/tests/testthat`.
+
+During development,
+start with focused tests for the area you changed.
+Before opening or updating a pull request,
+run the full test suite and package checks.
+
+### `R CMD check`
+
+Run checks routinely while you work.
+
+In `R`, we recommend:
+
+```r
+# The git repository contains the R package in the RcppTskit/ sub-directory.
+setwd("path/to/RcppTskit/RcppTskit")
+
+# Source the latest version, including changes
+devtools::load_all()
+
+# Focused tests while iterating
+devtools::test(filter = "relevant-tests")
+
+# Full tests
+devtools::test()
+
+# Package checks
+devtools::check(vignette = FALSE) # faster
+devtools::check()
+
+# Install if you want to try the package interactively
+devtools::install()
+
+# Inspect test coverage
+cov <- covr::package_coverage(clean = TRUE)
+covr::report(cov)
+```
+
+From the package directory,
+the equivalent terminal commands are:
+
+```sh
+cd path/to/RcppTskit/RcppTskit
+Rscript -e "devtools::test(filter = 'relevant-tests')"
+Rscript -e "devtools::test()"
+Rscript -e "devtools::check(vignette = FALSE)"
+Rscript -e "devtools::check()"
+```
+
+If you prefer to work directly with `R CMD`,
+run these commands from the package directory:
+
+```sh
+cd path/to/RcppTskit
+R CMD build RcppTskit
+R CMD check RcppTskit_*.tar.gz
+R CMD INSTALL RcppTskit_*.tar.gz
+```
+
+On Windows, replace `tar.gz` with `zip`.
+
+### Contributing your changes
+
+Once your tests and checks are passing,
+stage and commit your changes.
+Including the issue number in the commit message is helpful.
+
+```sh
+git add the_files_you_changed
+git commit -m "A clear, short message #123"
+git log
+```
+
+`git commit` will also run the `pre-commit` hooks. A typical output looks like
+this:
+
+```text
+> git commit -m "Implemented foo() #123"
+trim trailing whitespace..................................................Passed
+fix end of files..........................................................Passed
+mixed line ending.........................................................Passed
+check yaml............................................(no files to check)Skipped
+check for added large files...............................................Passed
+check for merge conflicts.................................................Passed
+air format................................................................Passed
+jarl lint.................................................................Passed
+clang-format..........................................(no files to check)Skipped
+clang-tidy for RcppTskit..............................(no files to check)Skipped
+check sync between cpp and hpp options and defaults...(no files to check)Skipped
+[bugfix-123 1dc2232] Implemented foo() #123
+ 1 file changed, 1 insertion(+)
+ create mode 100644 foo.txt
+```
+
+### Pre-commit
+
+`pre-commit` hooks should run automatically when you commit/push.
+You can also run them manually:
+
+```sh
+pre-commit autoupdate # update hook versions
+pre-commit run # run hooks on changed files
+pre-commit run --all-files # run hooks on the entire repository
+pre-commit run <hook_id> # run one hook on changed files
+pre-commit run <hook_id> --all-files # run one hook on the entire repository
+```
+
+### Pushing to origin and opening a pull request
+
+Before you push,
+rebase your branch onto the latest `upstream/main`
+(or `upstream/devel` if that is your target branch):
+
+```sh
+git fetch upstream main
+git rebase upstream/main
+```
+
+If the rebase stops because of conflicts:
+
+1. Run `git status` to see which files are conflicted.
+2. Edit each conflicted file and remove the conflict markers.
+3. Stage the resolved files with `git add <file>`.
+4. Continue with `git rebase --continue`.
+5. Repeat until the rebase finishes.
+
+If the rebase becomes confusing or the conflict set is larger than expected,
+abort it and start again:
+
+```sh
+git rebase --abort
+```
+
+At that point,
+the safest recovery path is usually to create a fresh branch from the latest `upstream/main`
+and then move your commits across with `git cherry-pick <commit>`,
+or simply re-apply the changes manually to the files if that is simpler.
+
+After a successful rebase, rerun the relevant tests and checks.
+If you already pushed the branch to `origin`, update it with:
+
+```sh
+git push --force-with-lease origin bugfix-123
+```
+
+If this is the first push for the branch, use:
+
+```sh
+git push -u origin bugfix-123
+```
+
+Git will print a URL like
+<https://github.com/<your-github-username>/RcppTskit/pull/new/bugfix-123>.
+Open that link and create a pull request.
+A draft pull request is fine if you want feedback before the work is complete.
+
+Mention the issue number `#123` in the pull request body
+so GitHub can link the PR and the issue.
+If the branch already has an open pull request,
+any further pushes to `origin/bugfix-123` automatically update it.
+
+### Continuous integration
+
+When you open a pull request,
+GitHub Actions runs continuous integration (CI) checks on each push and pull request.
+We run:
+
+* [R CMD check](.github/workflows/R-CMD-check.yaml) on multiple platforms
+  (see current status
+  [here](https://github.com/HighlanderLab/RcppTskit/actions/workflows/R-CMD-check.yaml))
+* [documentation generation](.github/workflows/document.yaml)
+  (see current status
+  [here](https://github.com/HighlanderLab/RcppTskit/actions/workflows/document.yaml))
+* [pre-commit hooks](.github/workflows/pre-commit.yaml)
+  (see current status
+  [here](https://github.com/HighlanderLab/RcppTskit/actions/workflows/pre-commit.yaml))
+* [test coverage](.github/workflows/test-coverage.yaml)
+  (see current status
+  [here](https://github.com/HighlanderLab/RcppTskit/actions/workflows/test-coverage.yaml))
+
+[R-universe for RcppTskit](https://highlanderlab.r-universe.dev/RcppTskit) also
+provides another set of checks; see
+[here](https://highlanderlab.r-universe.dev/RcppTskit#checktable). These appear
+after new code is pushed or merged into the repository.
+
+### Squashing commits
+
+It is common to accumulate several commits while implementing a change.
+We ask you to squash them into one before merging by using:
+
+```sh
+git reset --soft HEAD~n
+git commit -m "A clear, short message #123"
+git push --force-with-lease origin bugfix-123
+```
+
+Replace `n` with the number of commits you want to squash.
+You can count them from the pull request commit list.
+
+This completes the `RcppTskit` changes, checks, and contributing section.
+
+## `tskit C` update
+
+If you plan to update the vendored `tskit` C library,
+follow the instructions in `extern/README.md` and
+do not edit vendored copies by hand.
+Any changes to that code should go to `tskit` upstream.
