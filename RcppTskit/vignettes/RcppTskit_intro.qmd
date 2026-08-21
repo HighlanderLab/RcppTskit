@@ -169,7 +169,7 @@ The four typical use cases are:
 
 Examples for all of these cases are provided below
 after we describe the implemented data and class model,
-and API mirroring across the languages.
+and API alignment across the languages.
 
 ## Data and class model
 
@@ -200,20 +200,19 @@ with the same memory management as `rtsk_treeseq_t`.
 While tree sequence (`tsk_treeseq_t`) is an immutable object,
 table collection (`tsk_table_collection_t`) is a mutable object,
 which can be edited.
-No `R` functions for expanding and editing are implemented to date,
-so all editing should happen in `C/C++` or `Python`.
+Only some `R` functions for expanding and editing are implemented to date,
+so use `Python` or  `C/C++` for the missing `R` functionality.
 
-## API mirroring across the languages
+## API alignment across the languages
 
 `RcppTskit` aims to keep naming, arguments, defaults, and behaviour aligned
 with upstream `tskit` APIs whenever practical.
-Specifically,
-the `RcppTskit R` API mirrors the `tskit Python` API;
-the `R` functions and `R6` classes (with their methods) aim to mirror
-`tskit Python` functions and classes (with their methods).
-Note that the `RcppTskit R` API is far more limited than the `tskit Python` API.
-The `RcppTskit C++` API aims to mirror the `tskit C` API functions and semantics,
-but is deliberately `R` oriented.
+The `RcppTskit R` API intentionally combines an `R6` object model inspired by
+the `tskit Python` API with operations that map directly to the `tskit C` API.
+For example, `tc$node_table_add_row()` maps to `tsk_node_table_add_row()`
+without recreating Python's nested `tc.nodes.add_row()` object model.
+The `RcppTskit C++` API closely mirrors the `tskit C` API functions and
+semantics, but is deliberately `R` oriented.
 When we intentionally deviate (for example, to support `R` idioms or safety),
 we document the rationale and test the chosen behaviour.
 
@@ -278,7 +277,7 @@ For example, the above `R` function `ts_load()` effectively calls:
 
 ```{r}
 #| label: use_case_1_dev_funcs
-# Low-level R function, which further calls the C++ function
+# Low-level R function, which calls the C++ function
 # jarl-ignore internal_function: exposing for demo/doc
 RcppTskit:::rtsk_treeseq_load
 
@@ -310,7 +309,7 @@ if (check_tskit_py(tskit)) {
   ts_py <- ts$r_to_py()
   # ... continue in reticulate Python ...
   ts_py$num_individuals # 8
-  ts2_py = ts_py$simplify(samples = c(0L, 1L, 2L, 3L))
+  ts2_py <- ts_py$simplify(samples = c(0L, 1L, 2L, 3L))
   ts2_py$num_individuals # 2
   ts2_py$num_nodes # 8
   ts2_py$tables$nodes$time # 0.0 ... 5.0093910

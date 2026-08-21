@@ -20,11 +20,13 @@ as described at \url{https://tskit.dev/tutorials/tskitr.html}.
 where the \code{reticulate} option is not optimal; for example; high-performance
 or low-level work with tree sequences. Currently, \code{RcppTskit} provides a
 limited set of \code{R} functions because the \code{Python} API and
-\code{reticulate} already covers most needs. The provided \code{RcppTskit R}
-API mirrors the \code{tskit Python} API, while the \code{RcppTskit C++} API
-mirrors the \code{tskit C} API. Users should explore the \code{RcppTskit}
-help pages of \code{R} functions, while developers should explore the provided
-\code{RcppTskit:::rtsk_*} low-level \code{R} and \code{C++} functions.
+\code{reticulate} already covers most needs. The \code{RcppTskit R} API
+combines an \code{R6} object model inspired by the \code{tskit Python} API
+with operations that map directly to the \code{tskit C} API. The
+\code{RcppTskit C++} API closely mirrors the \code{tskit C} API. Users should
+explore the \code{RcppTskit} help pages of \code{R} functions, while
+developers should explore the provided \code{RcppTskit:::rtsk_*} low-level
+\code{R} and \code{C++} functions.
 }
 \examples{
 vignette("RcppTskit_intro")
@@ -42,6 +44,8 @@ Useful links:
 
 Other contributors:
 \itemize{
+  \item Jinyang Liang (\href{https://orcid.org/0009-0007-4015-6228}{ORCID}) [contributor]
+  \item Hannes Becher (\href{https://orcid.org/0000-0003-3700-2942}{ORCID}) [contributor]
   \item Tskit Developers (Authors of included tskit C library) [copyright holder]
 }
 

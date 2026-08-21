@@ -46,6 +46,16 @@ tc <- ts$dump_tables()
 is(tc)
 
 ## ------------------------------------------------
+## Method `TreeSequence$simplify`
+## ------------------------------------------------
+
+ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+ts_simplified <- ts$simplify(samples = c(0L, 1L, 2L, 3L))
+c(before = ts$num_nodes(),
+  after = ts_simplified$num_nodes())
+
+## ------------------------------------------------
 ## Method `TreeSequence$print`
 ## ------------------------------------------------
 
@@ -77,6 +87,18 @@ ts
     ts2_py$tables$nodes$time # 0.0 ... 5.0093910
   }
 }
+
+## ------------------------------------------------
+## Method `TreeSequence$variants`
+## ------------------------------------------------
+
+ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+it <- ts$variants()
+v1 <- it$next_variant()
+v2 <- it$next_variant()
+is.list(v1)
+is.list(v2)
 
 ## ------------------------------------------------
 ## Method `TreeSequence$num_provenances`
@@ -117,6 +139,14 @@ ts$num_individuals()
 ts_file <- system.file("examples/test.trees", package = "RcppTskit")
 ts <- ts_load(ts_file)
 ts$num_samples()
+
+## ------------------------------------------------
+## Method `TreeSequence$samples`
+## ------------------------------------------------
+
+ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+ts$samples()
 
 ## ------------------------------------------------
 ## Method `TreeSequence$num_nodes`
@@ -259,13 +289,16 @@ ts$file_uuid()
 \item \href{#method-TreeSequence-dump}{\code{TreeSequence$dump()}}
 \item \href{#method-TreeSequence-write}{\code{TreeSequence$write()}}
 \item \href{#method-TreeSequence-dump_tables}{\code{TreeSequence$dump_tables()}}
+\item \href{#method-TreeSequence-simplify}{\code{TreeSequence$simplify()}}
 \item \href{#method-TreeSequence-print}{\code{TreeSequence$print()}}
 \item \href{#method-TreeSequence-r_to_py}{\code{TreeSequence$r_to_py()}}
+\item \href{#method-TreeSequence-variants}{\code{TreeSequence$variants()}}
 \item \href{#method-TreeSequence-num_provenances}{\code{TreeSequence$num_provenances()}}
 \item \href{#method-TreeSequence-num_populations}{\code{TreeSequence$num_populations()}}
 \item \href{#method-TreeSequence-num_migrations}{\code{TreeSequence$num_migrations()}}
 \item \href{#method-TreeSequence-num_individuals}{\code{TreeSequence$num_individuals()}}
 \item \href{#method-TreeSequence-num_samples}{\code{TreeSequence$num_samples()}}
+\item \href{#method-TreeSequence-samples}{\code{TreeSequence$samples()}}
 \item \href{#method-TreeSequence-num_nodes}{\code{TreeSequence$num_nodes()}}
 \item \href{#method-TreeSequence-num_edges}{\code{TreeSequence$num_edges()}}
 \item \href{#method-TreeSequence-num_trees}{\code{TreeSequence$num_trees()}}
@@ -314,7 +347,7 @@ reference genome sequence information.}
 }
 \subsection{Details}{
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.load}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.load}.
 }
 
 \subsection{Returns}{
@@ -354,7 +387,7 @@ Write a tree sequence to a file.
 }
 \subsection{Details}{
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.dump}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.dump}.
 }
 
 \subsection{Returns}{
@@ -402,7 +435,7 @@ Copy the tables into a \code{\link{TableCollection}}.
 
 \subsection{Details}{
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.dump_tables}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.dump_tables}.
 }
 
 \subsection{Returns}{
@@ -414,6 +447,101 @@ A \code{\link{TableCollection}} object.
 ts <- ts_load(ts_file)
 tc <- ts$dump_tables()
 is(tc)
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TreeSequence-simplify"></a>}}
+\if{latex}{\out{\hypertarget{method-TreeSequence-simplify}{}}}
+\subsection{Method \code{simplify()}}{
+Return a simplified copy of this tree sequence.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TreeSequence$simplify(
+  samples = NULL,
+  map_nodes = FALSE,
+  reduce_to_site_topology = FALSE,
+  filter_populations = NULL,
+  filter_individuals = NULL,
+  filter_sites = NULL,
+  filter_nodes = NULL,
+  update_sample_flags = NULL,
+  keep_unary = FALSE,
+  keep_unary_in_individuals = NULL,
+  keep_input_roots = FALSE,
+  record_provenance = TRUE
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{samples}}{optional integer vector of distinct node IDs to retain as
+samples. If \code{NULL}, use the nodes currently marked as samples.}
+
+\item{\code{map_nodes}}{logical; if \code{TRUE}, also return the mapping from
+input node IDs to output node IDs (see also return section).}
+
+\item{\code{reduce_to_site_topology}}{logical; if \code{TRUE}, retain only
+topology needed to represent trees containing sites.}
+
+\item{\code{filter_populations}}{optional logical; if \code{TRUE}, remove
+populations no longer referenced by nodes. If \code{NULL}, treated as
+\code{TRUE}.}
+
+\item{\code{filter_individuals}}{optional logical; if \code{TRUE}, remove
+individuals no longer referenced by nodes. If \code{NULL}, treated as
+\code{TRUE}.}
+
+\item{\code{filter_sites}}{optional logical; if \code{TRUE}, remove sites no
+longer referenced by mutations. If \code{NULL}, treated as
+\code{TRUE}.}
+
+\item{\code{filter_nodes}}{optional logical; if \code{TRUE}, remove nodes no
+longer referenced by edges. If \code{NULL}, treated as
+\code{TRUE}.}
+
+\item{\code{update_sample_flags}}{optional logical; if \code{TRUE}, update node
+flags so exactly the requested samples carry the sample flag. If
+\code{NULL}, treated as \code{TRUE}.}
+
+\item{\code{keep_unary}}{logical; if \code{TRUE}, retain unary nodes on paths
+from samples to roots.}
+
+\item{\code{keep_unary_in_individuals}}{optional logical; if \code{TRUE}, retain
+unary nodes that are associated with an individual, while other unary
+nodes may still be removed. Cannot be used with
+\code{keep_unary = TRUE}. If \code{NULL}, treated as \code{FALSE}.}
+
+\item{\code{keep_input_roots}}{logical; retain topology back to the roots in the
+input tree sequence rather than stopping at samples' MRCAs.}
+
+\item{\code{record_provenance}}{logical; record this simplify call in the
+returned tree sequence.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+See the \code{tskit Python} equivalent at
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.simplify}.
+  The input tree sequence is unchanged.
+}
+
+\subsection{Returns}{
+A simplified \code{\link{TreeSequence}}. If
+  \code{map_nodes = TRUE}, return a named list containing
+  \code{tree_sequence} and the integer \code{node_map};
+  removed nodes map to \code{-1}.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+ts_simplified <- ts$simplify(samples = c(0L, 1L, 2L, 3L))
+c(before = ts$num_nodes(),
+  after = ts_simplified$num_nodes())
 }
 \if{html}{\out{</div>}}
 
@@ -500,6 +628,71 @@ By default, it calls \code{\link{get_tskit_py}} to obtain the module.}
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TreeSequence-variants"></a>}}
+\if{latex}{\out{\hypertarget{method-TreeSequence-variants}{}}}
+\subsection{Method \code{variants()}}{
+Iterate over sites as decoded variants.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TreeSequence$variants(
+  samples = NULL,
+  isolated_as_missing = TRUE,
+  alleles = NULL,
+  impute_missing_data = NULL,
+  copy = TRUE,
+  left = 0,
+  right = NULL
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{samples}}{Optional integer vector of sample node IDs to decode.}
+
+\item{\code{isolated_as_missing}}{Logical; decode isolated samples as missing
+data (\code{TRUE}, default) or as ancestral state (\code{FALSE}).}
+
+\item{\code{alleles}}{Optional character vector of allele states; when set,
+genotypes are indexed to this allele order.}
+
+\item{\code{impute_missing_data}}{Deprecated alias for
+\code{!isolated_as_missing}.}
+
+\item{\code{copy}}{Logical; currently only \code{TRUE} is supported.}
+
+\item{\code{left}}{Left genomic coordinate (inclusive).}
+
+\item{\code{right}}{Right genomic coordinate (exclusive). \code{NULL} means
+sequence length.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+See the \code{tskit Python} equivalent at
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.variants}.
+}
+
+\subsection{Returns}{
+A simple iterator object with methods \code{next()} and
+  \code{next_variant()} that each return either a variant list or
+  \code{NULL} at end.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+it <- ts$variants()
+v1 <- it$next_variant()
+v2 <- it$next_variant()
+is.list(v1)
+is.list(v2)
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TreeSequence-num_provenances"></a>}}
 \if{latex}{\out{\hypertarget{method-TreeSequence-num_provenances}{}}}
 \subsection{Method \code{num_provenances()}}{
@@ -510,7 +703,7 @@ Get the number of provenances in a tree sequence.
 
 \subsection{Details}{
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_provenances}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.num_provenances}.
 }
 
 \subsection{Returns}{
@@ -538,7 +731,7 @@ Get the number of populations in a tree sequence.
 
 \subsection{Details}{
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_populations}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.num_populations}.
 }
 
 \subsection{Returns}{
@@ -566,7 +759,7 @@ Get the number of migrations in a tree sequence.
 
 \subsection{Details}{
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_migrations}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.num_migrations}.
 }
 
 \subsection{Returns}{
@@ -594,7 +787,7 @@ Get the number of individuals in a tree sequence.
 
 \subsection{Details}{
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_individuals}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.num_individuals}.
 }
 
 \subsection{Returns}{
@@ -622,7 +815,7 @@ Get the number of samples (of nodes) in a tree sequence.
 
 \subsection{Details}{
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_samples}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.num_samples}.
 }
 
 \subsection{Returns}{
@@ -640,6 +833,50 @@ ts$num_samples()
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TreeSequence-samples"></a>}}
+\if{latex}{\out{\hypertarget{method-TreeSequence-samples}{}}}
+\subsection{Method \code{samples()}}{
+Get sample node IDs in this tree sequence.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TreeSequence$samples(population = NULL, time = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{population}}{integer or integer-valued numeric scalar population ID
+(0-based) used to filter samples. If \code{NULL}, do not filter by
+population.}
+
+\item{\code{time}}{numeric scalar or numeric vector of length 2 used to filter
+samples by node time. A scalar selects samples with approximately equal
+node time. A pair \code{c(min_time, max_time)} selects samples in the
+half-open interval \code{min_time <= time < max_time}. If \code{NULL},
+do not filter by time.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+See the \code{tskit Python} equivalent at
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.samples}.
+}
+
+\subsection{Returns}{
+An integer vector containing the sample node IDs (0-based) in
+  numerical order.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{ts_file <- system.file("examples/test.trees", package = "RcppTskit")
+ts <- ts_load(ts_file)
+ts$samples()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TreeSequence-num_nodes"></a>}}
 \if{latex}{\out{\hypertarget{method-TreeSequence-num_nodes}{}}}
 \subsection{Method \code{num_nodes()}}{
@@ -650,7 +887,7 @@ Get the number of nodes in a tree sequence.
 
 \subsection{Details}{
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_nodes}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.num_nodes}.
 }
 
 \subsection{Returns}{
@@ -678,7 +915,7 @@ Get the number of edges in a tree sequence.
 
 \subsection{Details}{
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_nodes}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.num_nodes}.
 }
 
 \subsection{Returns}{
@@ -706,7 +943,7 @@ Get the number of trees in a tree sequence.
 
 \subsection{Details}{
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_trees}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.num_trees}.
 }
 
 \subsection{Returns}{
@@ -734,7 +971,7 @@ Get the number of sites in a tree sequence.
 
 \subsection{Details}{
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_sites}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.num_sites}.
 }
 
 \subsection{Returns}{
@@ -762,7 +999,7 @@ Get the number of mutations in a tree sequence.
 
 \subsection{Details}{
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.num_mutations}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.num_mutations}.
 }
 
 \subsection{Returns}{
@@ -790,7 +1027,7 @@ Get the sequence length.
 
 \subsection{Details}{
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.sequence_length}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.sequence_length}.
 }
 
 \subsection{Returns}{
@@ -822,7 +1059,7 @@ Returns \code{TRUE} if all genomic coordinates in the tree
 
 
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.discrete_genome}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.discrete_genome}.
 }
 
 \subsection{Returns}{
@@ -853,7 +1090,7 @@ Get whether the tree sequence has a reference genome sequence.
 
 \subsection{Details}{
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.has_reference_sequence}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.has_reference_sequence}.
 }
 
 \subsection{Returns}{
@@ -884,7 +1121,7 @@ Get the time units string.
 
 \subsection{Details}{
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.time_units}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.time_units}.
 }
 
 \subsection{Returns}{
@@ -916,7 +1153,7 @@ Returns \code{TRUE} if all time values in the tree sequence are
 
 
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.discrete_time}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.discrete_time}.
 }
 
 \subsection{Returns}{
@@ -947,7 +1184,7 @@ Get the min time in node table and mutation table.
 
 \subsection{Details}{
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.min_time}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.min_time}.
 }
 
 \subsection{Returns}{
@@ -975,7 +1212,7 @@ Get the max time in node table and mutation table.
 
 \subsection{Details}{
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.TreeSequence.max_time}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.TreeSequence.max_time}.
 }
 
 \subsection{Returns}{

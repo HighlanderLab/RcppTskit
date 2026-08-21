@@ -25,7 +25,7 @@ Load a tree sequence from a file
 }
 \details{
 See the \code{tskit Python} equivalent at
-  \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.load}.
+  \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.load}.
 }
 \section{Functions}{
 \itemize{

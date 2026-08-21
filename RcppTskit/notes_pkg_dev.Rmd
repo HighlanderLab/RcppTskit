@@ -2,12 +2,48 @@
 
 ## Next TODOs
 
-If needed, consider a Python-style logical argument on the R method for
-mutation-parent computation instead of exposing bitwise flags, e.g.
-`compute_mutation_parents = FALSE`, while still translating to
-`TSK_TS_INIT_COMPUTE_MUTATION_PARENTS` inside the low-level wrapper layer.
+### Review and polish variants work
 
-// TODO: This will go into AlphaSimR
+struct rtsk_variant_iterator_state_t
+
+static void rtsk_variant_iterator_free
+
+void validate_variant_site_index_range
+
+std::pair<tsk_id_t, tsk_id_t> compute_variant_iteration_bounds
+
+SEXP rtsk_treeseq_init_variants_iterator(
+    SEXP ts, Rcpp::Nullable<Rcpp::IntegerVector> samples = R_NilValue,
+    bool isolated_as_missing = true,
+    Rcpp::Nullable<Rcpp::CharacterVector> alleles = R_NilValue,
+    double left = 0.0, double right = NA_REAL) {
+  std::unique_ptr<rtsk_variant_iterator_state_t> state_ptr(
+      new rtsk_variant_iterator_state_t(ts));
+
+SEXP rtsk_treeseq_next_variant(SEXP iterator)
+
+void test_rtsk_variant_iterator_force_null_first_allele(bool enabled)
+
+void test_rtsk_variant_iterator_set_site_bounds(SEXP iterator, int next_site_id,
+                                                int stop_site_id)
+
+void test_variant_site_index_range
+
+SEXP ts_sexp = R_NilValue; // TODO: remove?
+
+//   \item{\code{ts_sexp}}{Preserved \code{R} external-pointer object that
+//     keeps the tree sequence alive while the iterator exists. It remains
+//     \code{R_NilValue} until it is preserved.}
+
+I would, however, rename the external-pointer alias:
+using rtsk_variant_iterator_xptr_t = Rcpp::XPtr<...>;
+instead of rtsk_variant_iterator_t, which currently sounds like the underlying state type.
+
+One important issue surfaced while documenting this: variant_initialized is set only after successful tsk_variant_init(). The tskit lifecycle rules require tsk_variant_free() even when initialization returns an error, because partial allocation may have occurred. Our unique_ptr error path currently only deletes the state and does not call tsk_variant_free(). We should address that immediately after settling the docstring and names.
+
+rtsk_variant_iterator_init mention copy is not implemented (a note from my postit)!?
+
+### This type of code will go into AlphaSimR
 
 Tskit examples of building tree sequence in C
 extern/tskit/c/tests/testlib.c has lots of examples of constructing a tree sequence using C
@@ -62,7 +98,6 @@ SEXP tc_grow(SEXP tc) {
 * This PR nicely shows how slendr is dealing with ts objects
   (it saves various ts information as attributes)
   https://github.com/bodkan/slendr/pull/191/changes#diff-f46eb0da2f9267022ecc6e09316598fde6bdcd2f980963906dc041b5096f344f
-
 
 ## NEWS template
 
@@ -140,13 +175,13 @@ install.packages("covr")
 # https://usethis.r-lib.org/reference/use_coverage.html
 usethis::use_coverage(type = "codecov")
 
-# Build the report & report
+# Build the report & display interactive HTML
 cov <- covr::package_coverage(clean = TRUE); covr::report(cov)
 
 # Build the report
 cov <- covr::package_coverage(clean = TRUE)
 
-# Interactive HTML report with uncovered lines highlighted
+# Display interactive HTML report
 covr::report(cov)
 
 # List lines with zero coverage per file

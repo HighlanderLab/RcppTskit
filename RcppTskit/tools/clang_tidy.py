@@ -28,6 +28,29 @@ def find_r():
     return None
 
 
+def find_clang_tidy():
+    configured = os.environ.get("CLANG_TIDY")
+    if configured:
+        return configured
+
+    path = shutil.which("clang-tidy")
+    if path:
+        return path
+
+    # Homebrew's LLVM is keg-only, so GUI Git clients and IDEs commonly do not
+    # include its bin directory in the PATH inherited by pre-commit.
+    brew = shutil.which("brew")
+    if brew:
+        try:
+            candidate = Path(run([brew, "--prefix", "llvm"])) / "bin" / "clang-tidy"
+            if candidate.is_file() and os.access(candidate, os.X_OK):
+                return str(candidate)
+        except (OSError, subprocess.CalledProcessError):
+            pass
+
+    return None
+
+
 def r_cmd_config(r_bin, var):
     return run([r_bin, "CMD", "config", var])
 
@@ -390,9 +413,11 @@ def main(argv):
     if not r_bin:
         return die("R not found on PATH; install R or set PATH accordingly.")
 
-    clang_tidy = os.environ.get("CLANG_TIDY") or shutil.which("clang-tidy")
+    clang_tidy = find_clang_tidy()
     if not clang_tidy:
-        return die("clang-tidy not found on PATH; install LLVM/clang-tidy.")
+        return die(
+            "clang-tidy not found; install LLVM/clang-tidy or set CLANG_TIDY."
+        )
 
     root = Path(__file__).resolve().parents[2]
     exit_code = 0

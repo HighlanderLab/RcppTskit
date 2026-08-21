@@ -4,7 +4,10 @@ All notable changes to `RcppTskit` are documented in this file.
 The file format is based on [Keep a Changelog](https://keepachangelog.com),
 and releases adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.3.0] 2026-04-07 (not yet released)
+## [0.3.0] 2026-08-21 (not yet released)
+
+A lot of work has gone into this release with help from
+Jinyang Liang and Hannes Becher.
 
 ### Added (new features)
 
@@ -39,8 +42,32 @@ and releases adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
   to append site rows from \code{R}, mirroring `tsk_site_table_add_row()`.
 - Added `rtsk_mutation_table_add_row()` and
   `TableCollection$mutation_table_add_row()` to append mutation rows from
-  \code{R}, mirroring `tsk_mutation_table_add_row()`.
-- TODO
+  `R`, mirroring `tsk_mutation_table_add_row()`.
+- Added `rtsk_population_table_add_row()` and
+  `TableCollection$population_table_add_row()` to append population rows from
+  `R`, mirroring `tsk_population_table_add_row()`.
+- Added `rtsk_migration_table_add_row()` and
+  `TableCollection$migration_table_add_row()` to append migration rows from
+  `R`, mirroring `tsk_migration_table_add_row()`.
+- Added `rtsk_provenance_table_add_row()` and
+  `TableCollection$provenance_table_add_row()` to append provenance rows from
+  `R`, mirroring `tsk_provenance_table_add_row()`.
+- Added `rtsk_node_table_get_row()` and `TableCollection$node_table_get_row()`
+  to retrieve node-table rows by 0-based row index.
+- Added `rtsk_table_collection_sort()` and `TableCollection$sort()` to sort a
+  table collection in place.
+- Added `rtsk_table_collection_simplify()` and
+  `TableCollection$simplify()` to simplify table collection in place, and
+  `TreeSequence$simplify()` to return a simplified tree sequence.
+- Added low-level variant iterators
+  (`rtsk_treeseq_init_variants_iterator()`/`rtsk_treeseq_next_variant()`) and a
+  user-facing `TreeSequence$variants()` method to iterate over decoded
+  site-by-site variants from `R`, aligned with `Python` API
+  semantics for `samples`, `isolated_as_missing`, `alleles`, and
+  `left`/`right` intervals.
+- Added `rtsk_treeseq_get_samples()` and `TreeSequence$samples()` to retrieve
+  sample node IDs from a tree sequence, with `TreeSequence$samples()` now
+  supporting `population` and `time` filters.
 
 ### Changed
 
@@ -53,17 +80,17 @@ and releases adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
   `pointer` to `xptr`.
 - Ensured `TableCollection$tree_sequence()` matches `tskit Python` API:
   it now builds indexes on the `TableCollection`, if indexes are not present.
+- Refined integer validation behaviour across scalar and optional vector inputs.
 - We now use `bit64::integer64` (signed 64 bit integer) instead of `int` aiming
   to approach `tsk_size_t` in `tskit C` (unsigned 64 bit integer); in low-level
   `rtsk_treeseq_get_num_*()` wrappers and count/metadata-length fields.
-- TODO
 
 ### Maintenance
 
 - Turn vignette URL as hyperlinks and similar cosmetics.
-- State that we mirror the `R/Python` APIs and `C++/C` APIs across the package.
-- Update `tskit C` to 1.3.1
-- TODO
+- Clarify that the `R` API combines a Python-inspired `R6` object model with
+  operations that map directly to the `tskit C` API.
+- Update `tskit C` to 1.3.1 and `kastore` to `2.1.3` (security update).
 
 ## [0.2.0] - 2026-02-22
 

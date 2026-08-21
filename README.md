@@ -21,8 +21,9 @@ seamlessly load and analyse a tree sequence, as described at
 For example, for high-performance and low-level work with tree sequences.
 Currently, `RcppTskit` provides a limited number of functions
 due to the availability of extensive `Python` API and the `reticulate` option.
-The provided `RcppTskit R` API mirrors the `tskit Python` API,
-while the `RcppTskit C++` API mirrors the `tskit C` API.
+The `RcppTskit R` API combines an `R6` object model inspired by the
+`tskit Python` API with operations that map directly to the `tskit C` API.
+The `RcppTskit C++` API closely mirrors the `tskit C` API.
 
 See more details on the state of the tree sequence ecosystem and aims of
 `RcppTskit` in [the introduction vignette](https://highlanderlab.r-universe.dev/articles/RcppTskit/RcppTskit_intro.html) ([source](RcppTskit/vignettes/RcppTskit_intro.qmd)).

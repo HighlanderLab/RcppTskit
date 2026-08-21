@@ -99,6 +99,7 @@ check_tskit_py <- function(object, stop = FALSE) {
   }
 }
 
+# INTERNAL
 # @title Validating logical args
 # @param value logical from the argument
 # @param name character of the argument
@@ -109,6 +110,262 @@ validate_logical_arg <- function(value, name) {
   }
 }
 
+# INTERNAL
+# @title Validating integer scalar args
+# @param value integer scalar from the argument
+# @param name character of the argument
+# @param minimum lower bound
+# @param allow_null logical
+# @param strict logical throw an error when value is numeric
+# @details To make it flexible for R users, we also accept numeric input,
+#   unless \code{strict = TRUE} (in that case this function throws an error).
+# @return Integer scalar (or NULL if allowed).
+validate_integer_scalar_arg <- function(
+  value,
+  name,
+  minimum = NULL,
+  allow_null = FALSE,
+  strict = FALSE
+) {
+  if (is.null(value)) {
+    if (allow_null) {
+      return(NULL)
+    }
+    stop(name, " cannot be NULL.", call. = FALSE)
+  }
+
+  abort <- function() {
+    msg <- "a non-NA integer scalar within 32-bit range"
+    if (identical(minimum, 0L)) {
+      msg <- paste0(
+        "a non-NA, non-negative integer scalar no greater than ",
+        ".Machine$integer.max"
+      )
+    } else if (!is.null(minimum)) {
+      msg <- paste0(msg, " (>= ", minimum, ")")
+    }
+    if (allow_null) {
+      stop(name, " must be NULL or ", msg, "!", call. = FALSE)
+    }
+    stop(name, " must be ", msg, "!", call. = FALSE)
+  }
+
+  is_valid_type <- if (strict) {
+    is.integer(value)
+  } else {
+    is.numeric(value)
+  }
+  if (!is_valid_type || length(value) != 1L || is.na(value)) {
+    abort()
+  }
+
+  if (is.integer(value)) {
+    if (!is.null(minimum) && value < minimum) {
+      abort()
+    }
+    return(value)
+  }
+
+  value_num <- as.numeric(value)
+  int_min <- -as.numeric(.Machine$integer.max) - 1
+  int_max <- as.numeric(.Machine$integer.max)
+  is_whole <- value_num %% 1 == 0
+  is_within_bounds <- value_num >= int_min && value_num <= int_max
+  is_above_min <- is.null(minimum) || value_num >= minimum
+
+  if (
+    !is.finite(value_num) || !is_whole || !is_within_bounds || !is_above_min
+  ) {
+    abort()
+  }
+
+  return(as.integer(value_num))
+}
+
+# INTERNAL
+# @title Validating row indexes
+# @param index integer row index (0-based)
+# @param name character of the argument
+# @param allow_null logical
+# @return No return value; called for side effects.
+validate_row_index <- function(
+  index,
+  name = "index",
+  allow_null = FALSE
+) {
+  validate_integer_scalar_arg(
+    index,
+    name,
+    minimum = 0L,
+    allow_null = allow_null
+  )
+}
+
+# INTERNAL
+# @title Validating optional numeric vectors with no missing values
+# @param value numeric vector or \code{NULL}
+# @param name character of the argument
+# @param lengths optional integer vector of permitted lengths
+# @param error_message optional caller-specific error message
+# @return No return value; called for side effects.
+validate_optional_numeric_vector_arg <- function(
+  value,
+  name,
+  lengths = NULL,
+  error_message = NULL
+) {
+  if (is.null(value)) {
+    return(invisible(NULL))
+  }
+
+  valid_type <- is.integer(value) || is.double(value)
+  valid_length <- is.null(lengths) || length(value) %in% lengths
+  if (!valid_type || !is.null(dim(value)) || anyNA(value) || !valid_length) {
+    if (!is.null(error_message)) {
+      stop(error_message, call. = FALSE)
+    }
+    stop(
+      name,
+      " must be NULL or a numeric vector with no NA values!",
+      call. = FALSE
+    )
+  }
+
+  invisible(NULL)
+}
+
+# INTERNAL
+# @title Compare numeric values using NumPy's default isclose tolerances
+# @param value numeric vector
+# @param target numeric scalar
+# @return Logical vector indicating which values are close to \code{target}.
+numeric_values_are_close <- function(value, target) {
+  close <- value == target
+  finite <- is.finite(value) & is.finite(target)
+  close[finite] <-
+    abs(value[finite] - target) <= 1e-08 + 1e-05 * abs(target)
+  close[is.na(close)] <- FALSE
+  close
+}
+
+# INTERNAL
+# @title Validating optional integer vectors with no missing values
+# @param value integer vector or \code{NULL}
+# @param name character of the argument
+# @param strict logical throw an error when value is numeric
+# @details To make it flexible for R users, we also accept numeric input,
+#   unless \code{strict = TRUE} (in that case this function throws an error).
+# @return No return value; called for side effects.
+validate_optional_integer_vector_arg <- function(value, name, strict = FALSE) {
+  int_min <- -as.numeric(.Machine$integer.max) - 1
+  int_max <- as.numeric(.Machine$integer.max)
+
+  if (is.null(value)) {
+    return(invisible(NULL))
+  }
+
+  if (strict && !is.integer(value)) {
+    stop(
+      name,
+      " must be NULL or an integer vector with no NA values within 32-bit range!"
+    )
+  }
+
+  value_num <- suppressWarnings(as.numeric(value))
+
+  if (
+    !is.numeric(value) ||
+      anyNA(value_num) ||
+      !all(is.finite(value_num)) ||
+      any(value_num != trunc(value_num)) ||
+      any(value_num < int_min) ||
+      any(value_num > int_max)
+  ) {
+    stop(
+      name,
+      " must be NULL or an integer vector with no NA values within 32-bit range!"
+    )
+  }
+
+  invisible(as.integer(value_num))
+}
+
+# INTERNAL
+# @title Validating numeric scalar args
+# @param value numeric scalar
+# @param name character of the argument
+# @param allow_null logical
+# @param allow_nan logical
+# @return No return value; called for side effects.
+validate_numeric_scalar_arg <- function(
+  value,
+  name,
+  allow_null = FALSE,
+  allow_nan = FALSE
+) {
+  if (is.null(value)) {
+    if (allow_null) {
+      return(invisible(NULL))
+    }
+    stop(name, " must be a non-NA numeric scalar!")
+  }
+  if (!is.numeric(value) || length(value) != 1L) {
+    if (allow_null && allow_nan) {
+      stop(name, " must be NaN, NULL, or a non-NA numeric scalar!")
+    }
+    stop(name, " must be a non-NA numeric scalar!")
+  }
+  if (allow_nan) {
+    if (!is.na(value) || is.nan(value)) {
+      return(invisible(NULL))
+    }
+    stop(name, " must be NaN, NULL, or a non-NA numeric scalar!")
+  }
+  if (is.na(value)) {
+    stop(name, " must be a non-NA numeric scalar!")
+  }
+}
+
+# INTERNAL
+# @title Validating character scalar args
+# @param value character scalar
+# @param name character of the argument
+# @return No return value; called for side effects.
+validate_character_scalar_arg <- function(value, name) {
+  if (
+    is.null(value) ||
+      !is.character(value) ||
+      length(value) != 1L ||
+      is.na(value)
+  ) {
+    stop(name, " must be a length-1 non-NA character string!")
+  }
+}
+
+# INTERNAL
+# @title Validating metadata argument and possibly converting it to raw
+# @param metadata \code{NULL}, character, or raw argument
+# @return \code{NULL} when metadata is \code{NULL} and raw vector otherwise.
+validate_metadata_arg <- function(metadata) {
+  if (is.null(metadata)) {
+    return(NULL)
+  }
+  if (
+    is.character(metadata) &&
+      length(metadata) == 1L &&
+      !is.na(metadata)
+  ) {
+    return(charToRaw(metadata))
+  }
+  if (is.raw(metadata)) {
+    return(metadata)
+  }
+  stop(
+    "metadata must be NULL, a length-1 non-NA character string, or a raw vector!"
+  )
+}
+
+# INTERNAL
 # @title Converting load arguments to \code{tskit} bitwise options
 # @param skip_tables logical
 # @param skip_reference_sequence logical
@@ -141,7 +398,7 @@ load_args_to_options <- function(
 #' @param skip_reference_sequence logical; if \code{TRUE}, skip loading
 #'   reference genome sequence information.
 #' @details See the \code{tskit Python} equivalent at
-#'   \url{https://tskit.dev/tskit/docs/latest/python-api.html#tskit.load}.
+#'   \url{https://tskit.dev/tskit/docs/stable/python-api.html#tskit.load}.
 #' @return A \code{\link{TreeSequence}} object.
 #' @seealso \code{\link[=TreeSequence]{TreeSequence$new}}
 #' @examples

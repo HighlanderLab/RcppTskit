@@ -18,12 +18,19 @@ void rtsk_table_collection_dump(SEXP tc, const std::string &filename,
                                 int options = 0);
 SEXP rtsk_treeseq_copy_tables(SEXP ts, int options = 0);
 SEXP rtsk_treeseq_init(SEXP tc, int options = 0);
+SEXP rtsk_treeseq_init_variants_iterator(
+    SEXP ts, Rcpp::Nullable<Rcpp::IntegerVector> samples = R_NilValue,
+    bool isolated_as_missing = true,
+    Rcpp::Nullable<Rcpp::CharacterVector> alleles = R_NilValue,
+    double left = 0.0, double right = NA_REAL);
+SEXP rtsk_treeseq_next_variant(SEXP iterator);
 
 SEXP rtsk_treeseq_get_num_provenances(SEXP ts);
 SEXP rtsk_treeseq_get_num_populations(SEXP ts);
 SEXP rtsk_treeseq_get_num_migrations(SEXP ts);
 SEXP rtsk_treeseq_get_num_individuals(SEXP ts);
 SEXP rtsk_treeseq_get_num_samples(SEXP ts);
+Rcpp::IntegerVector rtsk_treeseq_get_samples(SEXP ts);
 SEXP rtsk_treeseq_get_num_nodes(SEXP ts);
 SEXP rtsk_treeseq_get_num_edges(SEXP ts);
 SEXP rtsk_treeseq_get_num_trees(SEXP ts);
@@ -55,6 +62,12 @@ Rcpp::String rtsk_table_collection_get_file_uuid(SEXP tc);
 bool rtsk_table_collection_has_index(SEXP tc, int options = 0);
 void rtsk_table_collection_build_index(SEXP tc, int options = 0);
 void rtsk_table_collection_drop_index(SEXP tc, int options = 0);
+void rtsk_table_collection_sort(SEXP tc, int start_edges = 0,
+                                int start_sites = 0, int start_mutations = 0,
+                                int options = 0);
+Rcpp::IntegerVector rtsk_table_collection_simplify(
+    SEXP tc, Rcpp::Nullable<Rcpp::IntegerVector> samples = R_NilValue,
+    int options = 0);
 Rcpp::List rtsk_table_collection_summary(SEXP tc);
 Rcpp::List rtsk_table_collection_metadata_length(SEXP tc);
 int rtsk_individual_table_add_row(
@@ -62,18 +75,33 @@ int rtsk_individual_table_add_row(
     Rcpp::Nullable<Rcpp::NumericVector> location = R_NilValue,
     Rcpp::Nullable<Rcpp::IntegerVector> parents = R_NilValue,
     Rcpp::Nullable<Rcpp::RawVector> metadata = R_NilValue);
+Rcpp::List rtsk_individual_table_get_row(SEXP tc, int index);
 int rtsk_node_table_add_row(
     SEXP tc, int flags = 0, double time = 0, int population = -1,
     int individual = -1, Rcpp::Nullable<Rcpp::RawVector> metadata = R_NilValue);
+Rcpp::List rtsk_node_table_get_row(SEXP tc, int index);
 int rtsk_edge_table_add_row(
     SEXP tc, double left, double right, int parent, int child,
     Rcpp::Nullable<Rcpp::RawVector> metadata = R_NilValue);
+Rcpp::List rtsk_edge_table_get_row(SEXP tc, int index);
 int rtsk_site_table_add_row(
     SEXP tc, double position, const std::string &ancestral_state,
     Rcpp::Nullable<Rcpp::RawVector> metadata = R_NilValue);
+Rcpp::List rtsk_site_table_get_row(SEXP tc, int index);
 int rtsk_mutation_table_add_row(
     SEXP tc, int site, int node, int parent, double time,
     const std::string &derived_state,
     Rcpp::Nullable<Rcpp::RawVector> metadata = R_NilValue);
+Rcpp::List rtsk_mutation_table_get_row(SEXP tc, int index);
+int rtsk_population_table_add_row(
+    SEXP tc, Rcpp::Nullable<Rcpp::RawVector> metadata = R_NilValue);
+Rcpp::List rtsk_population_table_get_row(SEXP tc, int index);
+int rtsk_migration_table_add_row(
+    SEXP tc, double left, double right, int node, int source, int dest,
+    double time, Rcpp::Nullable<Rcpp::RawVector> metadata = R_NilValue);
+Rcpp::List rtsk_migration_table_get_row(SEXP tc, int index);
+int rtsk_provenance_table_add_row(SEXP tc, const std::string &timestamp,
+                                  const std::string &record);
+Rcpp::List rtsk_provenance_table_get_row(SEXP tc, int index);
 
 #endif

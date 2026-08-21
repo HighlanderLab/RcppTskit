@@ -5,6 +5,9 @@
 ^[.]?air[.]toml$
 ^[.]?jarl[.]toml$
 ^\.Rproj\.user$
+^\.idea$
+^src/\.idea$
+^src/tskit/\.idea$
 ^\.\.$
 ^\.clang-format$
 ^\.covrignore$
@@ -19,7 +22,6 @@
 ^inst/examples/explore_reticulate\.R$
 ^inst/examples/explore_slendr\.R$
 ^notes_pkg_dev\.Rmd$
-^pkg_dev_notes\.md$
 ^src/.*\.gcda$
 ^src/.*\.gcno$
 ^test\.trees$

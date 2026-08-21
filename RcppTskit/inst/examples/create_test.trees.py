@@ -10,6 +10,8 @@ ts = msprime.sim_ancestry(
 )
 ts = msprime.sim_mutations(ts, rate=2e-2, random_seed=42)
 ts
+# os.getcwd()
+# ts = tskit.load("RcppTskit/inst/examples/test.trees")
 print(ts)
 ts.num_provenances  # 2
 ts.num_populations  # 1
@@ -25,6 +27,15 @@ ts.sequence_length  # 100.0
 ts.time_units  # 'generations'
 ts.min_time  # 0.0
 ts.max_time  # 6.961993337190808
+
+ts.samples()
+# array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15],
+#       dtype=int32)
+
+ts.tables.nodes[0]
+# NodeTableRow(flags=1, time=0.0, population=0, individual=0, metadata=b'')
+ts.tables.nodes[38]
+# NodeTableRow(flags=0, time=6.961993337190808, population=0, individual=-1, metadata=b'')
 
 ts.metadata  # b''
 type(ts.metadata)  # bytes
@@ -62,6 +73,14 @@ tskit.load("RcppTskit/inst/examples/test.trees").file_uuid
 # '79ec383f-a57d-b44f-2a5c-f0feecbbcb32'
 # test_trees_file_uuid <- "79ec383f-a57d-b44f-2a5c-f0feecbbcb32"
 # ts = tskit.load("RcppTskit/inst/examples/test.trees")
+
+# Tiny non-sorted table-collection example used to test TableCollection.sort()
+tc_unsorted = ts.dump_tables()
+tc_unsorted.sites.add_row(
+    position=tc_unsorted.sites.position[-1] / 2,
+    ancestral_state="A",
+)
+tc_unsorted.dump("RcppTskit/inst/examples/test_unsorted.trees")
 
 # -----------------------------------------------------------------------------
 
